@@ -1,0 +1,66 @@
+<div class="content">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">Create Project</button>
+            </div>
+            <div class="col-sm-8">
+                <div class="project-sort pull-right">
+                    <div class="project-sort-item">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label>Phase :</label>
+                                <select class="form-control input-sm">
+                                    <option>All Posts</option>
+                                    <option>Category 1</option>
+                                    <option>Category 2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sort :</label>
+                                <select class="form-control input-sm">
+                                    <option>Date (Latest first)</option>
+                                    <option>Date (Oldest first)</option>
+                                    <option>Title</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- end col-->
+        </div>
+        <!-- end row -->
+
+
+        <div class="row">
+            <div class="col-lg-4" ng-repeat="post in posts">
+                <div class="card-box project-box">
+                    <div class="label" ng-class="post.status ? 'label-success' : 'label-danger'">
+                        {{post.status ? 'Published' : 'Not published'}}
+                    </div>
+                    <h4 class="m-t-0 m-b-5"><a href="" class="text-white">{{post.title}}</a></h4>
+
+                    <p class="text-success text-uppercase m-b-20 font-13">{{post.category}}</p>
+                    <p class="text-muted font-13">{{post.description}}...<a href="#" class="font-600 text-muted">view more</a>
+                    </p>
+
+                    <ul class="list-inline">
+                        <li>
+                            <h3 class="m-b-0">{{post.views}}</h3>
+                            <p class="text-muted">Views</p>
+                        </li>
+                        <li>
+                            <h3 class="m-b-0">{{post.comments}}</h3>
+                            <p class="text-muted">Comments</p>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end col-->
+
+        </div>
+        <!-- end row -->
+
+    </div> <!-- container -->
+
+</div> <!-- content -->

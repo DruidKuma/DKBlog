@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    properties:
+      jadira:
+        usertype:
+          autoRegisterUserTypes: true
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/druidkuma-blog
+    username: postgres
+    password: postgres
+
+server:
+  port: 8081
