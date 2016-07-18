@@ -9,8 +9,7 @@ angular.module("blogApp")
 
         BlogEntry.all().then(function(response) {
             $scope.posts = response.data;
-            console.log(response.data);
         }, function(error) {
-            alert('PIZDA');
+        //    TODO
         });
     }]);

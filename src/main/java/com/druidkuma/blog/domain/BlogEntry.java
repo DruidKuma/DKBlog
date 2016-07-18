@@ -1,6 +1,7 @@
 package com.druidkuma.blog.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -44,6 +45,7 @@ public class BlogEntry {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cm_blog_entry_id")
+    @Where(clause = "cm_comment_parent_id IS NULL")
     private List<Comment> comments;
 
     @Column(name = "be_comments_enabled")

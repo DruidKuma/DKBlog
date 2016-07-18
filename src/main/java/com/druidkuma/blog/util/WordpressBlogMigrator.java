@@ -1,7 +1,6 @@
 package com.druidkuma.blog.util;
 
 import com.druidkuma.blog.dao.BlogEntryRepository;
-import com.druidkuma.blog.dao.CommentRepository;
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.Comment;
 import com.druidkuma.blog.domain.Content;
@@ -11,8 +10,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -32,13 +34,14 @@ import java.util.Map;
  * @version 1.0.0
  * @since 7/15/16
  */
-//@Service
+@Service
 public class WordpressBlogMigrator {
 
     @Autowired
     private BlogEntryRepository blogEntryRepository;
+
     @Autowired
-    private CommentRepository commentRepository;
+    private JdbcTemplate jdbcTemplate;
 
 //    @PostConstruct
     public void migrate() throws IOException {
@@ -57,26 +60,21 @@ public class WordpressBlogMigrator {
                 throw new RuntimeException("Incorrect format of line: " + record);
             }
 
-            String content = record.   get(4);
+            String content = record.get(4);
 
             if(content == null || content.equals("")) {
                 continue;
             }
 
-            Document parse = Jsoup.parse(content);
-
-            Elements img = parse.getElementsByTag("img");
-            if(img.size() < 1) {
-                continue;
-            }
-            String src = img.get(0).attr("src");
+            String src = extractImageUrlFromFirstCaption(content);
+            if (src == null) continue;
 //            if(!exists(src)) continue;
 
             entryMap.put(Integer.parseInt(record.get(0)),
                     BlogEntry.builder()
                             .author(record.get(1))
                             .creationDate(LocalDateTime.parse(record.get(2), formatter).toInstant(ZoneOffset.UTC))
-                            .content(Content.builder().contents(record.get(4)).imageUrl(src).title(record.get(5)).build())
+                            .content(Content.builder().contents(normalizeContent(record.get(4))).imageUrl(src).title(record.get(5)).build())
                             .numViews(1000L)
                             .permalink("Temporarily null")
                             .numComments(Long.parseLong(record.get(22)))
@@ -85,8 +83,6 @@ public class WordpressBlogMigrator {
                             .build());
 
             System.out.println("Accepted blog post with ID: " + record.get(0));
-
-
         }
         System.out.println("Finished parsing posts...");
 
@@ -151,5 +147,37 @@ public class WordpressBlogMigrator {
             System.out.println("Declined blog entry, image does not exist");
             return false;
         }
+    }
+
+    public static String extractImageUrlFromFirstCaption(String content) {
+        Document parse = Jsoup.parse(content);
+        Elements img = parse.getElementsByTag("img");
+        if(img.size() < 1) {
+            return null;
+        }
+        return img.get(0).attr("src");
+    }
+
+    public static String normalizeContent(String content) {
+        Document document = Jsoup.parse(content.replaceAll("\\[caption", "<caption").replaceAll("\"\\]","\">").replaceAll("\\[/caption\\]", "</caption>"));
+        return document.select("body").html();
+    }
+
+    @PostConstruct
+    public void test() {
+        for (BlogEntry blogEntry : blogEntryRepository.findAll()) {
+
+            //normalize content
+//            Content content = blogEntry.getContent();
+//            if(StringUtils.isEmpty(content)) continue;
+//            content.setContents(normalizeContent(content.getContents()));
+//            blogEntryRepository.save(blogEntry);
+
+            //recount comments
+            Long aLong = jdbcTemplate.queryForObject("SELECT count(1) FROM comments cm WHERE cm.cm_blog_entry_id = " + blogEntry.getId(), Long.class);
+            blogEntry.setNumComments(aLong);
+            blogEntryRepository.save(blogEntry);
+        }
+        blogEntryRepository.flush();
     }
 }

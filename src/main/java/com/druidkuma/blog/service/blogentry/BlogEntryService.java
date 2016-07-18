@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface BlogEntryService {
     List<BlogEntry> getAll();
+
+    BlogEntry getOne(Long id);
 }

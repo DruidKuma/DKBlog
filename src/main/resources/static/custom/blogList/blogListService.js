@@ -5,6 +5,12 @@ angular.module("blogApp").service('BlogEntry', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/entry",
                 method: "get"
             })
+        },
+        single: function(params) {
+            return $http({
+                url: BASE_URL + "/api/blog/entry/" + params,
+                method: "get"
+            })
         }
     }
 }]);
