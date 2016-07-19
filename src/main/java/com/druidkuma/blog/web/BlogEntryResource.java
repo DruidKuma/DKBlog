@@ -6,6 +6,7 @@ import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,10 @@ public class BlogEntryResource {
                         .status(entry.getIsPublished())
                         .imageUrl(entry.getContent().getImageUrl())
                         .creationDate(entry.getCreationDate())
-                        .description(entry.getContent().getContents().substring(0, Math.min(entry.getContent().getContents().length(), 80)))
+                        .description(Jsoup.parse(entry.getContent()
+                                .getContents()).text()
+                                .substring(0, Math.min(entry.getContent()
+                                        .getContents().length(), 80)))
                         .build())
                 .collect(Collectors.toList());
     }

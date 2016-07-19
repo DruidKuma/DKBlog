@@ -11,10 +11,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -34,7 +32,7 @@ import java.util.Map;
  * @version 1.0.0
  * @since 7/15/16
  */
-@Service
+//@Service
 public class WordpressBlogMigrator {
 
     @Autowired
@@ -163,7 +161,7 @@ public class WordpressBlogMigrator {
         return document.select("body").html();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void test() {
         for (BlogEntry blogEntry : blogEntryRepository.findAll()) {
 
