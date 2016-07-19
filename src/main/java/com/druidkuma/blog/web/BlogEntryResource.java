@@ -6,6 +6,7 @@ import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
+import com.druidkuma.blog.web.dto.BlogPostFilter;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,9 +40,44 @@ public class BlogEntryResource {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<BlogEntryInfoDto> getAllEntries() {
+    public List<BlogEntryInfoDto> getAllEntries() {
+        return blogEntryService.getAll().stream()
+                .map(entry -> BlogEntryInfoDto.builder()
+                        .id(entry.getId())
+                        .views(entry.getNumViews())
+                        .comments(entry.getNumComments())
+                        .category("Test Category")
+                        .title(entry.getContent().getTitle())
+                        .status(entry.getIsPublished())
+                        .imageUrl(entry.getContent().getImageUrl())
+                        .creationDate(entry.getCreationDate())
+                        .description(Jsoup.parse(entry.getContent()
+                                .getContents()).text()
+                                .substring(0, Math.min(entry.getContent()
+                                        .getContents().length(), 80)))
+                        .build())
+                .collect(Collectors.toList());
+    }
 
-        PageRequest pageRequest = new PageRequest(0, 20, Sort.Direction.DESC, "creationDate");
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id) {
+
+        BlogEntry entry = blogEntryService.getOne(id);
+
+        return BlogDetailedEntryDto.builder()
+                .title(entry.getContent().getTitle())
+                .creationDate(entry.getCreationDate())
+                .author(entry.getAuthor())
+                .content(entry.getContent().getContents())
+                .numComments(entry.getNumComments())
+                .comments(entry.getComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
+                .id(entry.getId()).build();
+    }
+
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) {
+
+        PageRequest pageRequest = new PageRequest(filter.getCurrentPage() - 1, filter.getEntriesOnPage(), Sort.Direction.DESC, "creationDate");
 
         Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageRequest);
 
@@ -60,21 +97,6 @@ public class BlogEntryResource {
                                         .getContents().length(), 80)))
                         .build())
                 .collect(Collectors.toList()), pageRequest, pageOfEntries.getTotalElements());
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id) {
-
-        BlogEntry entry = blogEntryService.getOne(id);
-
-        return BlogDetailedEntryDto.builder()
-                .title(entry.getContent().getTitle())
-                .creationDate(entry.getCreationDate())
-                .author(entry.getAuthor())
-                .content(entry.getContent().getContents())
-                .numComments(entry.getNumComments())
-                .comments(entry.getComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
-                .id(entry.getId()).build();
     }
 
     private BlogCommentDto buildCommentDto(Comment comment) {

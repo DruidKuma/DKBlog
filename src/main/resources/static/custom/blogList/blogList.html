@@ -1,4 +1,7 @@
-<div class="content">
+<div class="content" style="position: relative">
+    <div class="dk-loading" ng-show="loadingProcess">
+        <div class="dk-loading-animation"></div>
+    </div>
     <div class="container">
 
         <div class="row">
@@ -27,6 +30,14 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Published :</label>
+                                <select class="form-control input-sm">
+                                    <option>All</option>
+                                    <option>Only published</option>
+                                    <option>Only not published</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Sort :</label>
                                 <select class="form-control input-sm">
                                     <option>Date (Latest first)</option>
@@ -48,10 +59,10 @@
                     <div class="label" ng-class="post.status ? 'label-success' : 'label-danger'">
                         {{post.status ? 'Published' : 'Not published'}}
                     </div>
-                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white">{{post.title | cut:true:28:' ...'}}</a></h4>
+                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | cut:true:28:' ...'}}</a></h4>
 
                     <p class="text-success text-uppercase m-b-20 font-13">{{post.category}}</p>
-                    <p class="text-muted font-13">{{post.description}}...<a href="#" class="font-600 text-muted">view more</a>
+                    <p class="text-muted font-13">{{post.description}}...<a href="#/entry/{{post.id}}" class="font-600 text-muted">view more</a>
                     </p>
 
                     <ul class="list-inline">
@@ -63,6 +74,10 @@
                             <h3 class="m-b-0">{{post.comments}}</h3>
                             <p class="text-muted">Comments</p>
                         </li>
+                        <li>
+                            <h3 class="m-b-0">{{post.creationDate | date:'dd/MM/yyyy'}}</h3>
+                            <p class="text-muted">Created</p>
+                        </li>
                     </ul>
                 </div>
             </div><!-- end col-->
@@ -70,13 +85,14 @@
         </div>
         <!-- end row -->
         <uib-pagination
-                total-items="totalItems"
-                ng-model="currentPage"
+                total-items="blogListFilter.totalItems"
+                items-per-page="blogListFilter.entriesOnPage"
+                ng-model="blogListFilter.currentPage"
                 max-size="numPageSize"
                 class="pagination-sm pull-right"
                 boundary-link-numbers="true"
                 rotate="false"
-                ng-click="pageChanged()">
+                ng-click="reloadBlogPosts()">
         </uib-pagination>
 
     </div> <!-- container -->

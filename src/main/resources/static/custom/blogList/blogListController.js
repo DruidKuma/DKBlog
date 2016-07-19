@@ -3,22 +3,30 @@
  */
 angular.module("blogApp")
     .controller('BlogListController',['$scope', '$rootScope', 'BlogEntry', function($scope, $rootScope, BlogEntry) {
-
-        $scope.totalItems = 2050;
-        $scope.currentPage = 8;
-        $scope.numPageSize = 5;
-
-        $scope.pageChanged = function() {
-            console.log("Page changed to: " + $scope.currentPage);
-        };
-
         $scope.$on('$routeChangeSuccess', function () {
             $rootScope.pageTitle = "All posts";
         });
 
-        BlogEntry.all().then(function(response) {
-            $scope.posts = response.data.content;
-        }, function(error) {
-        //    TODO
-        });
+        $rootScope.loadingProcess = false;
+        $scope.numPageSize = 5;
+
+        $scope.blogListFilter = {
+            currentPage: 1,
+            entriesOnPage: 20,
+            category: '',
+            sort: 'creationDate DESC',
+            search: '',
+            filterPublished: '',
+            totalItems: 0
+        };
+
+        $scope.reloadBlogPosts = function() {
+            BlogEntry.page($scope.blogListFilter).then(function(response) {
+                $scope.posts = response.data.content;
+                $scope.blogListFilter.totalItems = response.data.totalElements;
+            });
+        };
+
+        $scope.reloadBlogPosts();
     }]);
+
