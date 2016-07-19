@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -37,7 +38,10 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     }
 
     @Override
-    public Page<BlogEntry> getPageOfEntries(Pageable pageable) {
+    public Page<BlogEntry> getPageOfEntries(Pageable pageable, Boolean publishFilter, String search) {
+        if(publishFilter != null) {
+            return blogEntryRepository.findAllByIsPublished(publishFilter, pageable);
+        }
         return blogEntryRepository.findAll(pageable);
     }
 }

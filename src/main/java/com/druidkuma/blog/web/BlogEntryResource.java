@@ -7,6 +7,7 @@ import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class BlogEntryResource {
                         .description(Jsoup.parse(entry.getContent()
                                 .getContents()).text()
                                 .substring(0, Math.min(entry.getContent()
-                                        .getContents().length(), 80)))
+                                        .getContents().length(), 70)))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -73,14 +74,10 @@ public class BlogEntryResource {
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) {
-
-        String[] split = filter.getSort().split(" ");
-        Validate.isTrue(split.length == 2);
-
+    public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) throws InterruptedException {
 
         Pageable pageable = buildPageRequest(filter);
-        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable);
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable, StringUtils.isNotEmpty(filter.getFilterPublished()) ? Boolean.valueOf(filter.getFilterPublished()) : null, null);
 
         return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()
@@ -95,7 +92,7 @@ public class BlogEntryResource {
                         .description(Jsoup.parse(entry.getContent()
                                 .getContents()).text()
                                 .substring(0, Math.min(entry.getContent()
-                                        .getContents().length(), 80)))
+                                        .getContents().length(), 70)))
                         .build())
                 .collect(Collectors.toList()), pageable, pageOfEntries.getTotalElements());
     }

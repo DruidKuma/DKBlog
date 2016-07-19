@@ -1,4 +1,4 @@
-DKBlogBuilder.iml
+*.iml
 target/
 .idea
 .mvn

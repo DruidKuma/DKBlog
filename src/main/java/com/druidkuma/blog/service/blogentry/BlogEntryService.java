@@ -18,5 +18,5 @@ public interface BlogEntryService {
 
     BlogEntry getOne(Long id);
 
-    Page<BlogEntry> getPageOfEntries(Pageable pageable);
+    Page<BlogEntry> getPageOfEntries(Pageable pageable, Boolean publishFilter, String search);
 }
