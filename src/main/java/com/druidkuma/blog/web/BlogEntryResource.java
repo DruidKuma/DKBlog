@@ -7,12 +7,10 @@ import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
+import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,9 +75,12 @@ public class BlogEntryResource {
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) {
 
-        PageRequest pageRequest = new PageRequest(filter.getCurrentPage() - 1, filter.getEntriesOnPage(), Sort.Direction.DESC, "creationDate");
+        String[] split = filter.getSort().split(" ");
+        Validate.isTrue(split.length == 2);
 
-        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageRequest);
+
+        Pageable pageable = buildPageRequest(filter);
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable);
 
         return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()
@@ -96,7 +97,7 @@ public class BlogEntryResource {
                                 .substring(0, Math.min(entry.getContent()
                                         .getContents().length(), 80)))
                         .build())
-                .collect(Collectors.toList()), pageRequest, pageOfEntries.getTotalElements());
+                .collect(Collectors.toList()), pageable, pageOfEntries.getTotalElements());
     }
 
     private BlogCommentDto buildCommentDto(Comment comment) {
@@ -107,5 +108,20 @@ public class BlogEntryResource {
                 .id(comment.getId())
                 .children(comment.getNestedComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
                 .build();
+    }
+
+    private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {
+        Integer page = blogPostFilter.getCurrentPage() - 1;
+        Integer pageSize = blogPostFilter.getEntriesOnPage();
+
+        String[] sort;
+        if(blogPostFilter.getSort() == null || blogPostFilter.getSort().split(" ").length != 2) {
+            sort = "creationDate DESC".split(" ");
+        }
+        else {
+            sort = blogPostFilter.getSort().split(" ");
+        }
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        return new PageRequest(page, pageSize, direction, sort[0]);
     }
 }

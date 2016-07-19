@@ -14,11 +14,11 @@
                         <form class="form-inline">
                             <div class="form-group">
                                 <label>Show :</label>
-                                <select class="form-control input-sm">
-                                    <option>10</option>
-                                    <option>20</option>
-                                    <option>50</option>
-                                    <option>100</option>
+                                <select class="form-control input-sm" ng-model="blogPostFilter.entriesOnPage" ng-change="reloadBlogPosts()">
+                                    <option value="10" selected>10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
                                 </select>
                             </div>
                             <div class="form-group">

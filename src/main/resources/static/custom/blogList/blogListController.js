@@ -12,7 +12,7 @@ angular.module("blogApp")
 
         $scope.blogListFilter = {
             currentPage: 1,
-            entriesOnPage: 20,
+            entriesOnPage: 10,
             category: '',
             sort: 'creationDate DESC',
             search: '',
