@@ -1,4 +1,4 @@
-var blogApp = angular.module("blogApp", ['ngRoute']);
+var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap']);
 var BASE_URL = 'http://localhost:8081';
 
 blogApp.config(['$routeProvider', function($routeProvider) {

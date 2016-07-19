@@ -69,6 +69,15 @@
 
         </div>
         <!-- end row -->
+        <uib-pagination
+                total-items="totalItems"
+                ng-model="currentPage"
+                max-size="numPageSize"
+                class="pagination-sm pull-right"
+                boundary-link-numbers="true"
+                rotate="false"
+                ng-click="pageChanged()">
+        </uib-pagination>
 
     </div> <!-- container -->
 
