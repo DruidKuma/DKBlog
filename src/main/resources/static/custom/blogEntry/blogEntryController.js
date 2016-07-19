@@ -63,6 +63,6 @@ angular.module("blogApp")
             compile: function(elem){
                 return RecursionHelper.compile(elem);
             },
-            template: "<div class=\"media\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\'></ba-comment>\n    </div>\n</div>"
+            template: "<div style='margin-top:15px' class=\"media m-b-10\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\'></ba-comment>\n    </div>\n</div>"
         }
     });

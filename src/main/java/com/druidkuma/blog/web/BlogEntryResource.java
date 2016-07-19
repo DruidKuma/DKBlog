@@ -8,12 +8,15 @@ import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -35,8 +38,13 @@ public class BlogEntryResource {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<BlogEntryInfoDto> getAllEntries() {
-        return blogEntryService.getAll().stream()
+    public Page<BlogEntryInfoDto> getAllEntries() {
+
+        PageRequest pageRequest = new PageRequest(0, 20, Sort.Direction.DESC, "creationDate");
+
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageRequest);
+
+        return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()
                         .id(entry.getId())
                         .views(entry.getNumViews())
@@ -51,7 +59,7 @@ public class BlogEntryResource {
                                 .substring(0, Math.min(entry.getContent()
                                         .getContents().length(), 80)))
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), pageRequest, pageOfEntries.getTotalElements());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

@@ -8,7 +8,7 @@ angular.module("blogApp")
         });
 
         BlogEntry.all().then(function(response) {
-            $scope.posts = response.data;
+            $scope.posts = response.data.content;
         }, function(error) {
         //    TODO
         });

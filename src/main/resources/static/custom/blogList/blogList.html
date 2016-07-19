@@ -10,7 +10,16 @@
                     <div class="project-sort-item">
                         <form class="form-inline">
                             <div class="form-group">
-                                <label>Phase :</label>
+                                <label>Show :</label>
+                                <select class="form-control input-sm">
+                                    <option>10</option>
+                                    <option>20</option>
+                                    <option>50</option>
+                                    <option>100</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Category :</label>
                                 <select class="form-control input-sm">
                                     <option>All Posts</option>
                                     <option>Category 1</option>
@@ -39,7 +48,7 @@
                     <div class="label" ng-class="post.status ? 'label-success' : 'label-danger'">
                         {{post.status ? 'Published' : 'Not published'}}
                     </div>
-                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white">{{post.title | cut:true:30:' ...'}}</a></h4>
+                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white">{{post.title | cut:true:28:' ...'}}</a></h4>
 
                     <p class="text-success text-uppercase m-b-20 font-13">{{post.category}}</p>
                     <p class="text-muted font-13">{{post.description}}...<a href="#" class="font-600 text-muted">view more</a>

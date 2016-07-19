@@ -8,7 +8,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card-box task-detail">
                     <div class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
@@ -66,7 +66,7 @@
                 </div>
             </div><!-- end col -->
 
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="card-box">
                     <div class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
@@ -84,35 +84,6 @@
                     <h4 class="header-title m-t-0 m-b-30">Comments ({{postEntry.numComments}})</h4>
 
                     <div>
-                        <!--<div class="media m-b-10" ng-repeat="comment in postEntry.comments">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object img-circle thumb-sm" alt="64x64" src="https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">{{comment.author}}</h4>
-                                <p class="font-13 text-muted m-b-0">
-                                    &lt;!&ndash;<a href="" class="text-primary">@Michael</a>&ndash;&gt;
-                                    {{comment.body}}
-                                </p>
-                                <a href="" class="text-success font-13">Reply</a>
-                                <div class="media" ng-repeat="child in comment.children">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object img-circle thumb-sm" alt="64x64" src="/dist/images/users/avatar-3.jpg">
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{child.author}}</h4>
-                                        <p class="font-13 text-muted m-b-0">
-                                            {{child.body}}
-                                        </p>
-                                        <a href="" class="text-success font-13">Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
                         <ba-comment comment="comment" ng-repeat="comment in postEntry.comments"></ba-comment>
 
                         <div class="media">
