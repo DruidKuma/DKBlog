@@ -7,7 +7,9 @@ angular.module("blogApp")
         $scope.newComment = {
             blogPostId: $routeParams.id,
             body: '',
-            parent: undefined
+            recipient: '',
+            parent: undefined,
+            parentDomElem: undefined
         };
 
         $scope.loadCommentsForPost = function() {
@@ -18,14 +20,54 @@ angular.module("blogApp")
                 $scope.commentLoadingProcess = false;
             });
         };
-        $scope.prepareReplyForm = function(comment) {
+        $scope.prepareReplyForm = function(comment, ev) {
             var replyInput = $("#replyInput");
-            $scope.newComment.body = '@' + comment.author + ', ';
+            $scope.newComment.recipient = comment.author;
             $('html,body').animate({ scrollTop: replyInput.offset().top }, 'slow');
+            $scope.newComment.parent = comment;
+            $scope.newComment.parentDomElem = angular.element(ev.target).parent();
             replyInput.focus();
-            console.log(comment);
         };
+        $scope.resetReplyForm = function() {
+            delete $scope.newComment.recipient;
+            delete $scope.newComment.body;
+        };
+        $scope.postNewComment = function() {
 
+            // TODO: deal with adding not reply comment (adding and correct highlighting)
+            // TODO: send data to server and make sure after reload data matches
+            // TODO: Improve style of highlighting
+
+
+            $scope.newComment.parent.children.push({
+                author: 'Reifen Admin',
+                body: $scope.newComment.body
+            });
+            $scope.newComment.parentDomElem.attr("id", "lastCommentAdded");
+            var lastComment = $("#lastCommentAdded");
+            $('html,body').animate({ scrollTop: lastComment.offset().top }, 'slow');
+            $scope.newComment.parentDomElem.removeAttr("id");
+
+            $scope.highlightElement(lastComment, 500);
+
+            delete $scope.newComment.body;
+            delete $scope.newComment.recipient;
+            delete $scope.newComment.parent;
+            delete $scope.newComment.parentDomElem;
+        };
+        $scope.highlightElement = function(element, millisToHighlight) {
+            element.addClass("highlight");
+            setTimeout(function() {
+                element.removeClass("highlight");
+                setTimeout(function() {
+                    element.addClass("highlight");
+                    setTimeout(function() {
+                        element.removeClass("highlight");
+                    }, millisToHighlight);
+                }, millisToHighlight);
+            }, millisToHighlight);
+        };
+        
         $scope.loadCommentsForPost();
     }])
     .factory('RecursionHelper', ['$compile', function($compile){
@@ -80,6 +122,6 @@ angular.module("blogApp")
             compile: function(elem){
                 return RecursionHelper.compile(elem);
             },
-            template: "<div style=\'margin-top:15px\' class=\"media m-b-10\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\" ng-click=\"prepareReplyForm()\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\' prepare-reply-form=\"topFunc(child)\" top-func=\"topFunc\"></ba-comment>\n    </div>\n</div>"
+            template: "<div style=\'margin-top:15px\' class=\"media m-b-10\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body blog-comment\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\" ng-click=\"prepareReplyForm({ev: $event, comment: comment})\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\' prepare-reply-form=\"topFunc(child, ev)\" top-func=\"topFunc\"></ba-comment>\n    </div>\n</div>"
         }
     });

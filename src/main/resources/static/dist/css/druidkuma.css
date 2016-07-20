@@ -5,6 +5,17 @@
     max-width: 100%;
 }
 
+#reply-recipient {
+    background-color: rgba(117, 117, 117, 0.6);
+}
+
+div.blog-comment {
+    transition: background-color 0.5s linear 0s;
+}
+div.blog-comment.highlight {
+    background-color: rgba(255, 180, 173, 0.77);
+}
+
 div.dk-loading {
     background: rgba(238, 236, 239, 0.85);;
     position: absolute;
