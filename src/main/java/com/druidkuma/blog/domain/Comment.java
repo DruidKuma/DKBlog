@@ -60,6 +60,10 @@ public class Comment {
     @Column(name = "cm_creation_date")
     private Instant creationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "cm_blog_entry_id")
+    private BlogEntry blogEntry;
+
     @Transient
     private Integer parentId;
     @Transient

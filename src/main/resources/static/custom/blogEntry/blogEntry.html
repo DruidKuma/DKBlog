@@ -1,12 +1,13 @@
 <!-- Start content -->
 <div class="content" style="position: relative;">
-    <div class="dk-loading" ng-show="loadingProcess">
-        <div class="dk-loading-animation"></div>
-    </div>
+
     <div class="container">
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="position: relative">
+                <div class="dk-loading" ng-show="loadingProcess">
+                    <div class="dk-loading-animation"></div>
+                </div>
                 <div class="card-box task-detail">
                     <div class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
@@ -64,7 +65,12 @@
                 </div>
             </div><!-- end col -->
 
-            <div class="col-md-12">
+            <div class="col-md-12" ng-controller="CommentController as commentCtrl" style="position: relative">
+
+                <div class="dk-loading" ng-show="commentLoadingProcess">
+                    <div class="dk-loading-animation"></div>
+                </div>
+
                 <div class="card-box">
                     <div class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
@@ -82,7 +88,7 @@
                     <h4 class="header-title m-t-0 m-b-30">Comments ({{postEntry.numComments}})</h4>
 
                     <div>
-                        <ba-comment comment="comment" ng-repeat="comment in postEntry.comments"></ba-comment>
+                        <ba-comment comment="comment" ng-repeat="comment in blogComments"></ba-comment>
 
                         <div class="media">
                             <div class="media-left">

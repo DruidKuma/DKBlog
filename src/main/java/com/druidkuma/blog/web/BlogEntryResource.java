@@ -1,9 +1,7 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Comment;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
-import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
@@ -46,7 +44,6 @@ public class BlogEntryResource {
                 .author(entry.getAuthor())
                 .content(entry.getContent().getContents())
                 .numComments(entry.getNumComments())
-                .comments(entry.getComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
                 .id(entry.getId()).build();
     }
 
@@ -76,16 +73,6 @@ public class BlogEntryResource {
                                         .getContents().length(), 80)))
                         .build())
                 .collect(Collectors.toList()), pageable, pageOfEntries.getTotalElements());
-    }
-
-    private BlogCommentDto buildCommentDto(Comment comment) {
-        return BlogCommentDto.builder()
-                .author(comment.getAuthor())
-                .body(comment.getBody())
-                .creationDate(comment.getCreationDate())
-                .id(comment.getId())
-                .children(comment.getNestedComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
-                .build();
     }
 
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {
