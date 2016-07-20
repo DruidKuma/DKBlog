@@ -7,8 +7,19 @@ angular.module("blogApp")
             $rootScope.pageTitle = "All posts";
         });
 
-        $rootScope.loadingProcess = false;
         $scope.numPageSize = 5;
+        $scope.entriesOnPageOptions = [10, 20, 50, 100];
+        $scope.sortOptions = [
+            {value: 'creationDate DESC', name: 'Date (Latest first)'},
+            {value: 'creationDate ASC', name: 'Date (Oldest first)'},
+            {value: 'content.title ASC', name: 'Title (From A to Z)'},
+            {value: 'content.title DESC', name: 'Title (From Z to A)'}
+        ];
+        $scope.publishFilter = [
+            {value: '', name: 'All posts'},
+            {value: 'true', name: 'Only published'},
+            {value: 'false', name: 'Only not published'}
+        ];
 
         $scope.blogListFilter = {
             currentPage: 1,
@@ -21,10 +32,23 @@ angular.module("blogApp")
         };
 
         $scope.reloadBlogPosts = function() {
+            $rootScope.loadingProcess = true;
             BlogEntry.page($scope.blogListFilter).then(function(response) {
                 $scope.posts = response.data.content;
                 $scope.blogListFilter.totalItems = response.data.totalElements;
+            }).finally(function() {
+                $rootScope.loadingProcess = false;
             });
+        };
+
+        $scope.resetPaginationAndReload = function() {
+            $scope.resetPagination();
+            $scope.reloadBlogPosts();
+        };
+
+        $scope.resetPagination = function() {
+            $scope.blogListFilter.currentPage = 1;
+            $scope.blogListFilter.totalItems = 0;
         };
 
         $scope.reloadBlogPosts();

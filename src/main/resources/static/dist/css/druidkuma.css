@@ -7,7 +7,7 @@
 
 div.dk-loading {
     background: rgba(238, 236, 239, 0.85);;
-    position: absolute !important;
+    position: fixed !important;
     top: 0;
     z-index: 4;
     left: 0;

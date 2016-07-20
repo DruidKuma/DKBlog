@@ -37,7 +37,8 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     }
 
     @Override
-    public Page<BlogEntry> getPageOfEntries(Pageable pageable) {
+    public Page<BlogEntry> getPageOfEntries(Pageable pageable, Boolean filterPublished, String search) {
+        if(filterPublished != null) return blogEntryRepository.findByIsPublished(filterPublished, pageable);
         return blogEntryRepository.findAll(pageable);
     }
 }

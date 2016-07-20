@@ -11,6 +11,7 @@ import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -80,7 +81,9 @@ public class BlogEntryResource {
 
 
         Pageable pageable = buildPageRequest(filter);
-        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable);
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable,
+                StringUtils.isEmpty(filter.getFilterPublished()) ? null : Boolean.valueOf(filter.getFilterPublished()),
+                filter.getSearch());
 
         return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()

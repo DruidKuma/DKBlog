@@ -6,7 +6,7 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">Create Project</button>
+                <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">New Post</button>
             </div>
             <div class="col-sm-8">
                 <div class="project-sort pull-right">
@@ -14,11 +14,10 @@
                         <form class="form-inline">
                             <div class="form-group">
                                 <label>Show :</label>
-                                <select class="form-control input-sm" ng-model="blogPostFilter.entriesOnPage" ng-change="reloadBlogPosts()">
-                                    <option value="10" selected>10</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
+                                <select class="form-control input-sm"
+                                        ng-model="blogListFilter.entriesOnPage"
+                                        ng-options="option for option in entriesOnPageOptions"
+                                        ng-change="resetPaginationAndReload()">
                                 </select>
                             </div>
                             <div class="form-group">
@@ -31,18 +30,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Published :</label>
-                                <select class="form-control input-sm">
-                                    <option>All</option>
-                                    <option>Only published</option>
-                                    <option>Only not published</option>
+                                <select class="form-control input-sm"
+                                        ng-model="blogListFilter.filterPublished"
+                                        ng-change="resetPaginationAndReload()"
+                                        ng-options="option.value as option.name for option in publishFilter">
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Sort :</label>
-                                <select class="form-control input-sm">
-                                    <option>Date (Latest first)</option>
-                                    <option>Date (Oldest first)</option>
-                                    <option>Title</option>
+                                <select class="form-control input-sm"
+                                        ng-model="blogListFilter.sort"
+                                        ng-change="reloadBlogPosts()"
+                                        ng-options="option.value as option.name for option in sortOptions">
                                 </select>
                             </div>
                         </form>
