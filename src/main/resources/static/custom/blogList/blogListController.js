@@ -3,10 +3,14 @@
  */
 angular.module("blogApp")
     .controller('BlogListController',['$scope', '$rootScope', 'BlogEntry', function($scope, $rootScope, BlogEntry) {
+
+        //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $rootScope.pageTitle = "All posts";
         });
 
+        // Blog List Filter Options
+        $scope.filterChanged = false;
         $scope.numPageSize = 5;
         $scope.entriesOnPageOptions = [10, 20, 50, 100];
         $scope.sortOptions = [
@@ -21,27 +25,14 @@ angular.module("blogApp")
             {value: 'false', name: 'Only not published'}
         ];
 
-        $scope.blogListFilter = {
-            currentPage: 1,
-            entriesOnPage: 10,
-            category: '',
-            sort: 'creationDate DESC',
-            search: '',
-            filterPublished: '',
-            totalItems: 0
-        };
-
-        $scope.reloadBlogPosts = function() {
-            $rootScope.loadingProcess = true;
-            BlogEntry.page($scope.blogListFilter).then(function(response) {
-                $scope.posts = response.data.content;
-                $scope.blogListFilter.totalItems = response.data.totalElements;
-            }).finally(function() {
-                $rootScope.loadingProcess = false;
-            });
+        // Helper Functions
+        $scope.reloadWithCustomFilter = function() {
+            $scope.filterChanged = true;
+            $scope.reloadBlogPosts();
         };
 
         $scope.resetPaginationAndReload = function() {
+            $scope.filterChanged = true;
             $scope.resetPagination();
             $scope.reloadBlogPosts();
         };
@@ -51,6 +42,19 @@ angular.module("blogApp")
             $scope.blogListFilter.totalItems = 0;
         };
 
+        $scope.resetBlogListFilter = function() {
+            $scope.blogListFilter.currentPage = 1;
+            $scope.blogListFilter.entriesOnPage = 10;
+            $scope.blogListFilter.category = '';
+            $scope.blogListFilter.sort = 'creationDate DESC';
+            $scope.blogListFilter.totalItems = 0;
+            $scope.blogListFilter.filterPublished = '';
+            $scope.filterChanged = false;
+            $scope.reloadBlogPosts();
+        };
+
+        // Initialize
+        $scope.resetBlogListFilter();
         $scope.reloadBlogPosts();
     }]);
 

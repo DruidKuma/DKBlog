@@ -38,6 +38,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <script src="dist/js/angular-bootstrap.js"></script>
         <script src="custom/app.js"></script>
+        <script src="custom/pageWrapper/pageWrapperController.js"></script>
         <script src="custom/home/homeController.js"></script>
         <script src="custom/sidebar/leftSidebar.js"></script>
         <script src="custom/blogList/blogListController.js"></script>
@@ -50,7 +51,7 @@
     <body class="fixed-left">
 
         <!-- Begin page -->
-        <div id="wrapper">
+        <div id="wrapper" ng-controller="PageWrapperController as pageWrapCtrl">
             <!-- Top Bar Start -->
             <div class="topbar">
 

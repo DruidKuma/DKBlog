@@ -7,6 +7,10 @@
         <div class="row">
             <div class="col-sm-4">
                 <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">New Post</button>
+                <button ng-click="resetBlogListFilter()"
+                        ng-show="filterChanged"
+                        type="button"
+                        class="btn btn-danger btn-rounded w-md waves-effect waves-light m-b-20 pull-right">Reset filters</button>
             </div>
             <div class="col-sm-8">
                 <div class="project-sort pull-right">
@@ -40,7 +44,7 @@
                                 <label>Sort :</label>
                                 <select class="form-control input-sm"
                                         ng-model="blogListFilter.sort"
-                                        ng-change="reloadBlogPosts()"
+                                        ng-change="reloadWithCustomFilter()"
                                         ng-options="option.value as option.name for option in sortOptions">
                                 </select>
                             </div>
@@ -91,7 +95,7 @@
                 class="pagination-sm pull-right"
                 boundary-link-numbers="true"
                 rotate="false"
-                ng-click="reloadBlogPosts()">
+                ng-click="reloadWithCustomFilter()">
         </uib-pagination>
 
     </div> <!-- container -->
