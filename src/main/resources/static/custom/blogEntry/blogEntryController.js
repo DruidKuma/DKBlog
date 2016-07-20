@@ -1,13 +1,13 @@
 angular.module("blogApp")
-    .controller('BlogEntryController',['$scope', '$rootScope', 'BlogEntry', '$routeParams', '$sce',
-        function($scope, $rootScope, BlogEntry, $routeParams, $sce) {
+    .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce',
+        function($scope, BlogEntry, $routeParams, $sce) {
         $scope.$on('$routeChangeSuccess', function () {
             $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
         });
 
         BlogEntry.single($routeParams.id).then(function(response) {
             $scope.postEntry = response.data;
-            $rootScope.pageTitle = $scope.postEntry.title;
+            $scope.pageHeading.title = $scope.postEntry.title;
             $scope.postEntry.content = $sce.trustAsHtml($scope.postEntry.content);
         }, function(error) {
         //    TODO

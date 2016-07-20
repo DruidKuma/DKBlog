@@ -2,11 +2,11 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('BlogListController',['$scope', '$rootScope', 'BlogEntry', function($scope, $rootScope, BlogEntry) {
+    .controller('BlogListController',['$scope', function($scope) {
 
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
-            $rootScope.pageTitle = "All posts";
+            $scope.pageHeading.title = "All posts";
         });
 
         // Blog List Filter Options
