@@ -1,17 +1,25 @@
 angular.module("blogApp")
     .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce',
         function($scope, BlogEntry, $routeParams, $sce) {
-        $scope.$on('$routeChangeSuccess', function () {
-            $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
-        });
+            $scope.$on('$routeChangeSuccess', function () {
+                $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+            });
 
-        BlogEntry.single($routeParams.id).then(function(response) {
-            $scope.postEntry = response.data;
-            $scope.pageHeading.title = $scope.postEntry.title;
-            $scope.postEntry.content = $sce.trustAsHtml($scope.postEntry.content);
-        }, function(error) {
-        //    TODO
-        });
+            $scope.loadBlogPost = function() {
+                $scope.loadingProcess = true;
+                BlogEntry.single($routeParams.id).then(function(response) {
+                    $scope.postEntry = response.data;
+                    $scope.pageHeading.title = $scope.postEntry.title;
+                    $scope.postEntry.content = $sce.trustAsHtml($scope.postEntry.content);
+                }, function(error) {
+                    //    TODO
+                }).finally(function() {
+                    $scope.loadingProcess = false;
+                });
+            };
+
+            $scope.loadBlogPost();
+
     }])
     .factory('RecursionHelper', ['$compile', function($compile){
         return {

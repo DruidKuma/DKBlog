@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('BlogListController',['$scope', function($scope) {
+    .controller('BlogListController',['$scope', '$routeParams', function($scope, $routeParams) {
 
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
@@ -41,20 +41,23 @@ angular.module("blogApp")
             $scope.blogListFilter.totalItems = 0;
         };
 
-        $scope.resetBlogListFilter = function() {
+        $scope.resetBlogListFilter = function(partialReload) {
             $scope.blogListFilter.currentPage = 1;
             $scope.blogListFilter.entriesOnPage = 10;
             $scope.blogListFilter.category = '';
             $scope.blogListFilter.sort = 'creationDate DESC';
             $scope.blogListFilter.totalItems = 0;
             $scope.blogListFilter.filterPublished = '';
-            $scope.blogListFilter.search = '';
-            $scope.blogListFilter.filterChanged = false;
+
+            if(!partialReload) $scope.blogListFilter.search = '';
+            $scope.blogListFilter.filterChanged = partialReload;
+
             $scope.reloadBlogPosts();
         };
 
         // Initialize
-        $scope.resetBlogListFilter();
+        $scope.resetBlogListFilter($routeParams.partial);
+        console.log($routeParams.partial);
         $scope.reloadBlogPosts();
     }]);
 
