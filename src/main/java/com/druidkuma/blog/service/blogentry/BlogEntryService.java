@@ -4,8 +4,6 @@ import com.druidkuma.blog.domain.BlogEntry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 /**
  * Created by Iurii Miedviediev
  *
@@ -14,9 +12,6 @@ import java.util.List;
  * @since 7/13/16
  */
 public interface BlogEntryService {
-    List<BlogEntry> getAll();
-
     BlogEntry getOne(Long id);
-
-    Page<BlogEntry> getPageOfEntries(Pageable pageable, Boolean publishFilter, String search);
+    Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName);
 }

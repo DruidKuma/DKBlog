@@ -6,7 +6,11 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">Create Project</button>
+                <button type="button" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">New Post</button>
+                <button ng-click="resetBlogListFilter()"
+                        ng-show="blogListFilter.filterChanged"
+                        type="button"
+                        class="btn btn-danger btn-rounded w-md waves-effect waves-light m-b-20 pull-right">Reset filters</button>
             </div>
             <div class="col-sm-8">
                 <div class="project-sort pull-right">
@@ -16,8 +20,8 @@
                                 <label>Show :</label>
                                 <select class="form-control input-sm"
                                         ng-model="blogListFilter.entriesOnPage"
-                                        ng-change="reloadBlogPosts()"
-                                        ng-options="option for option in numEntriesOptions">
+                                        ng-options="option for option in entriesOnPageOptions"
+                                        ng-change="resetPaginationAndReload()">
                                 </select>
                             </div>
                             <div class="form-group">
@@ -32,15 +36,15 @@
                                 <label>Published :</label>
                                 <select class="form-control input-sm"
                                         ng-model="blogListFilter.filterPublished"
-                                        ng-change="reloadBlogPosts()"
-                                        ng-options="option.value as option.name for option in publishOptions">
+                                        ng-change="resetPaginationAndReload()"
+                                        ng-options="option.value as option.name for option in publishFilter">
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Sort :</label>
                                 <select class="form-control input-sm"
                                         ng-model="blogListFilter.sort"
-                                        ng-change="reloadBlogPosts()"
+                                        ng-change="reloadWithCustomFilter()"
                                         ng-options="option.value as option.name for option in sortOptions">
                                 </select>
                             </div>
@@ -91,7 +95,7 @@
                 class="pagination-sm pull-right"
                 boundary-link-numbers="true"
                 rotate="false"
-                ng-click="reloadBlogPosts()">
+                ng-click="reloadWithCustomFilter()">
         </uib-pagination>
 
     </div> <!-- container -->

@@ -43,8 +43,7 @@ public class BlogEntry {
     @JoinColumn(name = "be_content_id")
     private Content content;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cm_blog_entry_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "blogEntry")
     @Where(clause = "cm_comment_parent_id IS NULL")
     private List<Comment> comments;
 

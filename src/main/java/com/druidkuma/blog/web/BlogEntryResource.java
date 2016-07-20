@@ -1,14 +1,10 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Comment;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
-import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,26 +33,6 @@ public class BlogEntryResource {
         this.blogEntryService = blogEntryService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<BlogEntryInfoDto> getAllEntries() {
-        return blogEntryService.getAll().stream()
-                .map(entry -> BlogEntryInfoDto.builder()
-                        .id(entry.getId())
-                        .views(entry.getNumViews())
-                        .comments(entry.getNumComments())
-                        .category("Test Category")
-                        .title(entry.getContent().getTitle())
-                        .status(entry.getIsPublished())
-                        .imageUrl(entry.getContent().getImageUrl())
-                        .creationDate(entry.getCreationDate())
-                        .description(Jsoup.parse(entry.getContent()
-                                .getContents()).text()
-                                .substring(0, Math.min(entry.getContent()
-                                        .getContents().length(), 70)))
-                        .build())
-                .collect(Collectors.toList());
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id) {
 
@@ -69,15 +44,18 @@ public class BlogEntryResource {
                 .author(entry.getAuthor())
                 .content(entry.getContent().getContents())
                 .numComments(entry.getNumComments())
-                .comments(entry.getComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
                 .id(entry.getId()).build();
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) throws InterruptedException {
+    public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) {
 
         Pageable pageable = buildPageRequest(filter);
-        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable, StringUtils.isNotEmpty(filter.getFilterPublished()) ? Boolean.valueOf(filter.getFilterPublished()) : null, null);
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(
+                pageable,
+                filter.getFilterPublished(),
+                filter.getSearch(),
+                filter.getCategory());
 
         return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()
@@ -92,19 +70,9 @@ public class BlogEntryResource {
                         .description(Jsoup.parse(entry.getContent()
                                 .getContents()).text()
                                 .substring(0, Math.min(entry.getContent()
-                                        .getContents().length(), 70)))
+                                        .getContents().length(), 80)))
                         .build())
                 .collect(Collectors.toList()), pageable, pageOfEntries.getTotalElements());
-    }
-
-    private BlogCommentDto buildCommentDto(Comment comment) {
-        return BlogCommentDto.builder()
-                .author(comment.getAuthor())
-                .body(comment.getBody())
-                .creationDate(comment.getCreationDate())
-                .id(comment.getId())
-                .children(comment.getNestedComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
-                .build();
     }
 
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {

@@ -38,11 +38,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <script src="dist/js/angular-bootstrap.js"></script>
         <script src="custom/app.js"></script>
+        <script src="custom/pageWrapper/pageWrapperController.js"></script>
         <script src="custom/home/homeController.js"></script>
         <script src="custom/sidebar/leftSidebar.js"></script>
         <script src="custom/blogList/blogListController.js"></script>
         <script src="custom/blogList/blogListService.js"></script>
         <script src="custom/blogEntry/blogEntryController.js"></script>
+        <script src="custom/comment/commentController.js"></script>
+        <script src="custom/comment/commentService.js"></script>
 
     </head>
 
@@ -50,7 +53,7 @@
     <body class="fixed-left">
 
         <!-- Begin page -->
-        <div id="wrapper">
+        <div id="wrapper" ng-controller="PageWrapperController as pageWrapCtrl">
             <!-- Top Bar Start -->
             <div class="topbar">
 
@@ -71,7 +74,7 @@
                                 </button>
                             </li>
                             <li>
-                                <h4 class="page-title">{{pageTitle}}</h4>
+                                <h4 class="page-title">{{pageHeading.title}}</h4>
                             </li>
                         </ul>
 
@@ -96,9 +99,13 @@
                             </li>
                             <li class="hidden-xs">
                                 <form role="search" class="app-search">
-                                    <input type="text" placeholder="Search..."
-                                           class="form-control" ng-bind="$rootScope.searchString">
-                                    <a href=""><i class="fa fa-search"></i></a>
+                                    <input type="text"
+                                           placeholder="Search..."
+                                           class="form-control"
+                                           ng-model="blogListFilter.search"
+                                           ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                                           ng-change="reloadForSearch()">
+                                    <a href="" ng-click="reloadForSearch()"><i class="fa fa-search"></i></a>
                                 </form>
                             </li>
                         </ul>
