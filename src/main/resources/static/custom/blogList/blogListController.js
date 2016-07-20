@@ -10,7 +10,6 @@ angular.module("blogApp")
         });
 
         // Blog List Filter Options
-        $scope.filterChanged = false;
         $scope.numPageSize = 5;
         $scope.entriesOnPageOptions = [10, 20, 50, 100];
         $scope.sortOptions = [
@@ -27,12 +26,12 @@ angular.module("blogApp")
 
         // Helper Functions
         $scope.reloadWithCustomFilter = function() {
-            $scope.filterChanged = true;
+            $scope.blogListFilter.filterChanged = true;
             $scope.reloadBlogPosts();
         };
 
         $scope.resetPaginationAndReload = function() {
-            $scope.filterChanged = true;
+            $scope.blogListFilter.filterChanged = true;
             $scope.resetPagination();
             $scope.reloadBlogPosts();
         };
@@ -49,7 +48,8 @@ angular.module("blogApp")
             $scope.blogListFilter.sort = 'creationDate DESC';
             $scope.blogListFilter.totalItems = 0;
             $scope.blogListFilter.filterPublished = '';
-            $scope.filterChanged = false;
+            $scope.blogListFilter.search = '';
+            $scope.blogListFilter.filterChanged = false;
             $scope.reloadBlogPosts();
         };
 

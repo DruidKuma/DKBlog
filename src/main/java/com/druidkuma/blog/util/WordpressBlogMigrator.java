@@ -1,6 +1,6 @@
 package com.druidkuma.blog.util;
 
-import com.druidkuma.blog.dao.BlogEntryRepository;
+import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.Comment;
 import com.druidkuma.blog.domain.Content;

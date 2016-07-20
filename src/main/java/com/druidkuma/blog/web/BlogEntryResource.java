@@ -7,17 +7,14 @@ import com.druidkuma.blog.web.dto.BlogCommentDto;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
-import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,26 +35,6 @@ public class BlogEntryResource {
         this.blogEntryService = blogEntryService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<BlogEntryInfoDto> getAllEntries() {
-        return blogEntryService.getAll().stream()
-                .map(entry -> BlogEntryInfoDto.builder()
-                        .id(entry.getId())
-                        .views(entry.getNumViews())
-                        .comments(entry.getNumComments())
-                        .category("Test Category")
-                        .title(entry.getContent().getTitle())
-                        .status(entry.getIsPublished())
-                        .imageUrl(entry.getContent().getImageUrl())
-                        .creationDate(entry.getCreationDate())
-                        .description(Jsoup.parse(entry.getContent()
-                                .getContents()).text()
-                                .substring(0, Math.min(entry.getContent()
-                                        .getContents().length(), 80)))
-                        .build())
-                .collect(Collectors.toList());
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id) {
 
@@ -76,14 +53,12 @@ public class BlogEntryResource {
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public Page<BlogEntryInfoDto> getPageOfBlogEntries(BlogPostFilter filter) {
 
-        String[] split = filter.getSort().split(" ");
-        Validate.isTrue(split.length == 2);
-
-
         Pageable pageable = buildPageRequest(filter);
-        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(pageable,
-                StringUtils.isEmpty(filter.getFilterPublished()) ? null : Boolean.valueOf(filter.getFilterPublished()),
-                filter.getSearch());
+        Page<BlogEntry> pageOfEntries = blogEntryService.getPageOfEntries(
+                pageable,
+                filter.getFilterPublished(),
+                filter.getSearch(),
+                filter.getCategory());
 
         return new PageImpl<>(pageOfEntries.getContent().stream()
                 .map(entry -> BlogEntryInfoDto.builder()

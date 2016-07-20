@@ -1,13 +1,13 @@
 package com.druidkuma.blog.service.blogentry;
 
-import com.druidkuma.blog.dao.BlogEntryRepository;
+import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
+import com.druidkuma.blog.dao.blogEntry.specification.BlogEntrySpecification;
+import com.druidkuma.blog.dao.blogEntry.specification.SearchCriteria;
 import com.druidkuma.blog.domain.BlogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -27,18 +27,12 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     }
 
     @Override
-    public List<BlogEntry> getAll() {
-        return blogEntryRepository.findAll();
-    }
-
-    @Override
     public BlogEntry getOne(Long id) {
         return blogEntryRepository.findOne(id);
     }
 
     @Override
-    public Page<BlogEntry> getPageOfEntries(Pageable pageable, Boolean filterPublished, String search) {
-        if(filterPublished != null) return blogEntryRepository.findByIsPublished(filterPublished, pageable);
-        return blogEntryRepository.findAll(pageable);
+    public Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName) {
+        return blogEntryRepository.findAll(new BlogEntrySpecification(new SearchCriteria(search, filterPublished, categoryName)), pageable);
     }
 }

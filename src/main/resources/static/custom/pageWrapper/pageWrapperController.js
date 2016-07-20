@@ -5,7 +5,8 @@ angular.module("blogApp")
     .controller('PageWrapperController',['$scope', 'BlogEntry', function($scope, BlogEntry) {
         $scope.pageHeading = {};
         $scope.blogListFilter = {
-            search: ''
+            search: '',
+            filterChanged: false
         };
 
         $scope.reloadBlogPosts = function() {
@@ -17,4 +18,8 @@ angular.module("blogApp")
                 $scope.loadingProcess = false;
             });
         };
+        $scope.reloadForSearch = function() {
+            $scope.blogListFilter.filterChanged = true;
+            $scope.reloadBlogPosts();
+        }
     }]);
