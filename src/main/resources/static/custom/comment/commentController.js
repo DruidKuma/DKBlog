@@ -4,6 +4,12 @@
 angular.module("blogApp")
     .controller('CommentController',['$scope', 'Comment', '$routeParams', function($scope, Comment, $routeParams) {
 
+        $scope.newComment = {
+            blogPostId: $routeParams.id,
+            body: '',
+            parent: undefined
+        };
+
         $scope.loadCommentsForPost = function() {
             $scope.commentLoadingProcess = true;
             Comment.allForPost($routeParams.id).then(function(response) {
@@ -11,6 +17,13 @@ angular.module("blogApp")
             }).finally(function() {
                 $scope.commentLoadingProcess = false;
             });
+        };
+        $scope.prepareReplyForm = function(comment) {
+            var replyInput = $("#replyInput");
+            $scope.newComment.body = '@' + comment.author + ', ';
+            $('html,body').animate({ scrollTop: replyInput.offset().top }, 'slow');
+            replyInput.focus();
+            console.log(comment);
         };
 
         $scope.loadCommentsForPost();
@@ -60,11 +73,13 @@ angular.module("blogApp")
         return {
             restrict: "E",
             scope: {
-                comment: "="
+                comment: "=",
+                topFunc: "=",
+                prepareReplyForm: "&"
             },
             compile: function(elem){
                 return RecursionHelper.compile(elem);
             },
-            template: "<div style='margin-top:15px' class=\"media m-b-10\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\'></ba-comment>\n    </div>\n</div>"
+            template: "<div style=\'margin-top:15px\' class=\"media m-b-10\">\n    <div class=\"media-left\">\n        <a href=\"#\">\n            <img class=\"media-object img-circle thumb-sm\" alt=\"64x64\" src=\"/dist/images/users/avatar-3.jpg\">\n        </a>\n    </div>\n    <div class=\"media-body\">\n        <h4 class=\"media-heading\">{{comment.author}}</h4>\n        <p class=\"font-13 text-muted m-b-0\">\n            {{comment.body}}\n        </p>\n        <a href=\"\" class=\"text-success font-13\" ng-click=\"prepareReplyForm()\">Reply</a>\n        <ba-comment comment=\'child\' ng-repeat=\'child in comment.children\' prepare-reply-form=\"topFunc(child)\" top-func=\"topFunc\"></ba-comment>\n    </div>\n</div>"
         }
     });

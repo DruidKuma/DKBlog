@@ -88,14 +88,14 @@
                     <h4 class="header-title m-t-0 m-b-30">Comments ({{postEntry.numComments}})</h4>
 
                     <div>
-                        <ba-comment comment="comment" ng-repeat="comment in blogComments"></ba-comment>
+                        <ba-comment comment="comment" ng-repeat="comment in blogComments" prepare-reply-form="prepareReplyForm(comment)" top-func="prepareReplyForm"></ba-comment>
 
                         <div class="media">
                             <div class="media-left">
                                 <a href="#"> <img class="media-object img-circle thumb-sm" alt="64x64" src="/dist/images/users/avatar-1.jpg"> </a>
                             </div>
                             <div class="media-body">
-                                <input type="text" class="form-control input-sm" placeholder="Some text value...">
+                                <input id="replyInput" type="text" class="form-control input-sm" placeholder="Some text value..." ng-model="newComment.body">
                             </div>
                         </div>
 
