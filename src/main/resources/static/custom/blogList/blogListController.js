@@ -57,7 +57,6 @@ angular.module("blogApp")
 
         // Initialize
         $scope.resetBlogListFilter($routeParams.partial);
-        console.log($routeParams.partial);
         $scope.reloadBlogPosts();
     }]);
 

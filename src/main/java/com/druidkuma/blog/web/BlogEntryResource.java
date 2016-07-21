@@ -44,6 +44,7 @@ public class BlogEntryResource {
                 .author(entry.getAuthor())
                 .content(entry.getContent().getContents())
                 .numComments(entry.getNumComments())
+                .isPublished(entry.getIsPublished())
                 .id(entry.getId()).build();
     }
 
@@ -73,6 +74,11 @@ public class BlogEntryResource {
                                         .getContents().length(), 80)))
                         .build())
                 .collect(Collectors.toList()), pageable, pageOfEntries.getTotalElements());
+    }
+
+    @RequestMapping(value = "/publish/{id}", method = RequestMethod.PUT)
+    public void switchPublishStatus(@PathVariable("id") Long id) {
+        blogEntryService.switchPublishStatus(id);
     }
 
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {

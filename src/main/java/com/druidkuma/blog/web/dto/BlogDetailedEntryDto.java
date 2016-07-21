@@ -24,5 +24,6 @@ public class BlogDetailedEntryDto {
     private Instant creationDate;
     private String content;
     private Long numComments;
+    private Boolean isPublished;
     private List<BlogCommentDto> comments;
 }

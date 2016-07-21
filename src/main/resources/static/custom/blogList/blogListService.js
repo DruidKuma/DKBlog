@@ -18,6 +18,12 @@ angular.module("blogApp").service('BlogEntry', ["$http", function($http) {
                 method: "get",
                 params: params
             })
+        },
+        switchPublishStatus: function(params) {
+            return $http({
+                url: BASE_URL + "/api/blog/entry/publish/" + params,
+                method: "put"
+            })
         }
     }
 }]);

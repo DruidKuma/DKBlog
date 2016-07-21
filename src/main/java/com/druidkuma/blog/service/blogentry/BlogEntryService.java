@@ -14,4 +14,6 @@ import org.springframework.data.domain.Pageable;
 public interface BlogEntryService {
     BlogEntry getOne(Long id);
     Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName);
+
+    void switchPublishStatus(Long id);
 }

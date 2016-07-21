@@ -35,4 +35,11 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     public Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName) {
         return blogEntryRepository.findAll(new BlogEntrySpecification(new SearchCriteria(search, filterPublished, categoryName)), pageable);
     }
+
+    @Override
+    public void switchPublishStatus(Long id) {
+        BlogEntry entry = blogEntryRepository.findOne(id);
+        entry.setIsPublished(!entry.getIsPublished());
+        blogEntryRepository.saveAndFlush(entry);
+    }
 }

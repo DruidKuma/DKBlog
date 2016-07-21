@@ -17,5 +17,11 @@ angular.module("blogApp")
             });
         };
 
+        $scope.switchPublishStatus = function() {
+            BlogEntry.switchPublishStatus($scope.postEntry.id).then(function() {
+                $scope.postEntry.isPublished = !$scope.postEntry.isPublished;
+            });
+        };
+
         $scope.loadBlogPost();
     }]);
