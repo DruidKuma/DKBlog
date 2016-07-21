@@ -81,6 +81,11 @@ public class BlogEntryResource {
         blogEntryService.switchPublishStatus(id);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteBlogPost(@PathVariable("id") Long id) {
+        blogEntryService.deleteBlogPost(id);
+    }
+
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {
         Integer page = blogPostFilter.getCurrentPage() - 1;
         Integer pageSize = blogPostFilter.getEntriesOnPage();

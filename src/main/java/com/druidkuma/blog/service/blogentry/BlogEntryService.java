@@ -16,4 +16,6 @@ public interface BlogEntryService {
     Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName);
 
     void switchPublishStatus(Long id);
+
+    void deleteBlogPost(Long id);
 }

@@ -24,6 +24,12 @@ angular.module("blogApp").service('BlogEntry', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/entry/publish/" + params,
                 method: "put"
             })
+        },
+        deletePost: function(params) {
+            return $http({
+                url: BASE_URL + "/api/blog/entry/" + params,
+                method: 'delete'
+            })
         }
     }
 }]);

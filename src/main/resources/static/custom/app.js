@@ -19,6 +19,11 @@ blogApp.config(['$routeProvider', function($routeProvider) {
         controller: 'BlogEntryController'
     }).
 
+    when('/entry/edit/:id', {
+        templateUrl: '/custom/blogEditEntry/blogEditEntry.html',
+        controller: 'BlogEditEntryController'
+    }).
+
     otherwise({
         redirectTo: '/'
     });

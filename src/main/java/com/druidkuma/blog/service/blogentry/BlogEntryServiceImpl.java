@@ -42,4 +42,9 @@ public class BlogEntryServiceImpl implements BlogEntryService {
         entry.setIsPublished(!entry.getIsPublished());
         blogEntryRepository.saveAndFlush(entry);
     }
+
+    @Override
+    public void deleteBlogPost(Long id) {
+        blogEntryRepository.delete(id);
+    }
 }

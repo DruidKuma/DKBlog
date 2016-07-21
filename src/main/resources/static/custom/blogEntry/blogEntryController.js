@@ -1,5 +1,5 @@
 angular.module("blogApp")
-    .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', function($scope, BlogEntry, $routeParams, $sce) {
+    .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', function($scope, BlogEntry, $routeParams, $sce, $location) {
         $scope.$on('$routeChangeSuccess', function () {
             $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
         });
@@ -10,8 +10,6 @@ angular.module("blogApp")
                 $scope.postEntry = response.data;
                 $scope.pageHeading.title = $scope.postEntry.title;
                 $scope.postEntry.content = $sce.trustAsHtml($scope.postEntry.content);
-            }, function(error) {
-                //    TODO
             }).finally(function() {
                 $scope.loadingProcess = false;
             });
@@ -20,6 +18,12 @@ angular.module("blogApp")
         $scope.switchPublishStatus = function() {
             BlogEntry.switchPublishStatus($scope.postEntry.id).then(function() {
                 $scope.postEntry.isPublished = !$scope.postEntry.isPublished;
+            });
+        };
+
+        $scope.deletePost = function() {
+            BlogEntry.deletePost($scope.postEntry.id).then(function() {
+                $location.path("/list");
             });
         };
 
