@@ -34,29 +34,30 @@ angular.module("blogApp")
         };
         $scope.postNewComment = function() {
 
-            // TODO: deal with adding not reply comment (correct highlighting)
             // TODO: send data to server and make sure after reload data matches
 
+            var newComment = {
+                blogPostId: $scope.newComment.blogPostId,
+                parentId: $scope.newComment.parent ? $scope.newComment.parent.id : undefined,
+                author: 'Reifen Admin',
+                body: $scope.newComment.body,
+                children: []
+            };
 
             if($scope.newComment.parent) {
-                $scope.newComment.parent.children.push({
-                    author: 'Reifen Admin',
-                    body: $scope.newComment.body
-                });
+                $scope.newComment.parent.children.push(newComment);
                 $scope.newComment.parentDomElem.attr("id", "lastCommentAdded");
                 var lastComment = $("#lastCommentAdded");
                 $('html,body').animate({ scrollTop: lastComment.offset().top }, 'slow');
                 $scope.newComment.parentDomElem.removeAttr("id");
-
                 $scope.highlightElement(lastComment, 500);
             }
             else {
-                $scope.blogComments.push({
-                    author: 'Reifen Admin',
-                    body: $scope.newComment.body
-                });
-                var lastComment = $('#comment-holder .media').last();
-                $scope.highlightElement(lastComment, 500);
+                $scope.blogComments.push(newComment);
+                setTimeout(function() {
+                    var lastComment = $('#comment-holder .blog-comment').last();
+                    $scope.highlightElement(lastComment, 500);
+                }, 50);
             }
 
 
