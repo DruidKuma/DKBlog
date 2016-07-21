@@ -11,7 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.StringUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,7 +20,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,7 +99,7 @@ public class WordpressBlogMigrator {
             }
 
             commentMap.put(Integer.parseInt(record.get(0)), Comment.builder()
-                    .blogPostId(Integer.parseInt(record.get(1)))
+//                    .blogPostId(Integer.parseInt(record.get(1)))
                     .author(record.get(2))
                     .email(record.get(3))
                     .authorIp(record.get(5))
@@ -109,7 +107,7 @@ public class WordpressBlogMigrator {
                     .body(record.get(8))
                     .isApproved("1".equals(record.get(10)))
                     .authorUserAgent(record.get(11))
-                    .parentId(StringUtils.isEmpty(record.get(13)) ? null : Integer.parseInt(record.get(13)))
+//                    .parentId(StringUtils.isEmpty(record.get(13)) ? null : Integer.parseInt(record.get(13)))
                     .build());
         }
         System.out.println("Finished parsing comments");
@@ -117,13 +115,13 @@ public class WordpressBlogMigrator {
         System.out.println("Mapping blog etries with comments...");
         for (Map.Entry<Integer, Comment> entry : commentMap.entrySet()) {
             Comment comment = entry.getValue();
-            if(comment.getParentId() != null) {
-                comment.addParent(commentMap.get(comment.getParentId()));
-                BlogEntry blogEntry = entryMap.get(comment.getBlogPostId());
-                if(blogEntry == null) continue;
-                if(blogEntry.getComments() == null) blogEntry.setComments(new ArrayList<>());
-                blogEntry.getComments().add(comment);
-            }
+//            if(comment.getParentId() != null) {
+//                comment.addParent(commentMap.get(comment.getParentId()));
+//                BlogEntry blogEntry = entryMap.get(comment.getBlogPostId());
+//                if(blogEntry == null) continue;
+//                if(blogEntry.getComments() == null) blogEntry.setComments(new ArrayList<>());
+//                blogEntry.getComments().add(comment);
+//            }
         }
 
         System.out.println("Saving blog entries to database...");

@@ -1,13 +1,15 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.Comment;
+import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.comment.CommentService;
 import com.druidkuma.blog.web.dto.BlogCommentDto;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +25,12 @@ import java.util.stream.Collectors;
 public class BlogCommentResource {
 
     private CommentService commentService;
+    private BlogEntryService blogEntryService;
 
     @Autowired
-    public BlogCommentResource(CommentService commentService) {
+    public BlogCommentResource(CommentService commentService, BlogEntryService blogEntryService) {
         this.commentService = commentService;
+        this.blogEntryService = blogEntryService;
     }
 
     @RequestMapping(value = "/{id}")
@@ -37,13 +41,33 @@ public class BlogCommentResource {
                 .collect(Collectors.toList());
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public BlogCommentDto saveComment(@RequestBody BlogCommentDto comment, HttpServletRequest request) {
+        return buildCommentDto(commentService.saveComment(buildComment(comment, request)));
+    }
+
     private BlogCommentDto buildCommentDto(Comment comment) {
         return BlogCommentDto.builder()
                 .author(comment.getAuthor())
                 .body(comment.getBody())
                 .creationDate(comment.getCreationDate())
                 .id(comment.getId())
-                .children(comment.getNestedComments().stream().map(this::buildCommentDto).collect(Collectors.toList()))
+                .children(comment.getNestedComments() != null ? comment.getNestedComments().stream().map(this::buildCommentDto).collect(Collectors.toList()) : Lists.newArrayList())
+                .build();
+    }
+
+    private Comment buildComment(BlogCommentDto commentDto, HttpServletRequest request) {
+        return Comment.builder()
+                .author(commentDto.getAuthor())
+                .authorUserAgent(request.getHeader("user-agent"))
+                .authorIp(request.getRemoteAddr())
+                .isApproved(true)
+                .body(commentDto.getBody())
+                .email("admin@blog.com")
+                .creationDate(Instant.now())
+                .blogEntry(blogEntryService.getOne(commentDto.getBlogPostId()))
+                .id(commentDto.getId())
+                .parent(commentDto.getParentId() != null ? commentService.getOne(commentDto.getParentId()) : null)
                 .build();
     }
 }

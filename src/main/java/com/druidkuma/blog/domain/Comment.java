@@ -1,12 +1,12 @@
 package com.druidkuma.blog.domain;
 
+import com.google.common.collect.Lists;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +29,7 @@ public class Comment {
     @Column(name = "cm_id")
     @SequenceGenerator(name = "comments_cm_id_seq", sequenceName = "comments_cm_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_cm_id_seq")
-    private Integer id;
+    private Long id;
 
     @Column(name = "cm_body")
     private String body;
@@ -60,20 +60,15 @@ public class Comment {
     @Column(name = "cm_creation_date")
     private Instant creationDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cm_blog_entry_id")
     private BlogEntry blogEntry;
-
-    @Transient
-    private Integer parentId;
-    @Transient
-    private Integer blogPostId;
 
     public void addParent(Comment comment) {
         if(comment == null) return;
         this.parent = comment;
         if(comment.getNestedComments() == null) {
-            comment.setNestedComments(new ArrayList<>());
+            comment.setNestedComments(Lists.newArrayList());
         }
         comment.getNestedComments().add(this);
     }

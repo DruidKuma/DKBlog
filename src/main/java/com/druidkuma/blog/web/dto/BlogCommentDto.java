@@ -1,8 +1,7 @@
 package com.druidkuma.blog.web.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.common.collect.Lists;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,11 +15,15 @@ import java.util.List;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class BlogCommentDto {
-    private Integer id;
+    private Long id;
+    private Long blogPostId;
+    private Long parentId;
     private String author;
     private String body;
     private Instant creationDate;
-    private List<BlogCommentDto> children;
+    private List<BlogCommentDto> children = Lists.newArrayList();
 }

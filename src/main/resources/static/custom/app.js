@@ -22,7 +22,6 @@ blogApp.config(['$routeProvider', function($routeProvider) {
     otherwise({
         redirectTo: '/'
     });
-
 }]);
 
 blogApp.filter('cut', function () {

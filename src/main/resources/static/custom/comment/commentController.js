@@ -33,9 +33,6 @@ angular.module("blogApp")
             delete $scope.newComment.body;
         };
         $scope.postNewComment = function() {
-
-            // TODO: send data to server and make sure after reload data matches
-
             var newComment = {
                 blogPostId: $scope.newComment.blogPostId,
                 parentId: $scope.newComment.parent ? $scope.newComment.parent.id : undefined,
@@ -43,6 +40,10 @@ angular.module("blogApp")
                 body: $scope.newComment.body,
                 children: []
             };
+
+            Comment.saveComment(newComment).then(function(response) {
+                console.log(response.data);
+            });
 
             if($scope.newComment.parent) {
                 $scope.newComment.parent.children.push(newComment);

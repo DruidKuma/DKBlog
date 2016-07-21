@@ -2,7 +2,6 @@ package com.druidkuma.blog.service.comment;
 
 import com.druidkuma.blog.dao.CommentRepository;
 import com.druidkuma.blog.domain.Comment;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +26,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getAllCommentsForBlogPost(Long blogPostId) {
-        return commentRepository.findByBlogEntryId(blogPostId);
+        return commentRepository.findByBlogEntryIdAndParentIsNull(blogPostId);
+    }
+
+    @Override
+    public Comment saveComment(Comment comment) {
+        comment.addParent(comment.getParent());
+        return commentRepository.saveAndFlush(comment);
+    }
+
+    @Override
+    public Comment getOne(Long commentId) {
+        return commentRepository.findOne(commentId);
     }
 }

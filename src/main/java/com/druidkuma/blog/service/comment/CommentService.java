@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface CommentService {
     List<Comment> getAllCommentsForBlogPost(Long blogPostId);
+    Comment saveComment(Comment comment);
+
+    Comment getOne(Long commentId);
 }

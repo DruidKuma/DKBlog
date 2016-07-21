@@ -15,6 +15,13 @@ angular.module("blogApp").service('Comment', ["$http", function($http) {
                 method: "get",
                 params: params
             })
+        },
+        saveComment: function(comment) {
+            return $http({
+                url: BASE_URL + "/api/blog/comment",
+                method: "post",
+                data: JSON.stringify(comment)
+            })
         }
     }
 }]);
