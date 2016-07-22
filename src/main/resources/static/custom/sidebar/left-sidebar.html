@@ -7,9 +7,12 @@
                     <i class="flag-icon flag-icon-ua"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                    <li><a href><i class="flag-icon flag-icon-us"></i> <span class="country-name">America</span></a></li>
-                    <li><a href><i class="flag-icon flag-icon-de"></i> <span class="country-name">America</span></a></li>
-                    <li><a href><i class="flag-icon flag-icon-pl"></i> <span class="country-name">America</span></a></li>
+                    <li ng-repeat="country in availableCountries">
+                        <a href>
+                            <i class="flag-icon flag-icon-{{country.isoCode | lowercase}}"></i>
+                            <span class="country-name">{{country.name}}</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

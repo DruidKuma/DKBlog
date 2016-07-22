@@ -19,19 +19,18 @@ div.blog-comment.highlight {
 div.country-block .dropdown-menu {
     min-width: 0;
     right: 0;
+    margin: 0 auto;
+    width: 80%;
+    padding: 0;
 }
 
 div.country-block a {
     width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
-div.country-block ul.dropdown-menu li a:after {
-    content: "";
-    display: block;
-    clear: both;
-    height: 0;
-    visibility: hidden;
+div.country-block > .dropdown {
+    text-align: center;
 }
 
 div.country-block ul.dropdown-menu li {
@@ -39,19 +38,15 @@ div.country-block ul.dropdown-menu li {
 }
 
 div.country-block a i {
-    display: block;
-    margin: 0 auto;
     font-size: 30px;
+    margin-right: 5px;
 }
 
 div.country-block ul.dropdown-menu a i {
-    float: left;
-    padding: 3px;
+    vertical-align: middle;
 }
 
 div.country-block ul.dropdown-menu a span.country-name {
-    position: absolute;
-    top: 25%;
 }
 
 div.dk-loading {

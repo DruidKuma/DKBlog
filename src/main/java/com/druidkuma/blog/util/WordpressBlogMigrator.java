@@ -22,9 +22,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -45,7 +43,7 @@ import java.util.Set;
  * @version 1.0.0
  * @since 7/15/16
  */
-@Service
+//@Service
 public class WordpressBlogMigrator {
 
     @Autowired
@@ -227,7 +225,7 @@ public class WordpressBlogMigrator {
         languageRepository.flush();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void createCountryLanguageMappings() throws IOException, ParseException {
         JSONArray countries = (JSONArray) new JSONParser().parse(new FileReader(this.getClass().getClassLoader().getResource("db/countries.json").getFile()));
 
