@@ -28,4 +28,25 @@ CREATE TABLE comments (
   cm_body TEXT,
   cm_approved BOOLEAN DEFAULT FALSE,
   cm_creation_date TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE TABLE country (
+  c_id SERIAL PRIMARY KEY,
+  c_name TEXT NOT NULL,
+  c_iso_2_alpha CHARACTER VARYING(2) NOT NULL,
+  c_iso_3_alpha CHARACTER VARYING(3) NOT NULL,
+  c_iso_numeric TEXT,
+  c_enabled BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE language (
+  l_id SERIAL PRIMARY KEY,
+  l_iso_code CHARACTER VARYING(2) NOT NULL,
+  l_name TEXT,
+  l_native_name TEXT
+);
+
+CREATE TABLE country_2_language (
+  c2l_country_id INTEGER REFERENCES country(c_id),
+  c2l_language_id INTEGER REFERENCES language(l_id)
 )

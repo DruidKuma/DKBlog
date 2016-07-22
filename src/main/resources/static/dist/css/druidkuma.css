@@ -16,6 +16,44 @@ div.blog-comment.highlight {
     background-color: rgba(255, 180, 173, 0.77);
 }
 
+div.country-block .dropdown-menu {
+    min-width: 0;
+    right: 0;
+}
+
+div.country-block a {
+    width: 100%;
+    text-align: center;
+}
+
+div.country-block ul.dropdown-menu li a:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+div.country-block ul.dropdown-menu li {
+    position: relative;
+}
+
+div.country-block a i {
+    display: block;
+    margin: 0 auto;
+    font-size: 30px;
+}
+
+div.country-block ul.dropdown-menu a i {
+    float: left;
+    padding: 3px;
+}
+
+div.country-block ul.dropdown-menu a span.country-name {
+    position: absolute;
+    top: 25%;
+}
+
 div.dk-loading {
     background: rgba(238, 236, 239, 0.85);;
     position: absolute;
