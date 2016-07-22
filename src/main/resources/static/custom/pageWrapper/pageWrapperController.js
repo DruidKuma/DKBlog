@@ -3,6 +3,9 @@
  */
 angular.module("blogApp")
     .controller('PageWrapperController',['$scope', '$location', 'BlogEntry', function($scope, $location, BlogEntry) {
+
+        $scope.currentCountry = {title: 'Germany'};
+
         $scope.pageHeading = {};
         $scope.blogListFilter = {
             search: '',
