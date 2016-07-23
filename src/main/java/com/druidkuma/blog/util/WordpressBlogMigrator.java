@@ -22,7 +22,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -256,5 +258,12 @@ public class WordpressBlogMigrator {
             countryRepository.save(country1);
         }
         countryRepository.flush();
+    }
+
+//    @PostConstruct
+    public void initi18nData() throws IOException, ParseException {
+        saveCountries();
+        saveLanguages();
+        createCountryLanguageMappings();
     }
 }

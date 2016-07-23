@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/20/16.
  */
 angular.module("blogApp")
-    .controller('CommentController',['$scope', 'Comment', '$routeParams', function($scope, Comment, $routeParams) {
+    .controller('CommentController',['$scope', 'Comment', '$routeParams', '$location', 'anchorSmoothScroll', function($scope, Comment, $routeParams, $location, anchorSmoothScroll) {
 
         $scope.newComment = {
             blogPostId: $routeParams.id,
@@ -21,12 +21,12 @@ angular.module("blogApp")
             });
         };
         $scope.prepareReplyForm = function(comment, ev) {
-            var replyInput = $("#replyInput");
             $scope.newComment.recipient = comment.author;
-            $('html,body').animate({ scrollTop: replyInput.offset().top }, 'slow');
+            anchorSmoothScroll.scrollTo('replyInput');
+
             $scope.newComment.parent = comment;
             $scope.newComment.parentDomElem = angular.element(ev.target).parent().parent();
-            replyInput.focus();
+            $("#replyInput").focus();
         };
         $scope.resetReplyForm = function() {
             delete $scope.newComment.recipient;
@@ -48,16 +48,14 @@ angular.module("blogApp")
             if($scope.newComment.parent) {
                 $scope.newComment.parent.children.push(newComment);
                 $scope.newComment.parentDomElem.attr("id", "lastCommentAdded");
-                var lastComment = $("#lastCommentAdded");
-                $('html,body').animate({ scrollTop: lastComment.offset().top }, 'slow');
+                anchorSmoothScroll.scrollTo('lastCommentAdded');
+                $scope.highlightElement($("#lastCommentAdded"), 500);
                 $scope.newComment.parentDomElem.removeAttr("id");
-                $scope.highlightElement(lastComment, 500);
             }
             else {
                 $scope.blogComments.push(newComment);
                 setTimeout(function() {
-                    var lastComment = $('#comment-holder .blog-comment').last();
-                    $scope.highlightElement(lastComment, 500);
+                    $scope.highlightElement($('#comment-holder .blog-comment').last(), 500);
                 }, 50);
             }
 
