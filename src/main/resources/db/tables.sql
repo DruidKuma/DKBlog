@@ -49,4 +49,19 @@ CREATE TABLE language (
 CREATE TABLE country_2_language (
   c2l_country_id INTEGER REFERENCES country(c_id),
   c2l_language_id INTEGER REFERENCES language(l_id)
-)
+);
+
+CREATE TABLE translation_groups (
+  tg_id SERIAL PRIMARY KEY,
+  tg_name TEXT,
+  tg_parent_group_id INTEGER REFERENCES translation_groups(tg_id)
+);
+
+CREATE TABLE translations (
+  tr_id SERIAL PRIMARY KEY,
+  tr_group_id INTEGER REFERENCES translation_groups (tg_id),
+  tr_key TEXT,
+  tr_value TEXT,
+  tr_language_id INTEGER REFERENCES language(l_id),
+  tr_last_modified TIMESTAMP WITHOUT TIME ZONE
+);

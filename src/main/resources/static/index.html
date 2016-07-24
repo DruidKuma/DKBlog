@@ -35,6 +35,10 @@
         <script src="dist/js/modernizr.min.js"></script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+        <script src="dist/js/angular-cookies.min.js"></script>
+        <script src="dist/js/angular-translate.js"></script>
+        <script src="dist/js/angular-translate-storage-cookie.min.js"></script>
+        <script src="dist/js/angular-translate-loader-partial.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <script src="dist/js/angular-bootstrap.js"></script>
         <script src="custom/app.js"></script>
@@ -62,7 +66,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="index.html" class="logo"><span>Reifen<span>DE</span></span><i class="zmdi zmdi-layers"></i></a>
+                    <a href="index.html" class="logo"><span>{{'sidebar.mainTitle.name' | translate}}<span>{{'sidebar.mainTitle.domain' | translate}}</span></span><i class="zmdi zmdi-layers"></i></a>
                 </div>
 
                 <!-- Button mobile view to collapse sidebar menu -->

@@ -1,7 +1,7 @@
-var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce']);
+var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce', 'ngCookies', 'pascalprecht.translate']);
 var BASE_URL = 'http://localhost:8081';
 
-blogApp.config(['$routeProvider', function($routeProvider) {
+blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoaderProvider', function($routeProvider, $translateProvider, $translatePartialLoaderProvider) {
     $routeProvider.
 
     when('/', {
@@ -27,6 +27,16 @@ blogApp.config(['$routeProvider', function($routeProvider) {
     otherwise({
         redirectTo: '/'
     });
+
+
+    $translateProvider.useLoader('$translatePartialLoader', {
+        urlTemplate: '/api/blog/i18n/{part}/{lang}'
+    });
+    $translateProvider.preferredLanguage('en');
+    $translateProvider.fallbackLanguage('en');
+    $translateProvider.useCookieStorage();
+
+    $translatePartialLoaderProvider.addPart('layout');
 }]);
 
 blogApp.filter('cut', function () {

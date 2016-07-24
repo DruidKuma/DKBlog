@@ -6,7 +6,7 @@ angular.module("blogApp").directive('leftSidebar', function() {
         restrict: 'E',
         replace: true,
         templateUrl: '/custom/sidebar/left-sidebar.html',
-        controller: ['$scope', '$location', '$rootScope', 'Country', function($scope, $location, $rootScope, Country) {
+        controller: ['$scope', '$location', '$rootScope', 'Country', '$translate', function($scope, $location, $rootScope, Country, $translate) {
             $scope.currentState = $location.path();
             $.Sidemenu.init();
 
@@ -18,7 +18,11 @@ angular.module("blogApp").directive('leftSidebar', function() {
                 Country.flags().then(function(response) {
                     $scope.availableCountries = response.data;
                 });
-            }
+            };
+
+            $scope.changeLanguage = function (langKey) {
+                $translate.use(langKey);
+            };
 
             $scope.initCountries();
         }]

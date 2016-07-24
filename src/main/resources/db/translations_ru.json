@@ -1,0 +1,26 @@
+{
+  "layout" : {
+    "menu": {
+      "searchPlaceholder" : "Поиск",
+      "copyright" : "2016 © DruidKuma"
+    },
+    "sidebar" : {
+      "dashboard" : "Главная",
+      "publishedPosts" : "Все посты",
+      "mainTitle" : {
+        "name" : "Shiny",
+        "domain" : "RU"
+      }
+    }
+  },
+  "postList" : {
+    "allPostsTitle" : "Все посты",
+    "newPost" : "Новый пост",
+    "filters" : {
+      "show" : "Показать",
+      "category" : "Категория",
+      "published" : "Опубликован",
+      "sort" : "Сортировка"
+    }
+  }
+}

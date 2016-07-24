@@ -3,11 +3,15 @@ package com.druidkuma.blog.util;
 import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.dao.country.LanguageRepository;
+import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
+import com.druidkuma.blog.dao.i18n.TranslationRepository;
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.Comment;
 import com.druidkuma.blog.domain.Content;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.country.Language;
+import com.druidkuma.blog.domain.i18n.Translation;
+import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.csv.CSVFormat;
@@ -25,18 +29,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Iurii Miedviediev
@@ -45,7 +48,7 @@ import java.util.Set;
  * @version 1.0.0
  * @since 7/15/16
  */
-//@Service
+@Service
 public class WordpressBlogMigrator {
 
     @Autowired
@@ -54,6 +57,10 @@ public class WordpressBlogMigrator {
     private CountryRepository countryRepository;
     @Autowired
     private LanguageRepository languageRepository;
+    @Autowired
+    private TranslationRepository translationRepository;
+    @Autowired
+    private TranslationGroupRepository translationGroupRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -266,4 +273,47 @@ public class WordpressBlogMigrator {
         saveLanguages();
         createCountryLanguageMappings();
     }
+
+    @PostConstruct
+    public void createTranslationFromJson() throws IOException, ParseException {
+        for (String lang : Arrays.asList("en", "ru")) {
+            JSONObject translations = (JSONObject) new JSONParser().parse(new FileReader(this.getClass().getClassLoader().getResource(String.format("db/translations_%s.json", lang)).getFile()));
+            resolveRecursively(translations, null, null, lang);
+        }
+    }
+
+    private void resolveRecursively(Map<String, Object> translations, TranslationGroup parentGroup, TranslationGroup currentGroup, String languageIsoCode) {
+        for (Map.Entry<String, Object> entry : translations.entrySet()) {
+            if(entry.getValue() instanceof Map) {
+                TranslationGroup newGroup = createTranslationGroup(entry.getKey(), parentGroup);
+                resolveRecursively((Map<String, Object>) entry.getValue(), newGroup, newGroup, languageIsoCode);
+            }
+            else if (entry.getValue() instanceof String) {
+                createTranslation(entry.getKey(), (String)entry.getValue(), languageIsoCode, currentGroup);
+            }
+        }
+    }
+
+    private void createTranslation(String key, String value, String languageIsoCode, TranslationGroup group) {
+        translationRepository.saveAndFlush(Translation.builder()
+                .key(key)
+                .value(value)
+                .language(languageRepository.findByIsoCode(languageIsoCode))
+                .translationGroup(group)
+                .lastModified(Instant.now())
+                .build());
+    }
+
+    private TranslationGroup createTranslationGroup(String key, TranslationGroup parentGroup) {
+        TranslationGroup existing = translationGroupRepository.findByName(key);
+        if(existing != null) return existing;
+
+        return translationGroupRepository.saveAndFlush(
+                TranslationGroup.builder()
+                        .name(key)
+                        .parent(parentGroup)
+                        .build());
+    }
+
+
 }

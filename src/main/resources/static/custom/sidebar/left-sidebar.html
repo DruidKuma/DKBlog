@@ -15,6 +15,9 @@
                     </li>
                 </ul>
             </div>
+
+            <button ng-click="changeLanguage('ru')" translate="BUTTON_LANG_RU"></button>
+            <button ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></button>
         </div>
 
         <!-- User -->
@@ -43,7 +46,7 @@
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul>
-                <li class="text-muted menu-title">Navigation</li>
+                <li class="text-muted menu-title">{{'navigation' | translate}}</li>
 
                 <li>
                     <a href="#/" class="waves-effect" ng-class="{'active':currentState == '/'}"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
