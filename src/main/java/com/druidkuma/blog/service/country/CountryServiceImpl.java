@@ -27,14 +27,10 @@ import java.util.concurrent.TimeUnit;
 public class CountryServiceImpl implements CountryService {
 
     private CountryRepository countryRepository;
-    private LanguageRepository languageRepository;
-
-    private LoadingCache<Long, Language> countryIsoToDefaultLanguageCache;
 
     @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository, LanguageRepository languageRepository) {
+    public CountryServiceImpl(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
-        this.languageRepository = languageRepository;
     }
 
     @Override
@@ -44,29 +40,6 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<CountryFlagRenderDto> getCountryDataForFlags() {
-        //TODO refactor this shit after https://hibernate.atlassian.net/browse/HHH-4335 will be fixed finally
-        List<CountryFlagRenderDto> dataForFlags = countryRepository.getCountryDataForFlags();
-        for (CountryFlagRenderDto dataForFlag : dataForFlags) {
-            Language language = countryIsoToDefaultLanguageCache.getUnchecked(dataForFlag.getId());
-            if(language != null) dataForFlag.setDefaultLanguageIso(language.getIsoCode());
-        }
-        return dataForFlags;
-    }
-
-    @PostConstruct
-    public void configureCache() {
-        countryIsoToDefaultLanguageCache = CacheBuilder.newBuilder()
-                .concurrencyLevel(1)
-                .expireAfterWrite(1, TimeUnit.HOURS)
-                .expireAfterAccess(1, TimeUnit.HOURS)
-                .maximumSize(300L)
-                .build(CacheLoader.from(new Function<Long, Language>() {
-                    @Override
-                    public Language apply(Long countryId) {
-                        Long languageId = languageRepository.getDefaultLanguageForCountry(countryId);
-                        if(languageId != null) return languageRepository.findOne(languageId);
-                        return languageRepository.findByIsoCode("en");
-                    }
-                }));
+        return countryRepository.getCountryDataForFlags();
     }
 }

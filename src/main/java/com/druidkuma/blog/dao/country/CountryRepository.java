@@ -20,6 +20,6 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     List<Country> findAllByIsEnabledIsTrue();
     Country findByIsoAlpha2Code(String isoAlpha2Code);
 
-    @Query(value = "SELECT DISTINCT new com.druidkuma.blog.web.dto.CountryFlagRenderDto(c.id, c.isoAlpha2Code, c.name) FROM Country c WHERE c.isEnabled = TRUE ORDER BY c.name")
+    @Query(value = "SELECT new com.druidkuma.blog.web.dto.CountryFlagRenderDto(c.id, c.isoAlpha2Code, c.name, c.defaultLanguage.isoCode) FROM Country c WHERE c.isEnabled = TRUE ORDER BY c.name")
     List<CountryFlagRenderDto> getCountryDataForFlags();
 }

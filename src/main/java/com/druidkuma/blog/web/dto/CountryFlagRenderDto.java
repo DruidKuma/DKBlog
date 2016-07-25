@@ -21,10 +21,4 @@ public class CountryFlagRenderDto {
     private String isoCode;
     private String name;
     private String defaultLanguageIso;
-
-    public CountryFlagRenderDto(Long id, String isoCode, String name) {
-        this.id = id;
-        this.isoCode = isoCode;
-        this.name = name;
-    }
 }

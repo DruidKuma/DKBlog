@@ -1,10 +1,12 @@
 package com.druidkuma.blog.domain.country;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.OrderBy;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -50,4 +52,8 @@ public class Country {
             joinColumns = @JoinColumn(name = "c2l_country_id"),
             inverseJoinColumns = @JoinColumn(name = "c2l_language_id"))
     private List<Language> languages;
+
+    @ManyToOne
+    @JoinFormula(value = "(SELECT c2l.c2l_language_id FROM country_2_language c2l WHERE c2l.c2l_country_id = c_id AND c2l.c2l_is_default)")
+    private Language defaultLanguage;
 }
