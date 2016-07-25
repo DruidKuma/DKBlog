@@ -23,6 +23,11 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         templateUrl: '/custom/blogEditEntry/blogEditEntry.html',
         controller: 'BlogEditEntryController'
     }).
+        
+    when('/i18n', {
+        templateUrl: '/custom/i18nPanel/i18nPanel.html',
+        controller: 'i18nPanelController'
+    }).
 
     otherwise({
         redirectTo: '/'
