@@ -2,9 +2,13 @@
  * Created by DruidKuma on 7/20/16.
  */
 angular.module("blogApp")
-    .controller('PageWrapperController',['$scope', '$location', 'BlogEntry', function($scope, $location, BlogEntry) {
+    .controller('PageWrapperController',['$scope', '$location', 'BlogEntry', '$cookies', function($scope, $location, BlogEntry, $cookies) {
 
-        $scope.currentCountry = {title: 'Germany'};
+        var currentCountryIso = $cookies.get('currentCountryIso');
+        if(!currentCountryIso) $cookies.put('currentCountryIso', 'US');
+        $scope.currentCountry = {
+            isoCode: $cookies.get('currentCountryIso')
+        };
 
         $scope.pageHeading = {};
         $scope.blogListFilter = {

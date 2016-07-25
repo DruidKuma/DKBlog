@@ -17,11 +17,15 @@ angular.module("blogApp").directive('leftSidebar', function() {
             $scope.initCountries = function() {
                 Country.flags().then(function(response) {
                     $scope.availableCountries = response.data;
+                    angular.merge($scope.currentCountry, $scope.availableCountries.filter(function(country) {
+                        return country.isoCode == $scope.currentCountry.isoCode;
+                    })[0]);
                 });
             };
 
             $scope.changeLanguage = function (langKey) {
                 $translate.use(langKey);
+                console.log($translate.proposedLanguage());
             };
 
             $scope.initCountries();

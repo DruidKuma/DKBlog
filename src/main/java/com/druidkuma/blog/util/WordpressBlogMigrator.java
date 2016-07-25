@@ -318,5 +318,25 @@ public class WordpressBlogMigrator {
                         .build());
     }
 
+//    @PostConstruct
+    public void createDefaultLanguageMappings() throws IOException {
+        Reader in = new FileReader(this.getClass().getClassLoader().getResource("db/country_lang_default.txt").getFile());
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+        Map<String, Language> countryToDefLang = Maps.newHashMap();
+
+        for (CSVRecord record : records) {
+            if(StringUtils.isNotBlank(record.get(2)) && record.get(5).equals("1")) {
+                Language language = languageRepository.findByIsoCode(record.get(1));
+                Country country = countryRepository.findByIsoAlpha2Code(record.get(2));
+                if(language != null && country != null) countryToDefLang.put(record.get(2), language);
+            }
+        }
+
+        for (Map.Entry<String, Language> entry : countryToDefLang.entrySet()) {
+            Country country = countryRepository.findByIsoAlpha2Code(entry.getKey());
+            jdbcTemplate.execute("UPDATE country_2_language SET c2l_is_default = TRUE WHERE c2l_country_id = "+ country.getId() +" AND c2l_language_id = " + entry.getValue().getId());
+        }
+    }
+
 
 }

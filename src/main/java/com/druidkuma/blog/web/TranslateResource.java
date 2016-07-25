@@ -1,7 +1,6 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.service.i18n.TranslationService;
-import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,6 @@ public class TranslateResource {
 
     @RequestMapping(value = "/{part}/{lang}", method = RequestMethod.GET)
     public Map<String, Object> testPartial(@PathVariable("part") String part, @PathVariable("lang") String lang) {
-        if(lang.equals("de")) return Maps.newHashMap();
         return translationService.getTranslationsForGroup(part, lang);
     }
 }

@@ -4,10 +4,10 @@
         <div class="country-block">
             <div class="" uib-dropdown>
                 <a href class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false" uib-dropdown-toggle>
-                    <i class="flag-icon flag-icon-ua"></i>
+                    <i class="flag-icon flag-icon-{{currentCountry.isoCode | lowercase}}"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                    <li ng-repeat="country in availableCountries">
+                    <li ng-repeat="country in availableCountries" ng-click="changeLanguage(country.defaultLanguageIso)">
                         <a href>
                             <i class="flag-icon flag-icon-{{country.isoCode | lowercase}}"></i>
                             <span class="country-name">{{country.name}}</span>

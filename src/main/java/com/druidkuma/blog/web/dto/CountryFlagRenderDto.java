@@ -17,6 +17,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryFlagRenderDto {
+    private Long id;
     private String isoCode;
     private String name;
+    private String defaultLanguageIso;
+
+    public CountryFlagRenderDto(Long id, String isoCode, String name) {
+        this.id = id;
+        this.isoCode = isoCode;
+        this.name = name;
+    }
 }
