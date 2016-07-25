@@ -6,7 +6,7 @@ angular.module("blogApp").directive('leftSidebar', function() {
         restrict: 'E',
         replace: true,
         templateUrl: '/custom/sidebar/left-sidebar.html',
-        controller: ['$scope', '$location', '$rootScope', 'Country', '$translate', function($scope, $location, $rootScope, Country, $translate) {
+        controller: ['$scope', '$location', '$rootScope', 'Country', '$translate', '$cookies', function($scope, $location, $rootScope, Country, $translate, $cookies) {
             $scope.currentState = $location.path();
             $.Sidemenu.init();
 
@@ -23,9 +23,11 @@ angular.module("blogApp").directive('leftSidebar', function() {
                 });
             };
 
-            $scope.changeLanguage = function (langKey) {
-                $translate.use(langKey);
-                console.log($translate.proposedLanguage());
+            $scope.changeLanguage = function (country) {
+                $scope.currentCountry = country;
+                $cookies.put('currentCountryIso', country.isoCode);
+                $translate.use(country.defaultLanguageIso);
+                $scope.initCountries();
             };
 
             $scope.initCountries();

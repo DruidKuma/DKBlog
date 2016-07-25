@@ -7,7 +7,7 @@
                     <i class="flag-icon flag-icon-{{currentCountry.isoCode | lowercase}}"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                    <li ng-repeat="country in availableCountries" ng-click="changeLanguage(country.defaultLanguageIso)">
+                    <li ng-repeat="country in availableCountries" ng-click="changeLanguage(country)">
                         <a href>
                             <i class="flag-icon flag-icon-{{country.isoCode | lowercase}}"></i>
                             <span class="country-name">{{country.name}}</span>
@@ -15,9 +15,6 @@
                     </li>
                 </ul>
             </div>
-
-            <button ng-click="changeLanguage('ru')" translate="BUTTON_LANG_RU"></button>
-            <button ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></button>
         </div>
 
         <!-- User -->
