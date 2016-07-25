@@ -17,9 +17,13 @@ angular.module("blogApp").directive('leftSidebar', function() {
             $scope.initCountries = function() {
                 Country.flags().then(function(response) {
                     $scope.availableCountries = response.data;
-                    angular.merge($scope.currentCountry, $scope.availableCountries.filter(function(country) {
+
+                    var selectedCountry = $scope.availableCountries.filter(function(country) {
                         return country.isoCode == $scope.currentCountry.isoCode;
-                    })[0]);
+                    })[0];
+                    $scope.availableCountries.splice($scope.availableCountries.indexOf(selectedCountry), 1);
+
+                    angular.merge($scope.currentCountry, selectedCountry);
                 });
             };
 
