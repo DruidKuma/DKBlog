@@ -274,7 +274,7 @@ public class WordpressBlogMigrator {
         createCountryLanguageMappings();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void createTranslationFromJson() throws IOException, ParseException {
         for (String lang : Arrays.asList("en", "ru")) {
             JSONObject translations = (JSONObject) new JSONParser().parse(new FileReader(this.getClass().getClassLoader().getResource(String.format("db/translations_%s.json", lang)).getFile()));
@@ -295,13 +295,16 @@ public class WordpressBlogMigrator {
     }
 
     private void createTranslation(String key, String value, String languageIsoCode, TranslationGroup group) {
-        translationRepository.saveAndFlush(Translation.builder()
+        Translation translation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(group, key, languageIsoCode);
+        if(translation != null) translation.setValue(value);
+        else translation = Translation.builder()
                 .key(key)
                 .value(value)
                 .language(languageRepository.findByIsoCode(languageIsoCode))
                 .translationGroup(group)
                 .lastModified(Instant.now())
-                .build());
+                .build();
+        translationRepository.saveAndFlush(translation);
     }
 
     private TranslationGroup createTranslationGroup(String key, TranslationGroup parentGroup) {
