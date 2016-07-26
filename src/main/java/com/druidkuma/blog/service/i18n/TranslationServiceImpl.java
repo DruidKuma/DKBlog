@@ -1,12 +1,9 @@
 package com.druidkuma.blog.service.i18n;
 
-import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
 import com.druidkuma.blog.dao.i18n.TranslationRepository;
-import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +31,18 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode) {
-        TranslationGroup group = resolveGroup(groupNameKey);
+        TranslationGroup group = resolveTranslationGroup(groupNameKey);
         Assert.notNull(group);
         return transformIntoTranslations(group, languageIsoCode);
     }
 
-    private TranslationGroup resolveGroup(String groupNameKey) {
+    @Override
+    public List<Translation> getTranslationsFromDb(TranslationGroup group, String languageIsoCode) {
+        return translationRepository.findByTranslationGroupAndLanguageIsoCode(group, languageIsoCode);
+    }
+
+    @Override
+    public TranslationGroup resolveTranslationGroup(String groupNameKey) {
         String[] nestedGroups = groupNameKey.split("\\.");
         Assert.notEmpty(nestedGroups);
 
@@ -47,6 +50,11 @@ public class TranslationServiceImpl implements TranslationService {
 
         if(nestedGroups.length < 2) return resultGroup;
         return resolveRecursively(Arrays.copyOfRange(nestedGroups, 1, nestedGroups.length), resultGroup);
+    }
+
+    @Override
+    public List<TranslationGroup> getTopLevelTranslationGroups() {
+        return translationGroupRepository.findAllByParentIsNull();
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {

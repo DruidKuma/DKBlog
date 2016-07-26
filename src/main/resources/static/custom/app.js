@@ -35,7 +35,7 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
 
 
     $translateProvider.useLoader('$translatePartialLoader', {
-        urlTemplate: '/api/blog/i18n/{part}/{lang}'
+        urlTemplate: '/api/blog/i18n/translate/{part}/{lang}'
     });
     $translateProvider.preferredLanguage('en');
     $translateProvider.fallbackLanguage('en');

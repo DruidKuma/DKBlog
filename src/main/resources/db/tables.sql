@@ -65,3 +65,5 @@ CREATE TABLE translations (
   tr_language_id INTEGER REFERENCES language(l_id),
   tr_last_modified TIMESTAMP WITHOUT TIME ZONE
 );
+
+ALTER TABLE country_2_language ADD COLUMN c2l_is_default NOT NULL DEFAULT FALSE;

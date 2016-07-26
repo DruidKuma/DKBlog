@@ -1,5 +1,9 @@
 package com.druidkuma.blog.service.i18n;
 
+import com.druidkuma.blog.domain.i18n.Translation;
+import com.druidkuma.blog.domain.i18n.TranslationGroup;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,4 +19,7 @@ public interface TranslationService {
      * @return
      */
     Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode);
+    List<Translation> getTranslationsFromDb(TranslationGroup translationGroup, String languageIsoCode);
+    TranslationGroup resolveTranslationGroup(String groupNameKey);
+    List<TranslationGroup> getTopLevelTranslationGroups();
 }
