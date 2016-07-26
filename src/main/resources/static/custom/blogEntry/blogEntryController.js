@@ -1,8 +1,5 @@
 angular.module("blogApp")
     .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', function($scope, BlogEntry, $routeParams, $sce, $location) {
-        $scope.$on('$routeChangeSuccess', function () {
-            $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
-        });
 
         $scope.loadBlogPost = function() {
             $scope.loadingProcess = true;

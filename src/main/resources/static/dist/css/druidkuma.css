@@ -177,3 +177,11 @@ div.tags input:matches([type="text"]) {
     background-color: #394c57;
     color: white;
 }
+
+div.panel div.panel-heading h4.panel-title a[aria-expanded="false"]:before {
+    content: '\f055';
+}
+
+div.panel div.panel-heading h4.panel-title a[aria-expanded="false"]:before {
+    content: '\f055';
+}

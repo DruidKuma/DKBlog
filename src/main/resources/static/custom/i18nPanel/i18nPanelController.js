@@ -6,5 +6,8 @@
  */
 angular.module("blogApp")
     .controller('i18nPanelController',['$scope', 'I18NService', function($scope, I18NService) {
-        $scope.futurePanel = 'PANEL OF THE FUTURE';
+        //Page Heading
+        $scope.$on('$routeChangeSuccess', function () {
+            $scope.pageHeading.title = "I18N Panel";
+        });
     }]);
