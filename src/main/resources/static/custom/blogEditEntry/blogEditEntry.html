@@ -42,6 +42,24 @@
                                             <textarea ui-tinymce ng-model="editEntryModel"></textarea>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-1 control-label">Countries</label>
+                                        <div class="col-md-11">
+                                            <tags-input ng-model="chosenCountries"
+                                                        display-property="name"
+                                                        placeholder="Add a country"
+                                                        replace-spaces-with-dashes="false"
+                                                        template="tag-template">
+                                                <auto-complete source="loadCountries($query)"
+                                                               min-length="0"
+                                                               load-on-focus="true"
+                                                               load-on-empty="true"
+                                                               max-results-to-show="32"
+                                                               template="autocomplete-template"></auto-complete>
+                                            </tags-input>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div><!-- end col -->
@@ -66,3 +84,26 @@
     </div> <!-- container -->
 
 </div> <!-- content -->
+
+<script type="text/ng-template" id="tag-template">
+    <div class="tag-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span>{{$getDisplayText()}}</span>
+            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+    <div class="autocomplete-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span ng-bind-html="$highlight($getDisplayText())"></span>
+        </div>
+    </div>
+</script>

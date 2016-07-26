@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/21/16.
  */
 angular.module("blogApp")
-    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', function($scope, BlogEntry, $routeParams, $sce, $location) {
+    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', function($scope, BlogEntry, $routeParams, $sce, $location, Country) {
 
         $scope.loadBlogPost = function() {
             if($routeParams.id) {
@@ -17,6 +17,25 @@ angular.module("blogApp")
                 });
             }
         };
+
+        $scope.chosenCountries = [
+            { name: "America", isoCode: "US" },
+            { name: "Spain", isoCode: "ES" },
+            { name: "Germany", isoCode: "DE" },
+            { name: "Ukraine", isoCode: "UA" },
+        ];
+
+
+        $scope.loadCountries = function($query) {
+            return Country.flags().then(function(response) {
+                var countries = response.data;
+                return countries.filter(function(country) {
+                    return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                });
+            });
+        };
+
+
 
         $scope.loadBlogPost();
     }]);
