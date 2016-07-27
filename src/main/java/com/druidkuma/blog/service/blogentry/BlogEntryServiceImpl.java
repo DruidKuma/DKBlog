@@ -3,6 +3,7 @@ package com.druidkuma.blog.service.blogentry;
 import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
 import com.druidkuma.blog.dao.blogEntry.specification.BlogEntrySpecification;
 import com.druidkuma.blog.dao.blogEntry.specification.SearchCriteria;
+import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.BlogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +21,12 @@ import org.springframework.stereotype.Service;
 public class BlogEntryServiceImpl implements BlogEntryService {
 
     private BlogEntryRepository blogEntryRepository;
+    private CountryRepository countryRepository;
 
     @Autowired
-    public BlogEntryServiceImpl(BlogEntryRepository blogEntryRepository) {
+    public BlogEntryServiceImpl(BlogEntryRepository blogEntryRepository, CountryRepository countryRepository) {
         this.blogEntryRepository = blogEntryRepository;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -32,8 +35,12 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     }
 
     @Override
-    public Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName) {
-        return blogEntryRepository.findAll(new BlogEntrySpecification(new SearchCriteria(search, filterPublished, categoryName)), pageable);
+    public Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName, String currentCountryIso) {
+        return blogEntryRepository.findAll(new BlogEntrySpecification(
+                new SearchCriteria(search,
+                        filterPublished,
+                        categoryName,
+                        countryRepository.findByIsoAlpha2Code(currentCountryIso))), pageable);
     }
 
     @Override

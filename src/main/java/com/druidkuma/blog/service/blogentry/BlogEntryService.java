@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface BlogEntryService {
     BlogEntry getOne(Long id);
-    Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName);
+    Page<BlogEntry> getPageOfEntries(Pageable pageable, String filterPublished, String search, String categoryName, String currentCountryIso);
 
     void switchPublishStatus(Long id);
 

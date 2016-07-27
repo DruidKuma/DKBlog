@@ -36,6 +36,7 @@ public class BlogEntrySpecification implements Specification<BlogEntry> {
     private List<Predicate> buildPredicates(Root<BlogEntry> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
 
         List<Predicate> result = Lists.newArrayList();
+        result.add(builder.isMember(criteria.getCountry(), root.get("countries")));
 
         if(StringUtils.isNotBlank(criteria.getFilterPublished())) {
             Boolean filterPublished = Boolean.valueOf(criteria.getFilterPublished());

@@ -1,5 +1,6 @@
 package com.druidkuma.blog.dao.blogEntry.specification;
 
+import com.druidkuma.blog.domain.country.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,4 +17,5 @@ public class SearchCriteria {
     private String search;
     private String filterPublished;
     private String categoryName;
+    private Country country;
 }

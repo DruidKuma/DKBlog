@@ -58,7 +58,7 @@ public class BlogEntry {
     @Column(name = "be_num_comments")
     private Long numComments;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "blog_entry_2_country",
             joinColumns = @JoinColumn(name = "be2c_blog_entry_id"),
             inverseJoinColumns = @JoinColumn(name = "be2c_country_id"))
