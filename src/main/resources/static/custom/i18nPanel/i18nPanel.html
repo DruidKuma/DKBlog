@@ -24,11 +24,58 @@
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
                                 <uib-accordion close-others="true">
+
                                     <div uib-accordion-group class="panel-default"
-                                         heading="{{groupName}}"
-                                         is-disabled="false" ng-repeat="groupName in topLevelGroupNames">
-                                        Lorem Ipsum
+                                         is-open="false"
+                                         is-disabled="false" ng-repeat="group in topLevelGroups">
+                                        <uib-accordion-heading>
+                                            <div ng-click="loadGroup(group)">{{group.name}}</div>
+                                        </uib-accordion-heading>
+
+                                        <form class="form-horizontal">
+                                            <div class="form-group" ng-repeat="translation in group.translations">
+                                                <label class="col-md-1 control-label">{{translation.key}}</label>
+                                                <div class="col-md-5 col-md-push-1">
+                                                    <input type="text" class="form-control" value="{{translation.valueFrom}}">
+                                                </div>
+                                                <div class="col-md-5 col-md-push-1">
+                                                    <input type="text" class="form-control" value="{{translation.valueTo}}">
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <uib-accordion close-others="true">
+
+                                            <div uib-accordion-group class="panel-default" is-open="false"
+                                                 is-disabled="false" ng-repeat="child in group.children">
+                                                <uib-accordion-heading>
+                                                    <div ng-click="loadGroup(child)">{{child.name}}</div>
+                                                </uib-accordion-heading>
+
+                                                <form class="form-horizontal">
+                                                    <div class="form-group" ng-repeat="translation in child.translations">
+                                                        <label class="col-md-1 control-label">{{translation.key}}</label>
+                                                        <div class="col-md-5 col-md-push-1">
+                                                            <input type="text" class="form-control" value="{{translation.valueFrom}}">
+                                                        </div>
+                                                        <div class="col-md-5 col-md-push-1">
+                                                            <input type="text" class="form-control" value="{{translation.valueTo}}">
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+                                        </uib-accordion>
+
+                                        <div class="pull-right">
+                                            <button class="btn btn-icon waves-effect btn-success m-b-5"> <i class="fa fa-plus"></i> </button>
+                                            <button class="btn btn-icon waves-effect waves-light btn-danger m-b-5"> <i class="fa fa-trash"></i> </button>
+                                            <button class="btn btn-icon waves-effect waves-light btn-purple m-b-5"> <i class="fa fa-music"></i> </button>
+                                        </div>
+
                                     </div>
+
                                 </uib-accordion>
                             </div>
                         </div><!-- end col -->

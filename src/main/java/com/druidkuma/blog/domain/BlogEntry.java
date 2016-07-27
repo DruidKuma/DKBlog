@@ -1,5 +1,6 @@
 package com.druidkuma.blog.domain;
 
+import com.druidkuma.blog.domain.country.Country;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
@@ -56,6 +57,12 @@ public class BlogEntry {
     private Long numViews;
     @Column(name = "be_num_comments")
     private Long numComments;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "blog_entry_2_country",
+            joinColumns = @JoinColumn(name = "be2c_blog_entry_id"),
+            inverseJoinColumns = @JoinColumn(name = "be2c_country_id"))
+    private List<Country> countries;
 
     @Transient
     private Set<Tag> tags;

@@ -29,7 +29,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -40,6 +39,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Iurii Miedviediev
@@ -336,6 +336,20 @@ public class WordpressBlogMigrator {
             Country country = countryRepository.findByIsoAlpha2Code(entry.getKey());
             jdbcTemplate.execute("UPDATE country_2_language SET c2l_is_default = TRUE WHERE c2l_country_id = "+ country.getId() +" AND c2l_language_id = " + entry.getValue().getId());
         }
+    }
+
+//    @PostConstruct
+    public void mapBlogEntriesToCountries() {
+        List<BlogEntry> blogEntries = blogEntryRepository.findAll();
+        List<Country> countries = countryRepository.findAll();
+
+        for (int i = 0; i < 3; i++) {
+            for (BlogEntry blogEntry : blogEntries) {
+                blogEntry.getCountries().add(countries.get(ThreadLocalRandom.current().nextInt(0, countries.size())));
+                blogEntryRepository.save(blogEntry);
+            }
+        }
+        blogEntryRepository.flush();
     }
 
 
