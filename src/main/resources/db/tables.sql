@@ -67,3 +67,8 @@ CREATE TABLE translations (
 );
 
 ALTER TABLE country_2_language ADD COLUMN c2l_is_default NOT NULL DEFAULT FALSE;
+
+CREATE TABLE blog_entry_2_country (
+  be2c_blog_entry_id INTEGER REFERENCES blog_entry(be_id),
+  be2c_country_id INTEGER REFERENCES country(c_id)
+);
