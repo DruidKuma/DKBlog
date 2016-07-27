@@ -1,4 +1,4 @@
-var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce', 'ngCookies', 'pascalprecht.translate', 'ngTagsInput']);
+var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce', 'ngCookies', 'pascalprecht.translate', 'ngTagsInput', 'dcbImgFallback']);
 var BASE_URL = 'http://localhost:8081';
 
 blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoaderProvider', function($routeProvider, $translateProvider, $translatePartialLoaderProvider) {
