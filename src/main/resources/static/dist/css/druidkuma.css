@@ -185,3 +185,10 @@ div.panel div.panel-heading h4.panel-title a[aria-expanded="false"]:before {
 div.panel div.panel-heading h4.panel-title a[aria-expanded="false"]:before {
     content: '\f055';
 }
+
+img.post-list-caption {
+    max-height: 11.7em;
+}
+div.post-list-caption-holder {
+    height: 11.7em;
+}

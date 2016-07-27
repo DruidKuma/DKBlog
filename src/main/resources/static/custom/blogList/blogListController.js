@@ -55,6 +55,10 @@ angular.module("blogApp")
             $scope.reloadBlogPosts();
         };
 
+        $scope.$on('countryChanged', function(event, data) {
+            $scope.resetBlogListFilter();
+        });
+
         // Initialize
         $scope.resetBlogListFilter($routeParams.partial);
         $scope.reloadBlogPosts();

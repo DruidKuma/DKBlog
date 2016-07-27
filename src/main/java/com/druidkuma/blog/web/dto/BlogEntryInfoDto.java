@@ -19,7 +19,6 @@ import java.time.Instant;
 public class BlogEntryInfoDto {
     private Long id;
     private String title;
-    private String description;
     private Long views;
     private long comments;
     private Boolean status;

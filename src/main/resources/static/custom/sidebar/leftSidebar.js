@@ -32,6 +32,8 @@ angular.module("blogApp").directive('leftSidebar', function() {
                 $cookies.put('currentCountryIso', country.isoCode);
                 $translate.use(country.defaultLanguageIso);
                 $scope.initCountries();
+
+                $rootScope.$broadcast('countryChanged', '');
             };
 
             $scope.initCountries();

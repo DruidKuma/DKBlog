@@ -64,24 +64,29 @@
                     </div>
                     <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | cut:true:28:' ...'}}</a></h4>
 
-                    <p class="text-success text-uppercase m-b-20 font-13">{{post.category}}</p>
-                    <p class="text-muted font-13">{{post.description}}...<a href="#/entry/{{post.id}}" class="font-600 text-muted">view more</a>
-                    </p>
+                    <div class="m-b-20 font-13">
+                        <span class="text-success text-uppercase">{{post.category}}</span>
+                        <span class="text-warning pull-right">{{post.creationDate | date:'dd/MM/yyyy'}}</span>
+                    </div>
 
-                    <ul class="list-inline">
-                        <li>
-                            <h3 class="m-b-0">{{post.views}}</h3>
-                            <p class="text-muted">Views</p>
-                        </li>
-                        <li>
-                            <h3 class="m-b-0">{{post.comments}}</h3>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                        <li>
-                            <h3 class="m-b-0">{{post.creationDate | date:'dd/MM/yyyy'}}</h3>
-                            <p class="text-muted">Created</p>
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-lg-8 post-list-caption-holder">
+                            <img ng-src="{{post.imageUrl}}" class="img-responsive post-list-caption">
+                        </div>
+                        <div class="col-lg-4">
+                            <ul class="list-inline">
+                                <li>
+                                    <h3 class="m-b-0">{{post.views}}</h3>
+                                    <p class="text-muted">Views</p>
+                                </li>
+                                <li>
+                                    <h3 class="m-b-0">{{post.comments}}</h3>
+                                    <p class="text-muted">Comments</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div><!-- end col-->
 
