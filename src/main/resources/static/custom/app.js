@@ -26,7 +26,12 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         
     when('/i18n', {
         templateUrl: '/custom/i18nPanel/i18nPanel.html',
-        controller: 'i18nPanelController'
+        controller: 'I18nPanelController'
+    }).
+
+    when('/category', {
+        templateUrl: '/custom/category/categoryList.html',
+        controller: 'CategoryController'
     }).
 
     otherwise({

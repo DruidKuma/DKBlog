@@ -22,5 +22,10 @@
       "published" : "Published",
       "sort" : "Sort"
     }
+  },
+  "components" : {
+    "category" : {
+      "tipsAndTricks" : "Tips & Tricks"
+    }
   }
 }

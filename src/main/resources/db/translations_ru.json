@@ -22,5 +22,10 @@
       "published" : "Опубликован",
       "sort" : "Сортировка"
     }
+  },
+  "components" : {
+    "category" : {
+      "tipsAndTricks" : "Типсы и Трики"
+    }
   }
 }

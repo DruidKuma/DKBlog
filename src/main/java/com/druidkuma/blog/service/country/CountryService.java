@@ -16,4 +16,6 @@ public interface CountryService {
     List<Country> getAvailableCountries();
 
     List<CountryFlagRenderDto> getCountryDataForFlags();
+
+    Country getCountryByIsoCode(String currentCountryIso);
 }
