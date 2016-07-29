@@ -19,10 +19,8 @@ angular.module("blogApp")
             });
         };
 
-        $scope.items = ['item1', 'item2', 'item3'];
-
         $scope.openEditModal = function(category) {
-            var modalInstance = $uibModal.open({
+            var editCategoryModal = $uibModal.open({
                 animation: true,
                 templateUrl: 'editCategoryModal.html',
                 controller: 'EditCategoryController',
@@ -33,6 +31,11 @@ angular.module("blogApp")
                     }
                 }
             });
+
+            editCategoryModal.result.then(function (editedCategory) {
+                // save edited category
+            });
+
         };
 
         $scope.$on('countryChanged', function(event, data) {
@@ -43,13 +46,16 @@ angular.module("blogApp")
     }])
     .controller('EditCategoryController', function ($scope, $uibModalInstance, category) {
 
-    $scope.category = category;
+        $scope.category = category;
 
-    $scope.ok = function () {
-        $uibModalInstance.close('OK');
-    };
+        $scope.colorPickerOptions = {format: 'hex'};
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
-});
+        $scope.saveCategory = function () {
+            $uibModalInstance.close($scope.category);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+    });

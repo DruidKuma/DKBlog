@@ -20,11 +20,10 @@
                         <th>Number of Posts</th>
                         <th>Last Modified</th>
                         <th>Actions</th>
-                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="category in categories" ng-style="{'background-color': '{{category.hexColor}}'}">
+                    <tr ng-repeat="category in categories" ng-style="{'background-color': category.hexColor}">
                         <th scope="row">{{category.id}}</th>
                         <td>{{category.nameKey | translate}}</td>
                         <td>{{category.numPosts}}</td>
@@ -33,7 +32,6 @@
                             <a href class="text-success" ng-click="openEditModal(category)"><i class="fa fa-pencil"></i></a>
                             <a href class="text-danger"><i class="fa fa-trash-o"></i></a>
                         </td>
-                        <td><input colorpicker ng-model="category.hexColor" type="text"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -48,12 +46,20 @@
         <h3 class="modal-title">{{category.nameKey | translate}}</h3>
     </div>
     <div class="modal-body">
-        <form action="" class="form-horizontal">
-            <input colorpicker ng-model="category.hexColor" type="text">
-        </form>
+        <div class="container">
+            <div class="col-lg-12">
+                <form action="" class="form-horizontal">
+                    <div class="form-group">
+                        <color-picker options="colorPickerOptions" ng-model="category.hexColor"></color-picker>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary" type="button" ng-click="saveCategory()">Save</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
