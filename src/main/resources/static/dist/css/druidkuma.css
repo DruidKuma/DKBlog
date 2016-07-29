@@ -192,3 +192,12 @@ img.post-list-caption {
 div.post-list-caption-holder {
     height: 11.7em;
 }
+
+td.actions a i {
+    font-size: 20px;
+    padding: 2px;
+}
+
+table#categoryTable tr td {
+    vertical-align: middle;
+}

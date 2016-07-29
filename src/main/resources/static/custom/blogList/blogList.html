@@ -62,7 +62,7 @@
                     <div class="label" ng-class="post.status ? 'label-success' : 'label-danger'">
                         {{post.status ? 'Published' : 'Not published'}}
                     </div>
-                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | cut:true:28:' ...'}}</a></h4>
+                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | characters:28}}</a></h4>
 
                     <div class="m-b-20 font-13">
                         <span class="text-success text-uppercase">{{post.category}}</span>
