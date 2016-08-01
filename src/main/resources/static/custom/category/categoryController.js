@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', function($scope, Category, $translatePartialLoader, $translate, $uibModal) {
+    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', 'Country', function($scope, Category, $translatePartialLoader, $translate, $uibModal, Country) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "Category Overview";
@@ -26,6 +26,9 @@ angular.module("blogApp")
                 controller: 'EditCategoryController',
                 size: 'lg',
                 resolve: {
+                    Country: function() {
+                        return Country;
+                    },
                     category: function () {
                         return category;
                     }
@@ -44,9 +47,32 @@ angular.module("blogApp")
 
         $scope.loadCategories();
     }])
-    .controller('EditCategoryController', function ($scope, $uibModalInstance, category) {
+    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, category) {
 
-        $scope.category = category;
+        $scope.category = category ? category : {};
+
+        $scope.category.chosenCountries = [
+            { name: "America", isoCode: "US" },
+            { name: "Russia", isoCode: "RU" }
+        ];
+        $scope.category.translations = [
+            { lang: 'ru', display: 'Russian', value: 'Типсы и трики'},
+            { lang: 'en', display: 'English', value: 'Tips & Tricks'}
+        ];
+
+
+        $scope.loadCountries = function($query) {
+            return Country.flags().then(function(response) {
+                var countries = response.data;
+                return countries.filter(function(country) {
+                    return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                });
+            });
+        };
+
+        $scope.$watchCollection('category.chosenCountries', function(oldValue, newValue) {
+            console.log('pizda');
+        });
 
         $scope.colorPickerOptions = {format: 'hex'};
 

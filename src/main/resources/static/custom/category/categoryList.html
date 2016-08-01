@@ -12,7 +12,7 @@
                     Be careful editing categories as any changes would influence all blog posts containing in edited category.
                 </p>
 
-                <table class="table m-b-0" id="categoryTable">
+                <table class="table m-b-15" id="categoryTable">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -36,6 +36,10 @@
                     </tbody>
                 </table>
 
+                <div class="row">
+                    <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
+                </div>
+
             </div>
         </div><!-- end col -->
     </div>
@@ -43,14 +47,57 @@
 
 <script type="text/ng-template" id="editCategoryModal.html">
     <div class="modal-header">
-        <h3 class="modal-title">{{category.nameKey | translate}}</h3>
+        <h3 class="modal-title">{{category.nameKey ? (category.nameKey | translate) : 'New Category'}}</h3>
     </div>
     <div class="modal-body">
         <div class="container">
             <div class="col-lg-12">
                 <form action="" class="form-horizontal">
                     <div class="form-group">
-                        <color-picker options="colorPickerOptions" ng-model="category.hexColor"></color-picker>
+                        <label class="col-md-2">Display color</label>
+                        <div class="col-md-10">
+                            <color-picker options="colorPickerOptions" ng-model="category.hexColor"></color-picker>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2">
+                            Name Key
+                        </label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2">
+                            Countries
+                        </label>
+                        <div class="col-md-10">
+                            <tags-input ng-model="category.chosenCountries"
+                                        display-property="name"
+                                        placeholder="Add a country"
+                                        replace-spaces-with-dashes="false"
+                                        template="tag-template">
+                                <auto-complete source="loadCountries($query)"
+                                               min-length="0"
+                                               load-on-focus="true"
+                                               load-on-empty="true"
+                                               max-results-to-show="32"
+                                               template="autocomplete-template"></auto-complete>
+                            </tags-input>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h4 class="modal-title m-b-15">Translations</h4>
+                    <div class="form-group" ng-repeat="translation in category.translations">
+                        <label class="col-md-2">
+                            {{translation.display}}
+                        </label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="translation.value">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -61,5 +108,28 @@
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="saveCategory()">Save</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="tag-template">
+    <div class="tag-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span>{{$getDisplayText()}}</span>
+            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+    <div class="autocomplete-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span ng-bind-html="$highlight($getDisplayText())"></span>
+        </div>
     </div>
 </script>
