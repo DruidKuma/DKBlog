@@ -2,7 +2,8 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', 'Country', function($scope, Category, $translatePartialLoader, $translate, $uibModal, Country) {
+    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', 'Country', 'I18NService',
+        function($scope, Category, $translatePartialLoader, $translate, $uibModal, Country, I18NService) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "Category Overview";
@@ -32,6 +33,9 @@ angular.module("blogApp")
                     Category: function() {
                         return Category;
                     },
+                    I18NService: function() {
+                        return I18NService;
+                    },
                     category: function () {
                         return category;
                     }
@@ -50,7 +54,7 @@ angular.module("blogApp")
 
         $scope.loadCategories();
     }])
-    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, category) {
+    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, I18NService, category) {
 
         $scope.colorPickerOptions = {format: 'hex'};
 
@@ -70,8 +74,30 @@ angular.module("blogApp")
             });
         };
 
-        $scope.$watchCollection('category.chosenCountries', function(oldValue, newValue) {
+        $scope.findTranslationByLang = function(translations, lang) {
+            if(!translations) return;
+            return translations.find(function(element, index, array) {
+                return element.lang == lang;
+            });
+        };
 
+        $scope.$watchCollection('category.countries', function(newValue, oldValue) {
+            if(newValue) {
+                var newTranslations = [];
+                angular.forEach($scope.category.countries, function(country) {
+                    if(!$scope.findTranslationByLang(newTranslations, country.defaultLanguageIso)) {
+                        var translation = $scope.findTranslationByLang($scope.category.translations, country.defaultLanguageIso);
+                        if(translation) newTranslations.push(translation);
+                        else {
+                            I18NService.getForKeyAndLang({key: "components.category." + $scope.category.nameKey,
+                                lang: country.defaultLanguageIso}).then(function(response) {
+                                newTranslations.push(response.data);
+                            });
+                        }
+                    }
+                });
+                $scope.category.translations = newTranslations;
+            }
         });
 
         $scope.saveCategory = function () {

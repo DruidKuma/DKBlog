@@ -14,6 +14,12 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/i18n/panel/names/" + params,
                 method: "get"
             });
+        },
+        getForKeyAndLang: function(params) {
+            return $http({
+                url: BASE_URL + "/api/blog/i18n/get/" + params.key + "/" + params.lang,
+                method: "get"
+            })
         }
     }
 }]);

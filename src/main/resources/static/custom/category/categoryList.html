@@ -65,7 +65,7 @@
                             Name Key
                         </label>
                         <div class="col-md-10">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" ng-model="category.nameKey">
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@
                             Countries
                         </label>
                         <div class="col-md-10">
-                            <tags-input ng-model="category.chosenCountries"
+                            <tags-input ng-model="category.countries"
                                         display-property="name"
                                         placeholder="Add a country"
                                         replace-spaces-with-dashes="false"
