@@ -38,12 +38,19 @@ angular.module("blogApp")
                     },
                     category: function () {
                         return category;
+                    },
+                    currentCountry: function() {
+                        return $scope.currentCountry;
                     }
                 }
             });
 
             editCategoryModal.result.then(function (editedCategory) {
-                // save edited category
+                Category.save(editedCategory).then(function(response) {
+                    console.log("YEEEEAH");
+                }).finally(function() {
+                    $scope.loadCategories();
+                });
             });
 
         };
@@ -54,16 +61,17 @@ angular.module("blogApp")
 
         $scope.loadCategories();
     }])
-    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, I18NService, category) {
+    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, I18NService, category, currentCountry) {
 
         $scope.colorPickerOptions = {format: 'hex'};
+        $scope.newCategoryNameKey = '';
 
         if(category) {
             Category.one(category.id).then(function(response) {
                 $scope.category = response.data;
             });
         }
-        else $scope.category = {};
+        else $scope.category = {countries: [currentCountry]};
 
         $scope.loadCountries = function($query) {
             return Country.flags().then(function(response) {
@@ -101,6 +109,7 @@ angular.module("blogApp")
         });
 
         $scope.saveCategory = function () {
+            if(!$scope.category.nameKey) $scope.category.nameKey = $scope.newCategoryNameKey;
             $uibModalInstance.close($scope.category);
         };
 

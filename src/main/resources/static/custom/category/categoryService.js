@@ -14,6 +14,13 @@ angular.module("blogApp").service('Category', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/category/" + params,
                 method: "get"
             })
+        },
+        save: function(category) {
+            return $http({
+                url: BASE_URL + "/api/blog/category",
+                method: "post",
+                data: JSON.stringify(category)
+            })
         }
     }
 }]);

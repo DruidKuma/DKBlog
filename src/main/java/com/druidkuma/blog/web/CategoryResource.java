@@ -48,4 +48,9 @@ public class CategoryResource {
     public CategoryDetailedDto getDetailedCategoryInfo(@PathVariable("id") Long id) {
         return categoryService.getDetailedCategoryInfo(id);
     }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void saveCategory(@RequestBody CategoryDetailedDto categoryDto) {
+        System.out.println("TODO");
+    }
 }

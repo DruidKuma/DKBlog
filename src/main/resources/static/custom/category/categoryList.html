@@ -52,7 +52,7 @@
     <div class="modal-body">
         <div class="container">
             <div class="col-lg-12">
-                <form action="" class="form-horizontal">
+                <form class="form-horizontal" novalidate name="categoryForm">
                     <div class="form-group">
                         <label class="col-md-2">Display color</label>
                         <div class="col-md-10">
@@ -65,7 +65,9 @@
                             Name Key
                         </label>
                         <div class="col-md-10">
-                            <input class="form-control" type="text" ng-model="category.nameKey">
+                            <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" required>
+                            <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey" ng-if="!category.nameKey" required>
+                            <span ng-show="categoryForm.nameKey.$error.required">Error message</span>
                         </div>
                     </div>
 
@@ -96,7 +98,7 @@
                             {{translation.display}}
                         </label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" ng-model="translation.value">
+                            <input type="text" class="form-control" ng-model="translation.value" required>
                         </div>
                     </div>
                 </form>
