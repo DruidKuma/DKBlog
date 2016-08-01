@@ -2,12 +2,10 @@ package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.service.category.CategoryService;
 import com.druidkuma.blog.service.country.CountryService;
+import com.druidkuma.blog.web.dto.CategoryDetailedDto;
 import com.druidkuma.blog.web.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,5 +42,10 @@ public class CategoryResource {
                         .numPosts(category.getBlogEntries().size())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public CategoryDetailedDto getDetailedCategoryInfo(@PathVariable("id") Long id) {
+        return categoryService.getDetailedCategoryInfo(id);
     }
 }

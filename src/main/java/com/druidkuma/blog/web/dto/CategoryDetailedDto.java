@@ -2,6 +2,8 @@ package com.druidkuma.blog.web.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 /**
  * Created by Iurii Miedviediev
  *
@@ -18,4 +20,6 @@ public class CategoryDetailedDto {
     private Long id;
     private String hexColor;
     private String nameKey;
+    private List<CountryFlagRenderDto> countries;
+    private List<TranslationDto> translations;
 }

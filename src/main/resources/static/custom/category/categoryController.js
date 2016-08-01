@@ -29,6 +29,9 @@ angular.module("blogApp")
                     Country: function() {
                         return Country;
                     },
+                    Category: function() {
+                        return Category;
+                    },
                     category: function () {
                         return category;
                     }
@@ -47,19 +50,16 @@ angular.module("blogApp")
 
         $scope.loadCategories();
     }])
-    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, category) {
+    .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, category) {
 
-        $scope.category = category ? category : {};
+        $scope.colorPickerOptions = {format: 'hex'};
 
-        $scope.category.chosenCountries = [
-            { name: "America", isoCode: "US" },
-            { name: "Russia", isoCode: "RU" }
-        ];
-        $scope.category.translations = [
-            { lang: 'ru', display: 'Russian', value: 'Типсы и трики'},
-            { lang: 'en', display: 'English', value: 'Tips & Tricks'}
-        ];
-
+        if(category) {
+            Category.one(category.id).then(function(response) {
+                $scope.category = response.data;
+            });
+        }
+        else $scope.category = {};
 
         $scope.loadCountries = function($query) {
             return Country.flags().then(function(response) {
@@ -71,10 +71,8 @@ angular.module("blogApp")
         };
 
         $scope.$watchCollection('category.chosenCountries', function(oldValue, newValue) {
-            console.log('pizda');
-        });
 
-        $scope.colorPickerOptions = {format: 'hex'};
+        });
 
         $scope.saveCategory = function () {
             $uibModalInstance.close($scope.category);

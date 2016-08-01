@@ -8,6 +8,12 @@ angular.module("blogApp").service('Category', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/category",
                 method: "get"
             })
+        },
+        one: function(params) {
+            return $http({
+                url: BASE_URL + "/api/blog/category/" + params,
+                method: "get"
+            })
         }
     }
 }]);

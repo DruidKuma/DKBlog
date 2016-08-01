@@ -5,11 +5,16 @@ import com.druidkuma.blog.dao.category.specification.CategorySpecification;
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.Category;
 import com.druidkuma.blog.domain.country.Country;
+import com.druidkuma.blog.domain.i18n.Translation;
+import com.druidkuma.blog.web.dto.CategoryDetailedDto;
+import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Iurii Miedviediev
@@ -51,5 +56,34 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean isCategoryAvailableInCountry(Category category, Country country) {
         return isCategoryAvailableInCountries(category, Lists.newArrayList(country));
+    }
+
+    @Override
+    public CategoryDetailedDto getDetailedCategoryInfo(Long id) {
+        Category category = categoryRepository.findOne(id);
+        return CategoryDetailedDto.builder()
+                .hexColor(category.getHexColor())
+                .nameKey(category.getNameKey())
+                .id(category.getId())
+                .countries(getCountryFlagData(category.getCountries()))
+                .translations(getTranslationData(category.getTranslations()))
+                .build();
+    }
+
+    private List<TranslationDto> getTranslationData(List<Translation> translations) {
+        return translations.stream().map(translation -> TranslationDto.builder()
+                .value(translation.getValue())
+                .lang(translation.getLanguage().getIsoCode())
+                .display(translation.getLanguage().getName())
+                .build()).collect(Collectors.toList());
+    }
+
+    private List<CountryFlagRenderDto> getCountryFlagData(List<Country> countries) {
+        return countries.stream().map(country -> CountryFlagRenderDto.builder()
+                .id(country.getId())
+                .defaultLanguageIso(country.getDefaultLanguage().getIsoCode())
+                .isoCode(country.getIsoAlpha2Code())
+                .name(country.getName())
+                .build()).collect(Collectors.toList());
     }
 }

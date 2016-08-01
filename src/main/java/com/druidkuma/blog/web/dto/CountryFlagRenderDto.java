@@ -1,9 +1,6 @@
 package com.druidkuma.blog.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Created by Iurii Miedviediev
@@ -16,6 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CountryFlagRenderDto {
     private Long id;
     private String isoCode;
