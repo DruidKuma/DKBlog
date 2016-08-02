@@ -4,6 +4,11 @@
 angular.module("blogApp")
     .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', function($scope, BlogEntry, $routeParams, $sce, $location, Country) {
 
+        $scope.tinyMceOptions = {
+            image_advtab: true,
+            image_title: true
+        };
+
         $scope.loadBlogPost = function() {
             if($routeParams.id) {
                 $scope.loadingProcess = true;
@@ -22,7 +27,7 @@ angular.module("blogApp")
             { name: "America", isoCode: "US" },
             { name: "Spain", isoCode: "ES" },
             { name: "Germany", isoCode: "DE" },
-            { name: "Ukraine", isoCode: "UA" },
+            { name: "Ukraine", isoCode: "UA" }
         ];
 
 

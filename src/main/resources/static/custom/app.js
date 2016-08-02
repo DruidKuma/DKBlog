@@ -34,6 +34,11 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         controller: 'CategoryController'
     }).
 
+    when('/media', {
+        templateUrl: '/custom/media/mediaGallery.html',
+        controller: 'MediaGalleryController'
+    }).
+
     otherwise({
         redirectTo: '/'
     });
