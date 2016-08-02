@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -79,6 +80,25 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void saveCategory(Category category) {
         categoryRepository.saveAndFlush(category);
+    }
+
+    @Override
+    public void removeCountryFromCategory(Long id, String countryIso) {
+        Category category = categoryRepository.findOne(id);
+        Iterator<Country> countryIterator = category.getCountries().iterator();
+        while(countryIterator.hasNext()) {
+            Country country = countryIterator.next();
+            if(country.getIsoAlpha2Code().equals(countryIso)) {
+                countryIterator.remove();
+                break;
+            }
+        }
+        categoryRepository.saveAndFlush(category);
+    }
+
+    @Override
+    public void removeCategory(Long id) {
+        categoryRepository.delete(id);
     }
 
     private List<TranslationDto> getTranslationData(List<Translation> translations) {

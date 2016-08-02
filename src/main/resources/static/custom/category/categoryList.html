@@ -12,6 +12,18 @@
                     Be careful editing categories as any changes would influence all blog posts containing in edited category.
                 </p>
 
+                <div class="alert alert-success alert-dismissable" ng-show="isDeleteRequested">
+                    <button type="button" class="close" aria-hidden="true" ng-click="dismissCategoryDeletion()">×</button>
+                    Do you want to remove this category only for this country, or for all countries?
+                    <button type="button" class="btn btn-success waves-effect waves-light m-t-0" ng-click="deleteCountryFromCategory(categoryToDelete)">
+                        <i class="fa fa-globe"></i> Only for current country
+                    </button>
+                    <button type="button" class="btn btn-danger waves-effect m-t-0" ng-click="deleteCategory(categoryToDelete)">
+                        <i class="fa fa-trash"></i> Remove completely
+                    </button>
+                </div>
+
+
                 <table class="table m-b-15" id="categoryTable">
                     <thead>
                     <tr>
@@ -30,7 +42,7 @@
                         <td>{{category.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
                         <td class="actions">
                             <a href class="text-success" ng-click="openEditModal(category)"><i class="fa fa-pencil"></i></a>
-                            <a href class="text-danger" ng-click="deleteCategory(category)"><i class="fa fa-trash-o"></i></a>
+                            <a href class="text-danger" ng-click="showDeleteAlert(category)"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                     </tbody>

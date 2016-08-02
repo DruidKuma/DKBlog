@@ -100,4 +100,15 @@ public class CategoryResource {
         }
         categoryService.saveCategory(category);
     }
+
+    @RequestMapping(value = "/country/{id}", method = RequestMethod.DELETE)
+    public void deleteCountryFromCategory(@PathVariable("id") Long id,
+                                          @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        categoryService.removeCountryFromCategory(id, currentCountryIso);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteCountryFromCategory(@PathVariable("id") Long id) {
+        categoryService.removeCategory(id);
+    }
 }

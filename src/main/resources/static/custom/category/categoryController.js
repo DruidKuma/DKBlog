@@ -2,14 +2,15 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', 'Country', 'I18NService',
-        function($scope, Category, $translatePartialLoader, $translate, $uibModal, Country, I18NService) {
+    .controller('CategoryController',['$scope', 'Category', '$translatePartialLoader', '$translate', '$uibModal', 'Country', 'I18NService', function($scope, Category, $translatePartialLoader, $translate, $uibModal, Country, I18NService) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "Category Overview";
             $translatePartialLoader.addPart('components.category');
             $translate.refresh();
         });
+
+        $scope.isDeleteRequested = false;
 
         $scope.loadCategories = function() {
             $scope.loadingProcess = true;
@@ -54,6 +55,30 @@ angular.module("blogApp")
                 });
             });
 
+        };
+
+        $scope.dismissCategoryDeletion = function() {
+            $scope.isDeleteRequested = false;
+            delete $scope.categoryToDelete;
+        };
+
+        $scope.showDeleteAlert = function(category) {
+            $scope.isDeleteRequested = true;
+            $scope.categoryToDelete = category;
+        };
+
+        $scope.deleteCategory = function(category) {
+            Category.remove(category.id).then(function(response) {
+                $scope.dismissCategoryDeletion();
+                $scope.loadCategories();
+            });
+        };
+
+        $scope.deleteCountryFromCategory = function(category) {
+            Category.removeFromCountry(category.id).then(function(response) {
+                $scope.dismissCategoryDeletion();
+                $scope.loadCategories();
+            });
         };
 
         $scope.$on('countryChanged', function(event, data) {

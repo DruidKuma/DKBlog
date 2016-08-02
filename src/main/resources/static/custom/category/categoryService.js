@@ -21,6 +21,18 @@ angular.module("blogApp").service('Category', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(category)
             })
+        },
+        removeFromCountry: function(categoryId) {
+            return $http({
+                url: BASE_URL + "/api/blog/category/country/" + categoryId,
+                method: "delete"
+            })
+        },
+        remove: function(categoryId) {
+            return $http({
+                url: BASE_URL + "/api/blog/category/" + categoryId,
+                method: "delete"
+            })
         }
     }
 }]);

@@ -24,4 +24,7 @@ public interface CategoryService {
 
     Category getById(Long id);
     void saveCategory(Category category);
+    void removeCountryFromCategory(Long id, String countryIso);
+
+    void removeCategory(Long id);
 }
