@@ -65,9 +65,10 @@
                             Name Key
                         </label>
                         <div class="col-md-10">
-                            <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" required>
-                            <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey" ng-if="!category.nameKey" required>
-                            <span ng-show="categoryForm.nameKey.$error.required">Error message</span>
+                            <ng-form name="nameKeyForm">
+                                <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" name="{{category.nameKey}}" required>
+                                <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey" ng-if="!category.nameKey" name="{{category.nameKey}}" required>
+                            </ng-form>
                         </div>
                     </div>
 
@@ -108,7 +109,12 @@
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="saveCategory()">Save</button>
+        <div ng-if="categoryForm.$invalid" class="layer-mask m-r-5" tooltip-placement="left" uib-tooltip="Please, fill in name key, choose at least one country and fill all translations">
+            <div class="layer"></div>
+            <button class="btn btn-primary" type="button" disabled>Save</button>
+        </div>
+
+        <button class="btn btn-primary" type="button" ng-click="saveCategory()" ng-if="!categoryForm.$invalid">Save</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
