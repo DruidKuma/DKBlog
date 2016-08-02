@@ -21,4 +21,7 @@ public interface CategoryService {
     boolean isCategoryAvailableInCountries(Category category, List<Country> countries);
     boolean isCategoryAvailableInCountry(Category category, Country country);
     CategoryDetailedDto getDetailedCategoryInfo(Long id);
+
+    Category getById(Long id);
+    void saveCategory(Category category);
 }

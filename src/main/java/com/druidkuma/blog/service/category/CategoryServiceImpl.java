@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +71,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
     }
 
+    @Override
+    public Category getById(Long id) {
+        return categoryRepository.findOne(id);
+    }
+
+    @Override
+    public void saveCategory(Category category) {
+        categoryRepository.saveAndFlush(category);
+    }
+
     private List<TranslationDto> getTranslationData(List<Translation> translations) {
         return translations.stream().map(translation -> TranslationDto.builder()
                 .value(translation.getValue())
@@ -78,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .build()).collect(Collectors.toList());
     }
 
-    private List<CountryFlagRenderDto> getCountryFlagData(List<Country> countries) {
+    private List<CountryFlagRenderDto> getCountryFlagData(Set<Country> countries) {
         return countries.stream().map(country -> CountryFlagRenderDto.builder()
                 .id(country.getId())
                 .defaultLanguageIso(country.getDefaultLanguage().getIsoCode())

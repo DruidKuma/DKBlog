@@ -1,5 +1,6 @@
 package com.druidkuma.blog.service.i18n;
 
+import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.web.dto.TranslationDto;
@@ -25,4 +26,5 @@ public interface TranslationService {
     TranslationGroup resolveTranslationGroup(String groupNameKey);
     List<TranslationGroup> getTopLevelTranslationGroups();
     TranslationDto getForKeyAndLanguageIso(String key, String langIso);
+    Language getLanguageByIsoCode(String isoCode);
 }

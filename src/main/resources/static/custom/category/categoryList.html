@@ -30,7 +30,7 @@
                         <td>{{category.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
                         <td class="actions">
                             <a href class="text-success" ng-click="openEditModal(category)"><i class="fa fa-pencil"></i></a>
-                            <a href class="text-danger"><i class="fa fa-trash-o"></i></a>
+                            <a href class="text-danger" ng-click="deleteCategory(category)"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -65,10 +65,8 @@
                             Name Key
                         </label>
                         <div class="col-md-10">
-                            <ng-form name="nameKeyForm">
-                                <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" name="{{category.nameKey}}" required>
-                                <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey" ng-if="!category.nameKey" name="{{category.nameKey}}" required>
-                            </ng-form>
+                            <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" name="{{category.nameKey}}" required>
+                            <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey.value" ng-if="!category.nameKey" name="{{category.nameKey}}" required>
                         </div>
                     </div>
 

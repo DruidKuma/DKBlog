@@ -47,9 +47,10 @@ angular.module("blogApp")
 
             editCategoryModal.result.then(function (editedCategory) {
                 Category.save(editedCategory).then(function(response) {
-                    console.log("YEEEEAH");
-                }).finally(function() {
                     $scope.loadCategories();
+                    $translatePartialLoader.deletePart('components.category', true);
+                    $translatePartialLoader.addPart('components.category');
+                    $translate.refresh();
                 });
             });
 
@@ -64,7 +65,7 @@ angular.module("blogApp")
     .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, I18NService, category, currentCountry) {
 
         $scope.colorPickerOptions = {format: 'hex'};
-        $scope.newCategoryNameKey = '';
+        $scope.newCategoryNameKey = {};
 
         if(category) {
             Category.one(category.id).then(function(response) {
@@ -109,7 +110,9 @@ angular.module("blogApp")
         });
 
         $scope.saveCategory = function () {
-            if(!$scope.category.nameKey) $scope.category.nameKey = $scope.newCategoryNameKey;
+            if(!$scope.category.nameKey) {
+                $scope.category.nameKey = $scope.newCategoryNameKey.value;
+            }
             $uibModalInstance.close($scope.category);
         };
 

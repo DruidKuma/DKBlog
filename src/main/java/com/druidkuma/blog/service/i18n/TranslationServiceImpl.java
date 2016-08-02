@@ -3,6 +3,7 @@ package com.druidkuma.blog.service.i18n;
 import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
 import com.druidkuma.blog.dao.i18n.TranslationRepository;
+import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.web.dto.TranslationDto;
@@ -75,6 +76,11 @@ public class TranslationServiceImpl implements TranslationService {
                 .display(languageRepository.findByIsoCode(langIso).getName())
                 .lang(langIso)
                 .value(translation).build();
+    }
+
+    @Override
+    public Language getLanguageByIsoCode(String isoCode) {
+        return languageRepository.findByIsoCode(isoCode);
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {
