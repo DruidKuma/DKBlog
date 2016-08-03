@@ -218,3 +218,11 @@ table#categoryTable tr td {
     position: relative;
     z-index: 0;
 }
+
+div#imageGalleryModal div.custom-modal-text .content .container .imageContainer {
+    min-height: 400px;
+}
+
+div#imageGalleryModal div.custom-modal-text .content .container .imageContainer div.thumb.chosen {
+    border: 3px solid #71b6f9;
+}

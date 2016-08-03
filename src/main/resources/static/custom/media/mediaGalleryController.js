@@ -6,6 +6,4 @@ angular.module("blogApp").controller('MediaGalleryController',['$scope', 'Media'
     $scope.$on('$routeChangeSuccess', function () {
         $scope.pageHeading.title = "Media Gallery";
     });
-
-
 }]);
