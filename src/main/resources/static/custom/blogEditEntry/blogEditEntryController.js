@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/21/16.
  */
 angular.module("blogApp")
-    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', 'Upload', function($scope, BlogEntry, $routeParams, $sce, $location, Country, Upload) {
+    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', 'Upload', 'Media', function($scope, BlogEntry, $routeParams, $sce, $location, Country, Upload, Media) {
 
         $scope.loadingGalleryProcess = false;
 
@@ -62,21 +62,9 @@ angular.module("blogApp")
                 overlayOpacity: 1
             });
 
-            $scope.galleryImages = [
-                'dist/images/gallery/1.jpg',
-                'dist/images/gallery/2.jpg',
-                'dist/images/gallery/3.jpg',
-                'dist/images/gallery/4.jpg',
-                'dist/images/gallery/5.jpg',
-                'dist/images/gallery/6.jpg',
-                'dist/images/gallery/7.jpg',
-                'dist/images/gallery/8.jpg',
-                'dist/images/gallery/9.jpg',
-                'dist/images/gallery/10.jpg',
-                'dist/images/gallery/11.jpg',
-                'dist/images/gallery/12.jpg'
-            ];
+            $scope.galleryImages = [];
             $scope.selectedImage = '';
+            $scope.loadGalleryPart();
         };
 
         $scope.chooseImage = function(image) {
@@ -96,10 +84,17 @@ angular.module("blogApp")
 
         $scope.loadGalleryPart = function() {
             $scope.loadingGalleryProcess = true;
+            Media.page({page: $scope.galleryPaging.currentPage-1, numOnPage: $scope.galleryPaging.itemsPerPage}).then(function(response) {
+                $scope.galleryImages = response.data.content;
+                $scope.galleryPaging.totalItems = response.data.totalElements;
+            }).finally(function() {
+                $scope.loadingGalleryProcess = false;
+            });
         };
 
         $scope.uploadImage = function(file, errFiles) {
             if (file) {
+                $scope.loadingGalleryProcess = true;
                 Upload.upload({
                     url: BASE_URL + '/api/blog/image/upload',
                     data: {file: file}
@@ -108,6 +103,8 @@ angular.module("blogApp")
                 }, function (errResponse) {
                     if (errResponse.status > 0)
                         $scope.errorMsg = errResponse.status + ': ' + errResponse.data;
+                }).finally(function() {
+                    $scope.loadGalleryPart();
                 });
             }
         };

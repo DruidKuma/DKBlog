@@ -1,6 +1,6 @@
 package com.druidkuma.blog.service.comment;
 
-import com.druidkuma.blog.dao.CommentRepository;
+import com.druidkuma.blog.dao.comment.CommentRepository;
 import com.druidkuma.blog.domain.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

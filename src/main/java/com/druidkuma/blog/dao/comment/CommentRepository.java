@@ -1,4 +1,4 @@
-package com.druidkuma.blog.dao;
+package com.druidkuma.blog.dao.comment;
 
 import com.druidkuma.blog.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,10 +3,11 @@
  */
 angular.module("blogApp").service('Media', ["$http", function($http) {
     return {
-        all: function() {
+        page: function(params) {
             return $http({
-                url: BASE_URL + "/api/blog/media",
-                method: "get"
+                url: BASE_URL + "/api/blog/image/page",
+                method: "get",
+                params: params
             })
         }
     }

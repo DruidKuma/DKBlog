@@ -1,8 +1,10 @@
 package com.druidkuma.blog.service.image;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -13,5 +15,9 @@ import java.nio.file.Path;
  */
 public interface ImageService {
 
-    Path loadNewImage(MultipartFile file);
+    void loadNewImage(MultipartFile file, String basePath);
+
+    byte[] getImageByFileName(String fileName);
+
+    Page<List<String>> getPageOfImageUrls(PageRequest pageRequest);
 }
