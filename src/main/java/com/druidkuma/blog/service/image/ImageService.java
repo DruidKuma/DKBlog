@@ -1,10 +1,9 @@
 package com.druidkuma.blog.service.image;
 
+import com.druidkuma.blog.domain.image.ImageInfo;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -19,5 +18,7 @@ public interface ImageService {
 
     byte[] getImageByFileName(String fileName);
 
-    Page<List<String>> getPageOfImageUrls(PageRequest pageRequest);
+    Page<ImageInfo> getPageOfImages(Pageable pageRequest);
+
+    byte[] getThumbnailByFileName(String fileName);
 }

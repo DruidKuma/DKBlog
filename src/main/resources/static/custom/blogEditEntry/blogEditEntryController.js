@@ -28,8 +28,6 @@ angular.module("blogApp")
                 BlogEntry.single($routeParams.id).then(function(response) {
                     $scope.postEntry = response.data;
                     $scope.pageHeading.title = "Blog Entry Editor";
-                    //$scope.editEntryModel = $scope.postEntry.content;
-
                 }).finally(function() {
                     $scope.loadingProcess = false;
                 });
@@ -63,7 +61,7 @@ angular.module("blogApp")
             });
 
             $scope.galleryImages = [];
-            $scope.selectedImage = '';
+            $scope.selectedImage = {};
             $scope.loadGalleryPart();
         };
 
@@ -72,7 +70,7 @@ angular.module("blogApp")
         };
 
         $scope.addChosenImage = function() {
-            $scope.postEntry.content += '<img src="'+$scope.selectedImage+'"/>';
+            $scope.postEntry.content += '<img src="'+$scope.selectedImage.fullImgSrc+'"/>';
             $scope.closeImageGallery();
         };
 

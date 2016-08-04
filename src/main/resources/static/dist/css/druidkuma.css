@@ -226,3 +226,13 @@ div#imageGalleryModal div.custom-modal-text .content .container .imageContainer 
 div#imageGalleryModal div.custom-modal-text .content .container .imageContainer div.thumb.chosen {
     border: 3px solid #71b6f9;
 }
+
+div.imageContainer div.thumb {
+    background: #2f3e47 no-repeat center center;
+    background-size: contain;
+    height: 80px;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+}

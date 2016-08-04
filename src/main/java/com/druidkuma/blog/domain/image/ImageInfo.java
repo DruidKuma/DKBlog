@@ -27,8 +27,8 @@ public class ImageInfo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_info_ii_id_seq")
     private Long id;
 
-    @Column(name = "ii_image_path")
-    private String imagePath;
+    @Column(name = "ii_image_file_name")
+    private String imageFileName;
 
     @Column(name = "ii_created_at")
     private Instant createdAt;
