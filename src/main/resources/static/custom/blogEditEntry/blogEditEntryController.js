@@ -2,7 +2,14 @@
  * Created by DruidKuma on 7/21/16.
  */
 angular.module("blogApp")
-    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', 'Upload', 'Media', function($scope, BlogEntry, $routeParams, $sce, $location, Country, Upload, Media) {
+    .controller('BlogEditEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', 'Country', 'Category', 'Upload', 'Media', '$translatePartialLoader', '$translate', function($scope, BlogEntry, $routeParams, $sce, $location, Country, Category, Upload, Media, $translatePartialLoader, $translate) {
+
+        //Page Heading
+        $scope.$on('$routeChangeSuccess', function () {
+            $scope.pageHeading.title = "Blog Entry Editor";
+            $translatePartialLoader.addPart('components.category');
+            $translate.refresh();
+        });
 
         $scope.loadingGalleryProcess = false;
 
@@ -27,20 +34,14 @@ angular.module("blogApp")
                 $scope.loadingProcess = true;
                 BlogEntry.single($routeParams.id).then(function(response) {
                     $scope.postEntry = response.data;
-                    $scope.pageHeading.title = "Blog Entry Editor";
                 }).finally(function() {
                     $scope.loadingProcess = false;
                 });
             }
+            else {
+                $scope.postEntry = {};
+            }
         };
-
-        $scope.chosenCountries = [
-            { name: "America", isoCode: "US" },
-            { name: "Spain", isoCode: "ES" },
-            { name: "Germany", isoCode: "DE" },
-            { name: "Ukraine", isoCode: "UA" }
-        ];
-
 
         $scope.loadCountries = function($query) {
             return Country.flags().then(function(response) {
@@ -49,6 +50,35 @@ angular.module("blogApp")
                     return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
             });
+        };
+
+        $scope.loadCategories = function($query) {
+            return Category.forEntryEdit().then(function(response) {
+                var categories = response.data;
+                return categories.filter(function(category) {
+                    return $scope.isCategoryValidForChoice(category, $query) && category.nameKey.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                });
+            });
+        };
+
+        $scope.isCategoryValidForChoice = function(category) {
+            var isValid = true;
+            angular.forEach($scope.postEntry.countries, function(country) {
+                if (!category.countries.filter(function(e) { return e.isoCode == country.isoCode; }).length > 0) {
+                    isValid = false;
+                }
+            });
+            return isValid;
+        };
+
+        $scope.$watchCollection('postEntry.countries', function(newValue, oldValue) {
+            if(newValue) {
+                $scope.postEntry.categories = $scope.postEntry.categories.filter($scope.isCategoryValidForChoice);
+            }
+        });
+
+        $scope.closeEditPanel = function() {
+            $location.path("/entry/" + $routeParams.id);
         };
 
         $scope.openImageGallery = function() {
@@ -105,6 +135,13 @@ angular.module("blogApp")
                     $scope.loadGalleryPart();
                 });
             }
+        };
+
+        $scope.generatePermalink = function() {
+            BlogEntry.generatePermalink($scope.postEntry.title).then(function(response) {
+                console.log(response);
+                $scope.postEntry.permalink = response.data.permalink;
+            });
         };
 
         $scope.loadBlogPost();

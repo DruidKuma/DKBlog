@@ -9,6 +9,7 @@ import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.web.dto.CategoryDetailedDto;
 import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
+import com.druidkuma.blog.web.transformer.CountryTransformer;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,12 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private CategoryRepository categoryRepository;
+    private CountryTransformer countryTransformer;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CountryTransformer countryTransformer) {
         this.categoryRepository = categoryRepository;
+        this.countryTransformer = countryTransformer;
     }
 
     @Override
@@ -110,11 +113,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private List<CountryFlagRenderDto> getCountryFlagData(Set<Country> countries) {
-        return countries.stream().map(country -> CountryFlagRenderDto.builder()
-                .id(country.getId())
-                .defaultLanguageIso(country.getDefaultLanguage().getIsoCode())
-                .isoCode(country.getIsoAlpha2Code())
-                .name(country.getName())
-                .build()).collect(Collectors.toList());
+        return countries.stream().map(country -> countryTransformer.tranformToDto(country)).collect(Collectors.toList());
     }
 }

@@ -2,13 +2,18 @@ package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
+import com.druidkuma.blog.util.NormalizationUtil;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
+import com.druidkuma.blog.web.transformer.CategoryTransformer;
+import com.druidkuma.blog.web.transformer.CountryTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,10 +28,14 @@ import java.util.stream.Collectors;
 public class BlogEntryResource {
 
     private BlogEntryService blogEntryService;
+    private CountryTransformer countryTransformer;
+    private CategoryTransformer categoryTransformer;
 
     @Autowired
-    public BlogEntryResource(BlogEntryService blogEntryService) {
+    public BlogEntryResource(BlogEntryService blogEntryService, CountryTransformer countryTransformer, CategoryTransformer categoryTransformer) {
         this.blogEntryService = blogEntryService;
+        this.countryTransformer = countryTransformer;
+        this.categoryTransformer = categoryTransformer;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -36,11 +45,14 @@ public class BlogEntryResource {
 
         return BlogDetailedEntryDto.builder()
                 .title(entry.getContent().getTitle())
+                .permalink(entry.getPermalink())
                 .creationDate(entry.getCreationDate())
                 .author(entry.getAuthor())
                 .content(entry.getContent().getContents())
                 .numComments(entry.getNumComments())
                 .isPublished(entry.getIsPublished())
+                .countries(entry.getCountries().stream().map(country -> countryTransformer.tranformToDto(country)).collect(Collectors.toList()))
+                .categories(entry.getCategories().stream().map(category -> categoryTransformer.tranformToDto(category)).collect(Collectors.toList()))
                 .id(entry.getId()).build();
     }
 
@@ -77,6 +89,11 @@ public class BlogEntryResource {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteBlogPost(@PathVariable("id") Long id) {
         blogEntryService.deleteBlogPost(id);
+    }
+
+    @RequestMapping(value = "/permalink", method = RequestMethod.POST)
+    public Map<String, String> generatePermalink(@RequestBody String blogTitle) {
+        return Collections.singletonMap("permalink", NormalizationUtil.normalizeUrlNameKey(blogTitle));
     }
 
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {

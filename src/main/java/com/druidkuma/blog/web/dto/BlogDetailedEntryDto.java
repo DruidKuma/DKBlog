@@ -20,10 +20,12 @@ import java.util.List;
 public class BlogDetailedEntryDto {
     private Long id;
     private String title;
+    private String permalink;
     private String author;
     private Instant creationDate;
     private String content;
     private Long numComments;
     private Boolean isPublished;
-    private List<BlogCommentDto> comments;
+    private List<CountryFlagRenderDto> countries;
+    private List<CategoryDto> categories;
 }

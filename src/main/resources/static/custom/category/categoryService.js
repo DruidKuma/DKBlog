@@ -9,6 +9,12 @@ angular.module("blogApp").service('Category', ["$http", function($http) {
                 method: "get"
             })
         },
+        forEntryEdit: function() {
+            return $http({
+                url: BASE_URL + "/api/blog/category/entry/edit",
+                method: "get"
+            })
+        },
         one: function(params) {
             return $http({
                 url: BASE_URL + "/api/blog/category/" + params,

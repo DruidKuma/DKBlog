@@ -2,6 +2,8 @@ package com.druidkuma.blog.domain;
 
 import com.druidkuma.blog.domain.country.Country;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -59,13 +61,18 @@ public class BlogEntry {
     private Long numComments;
 
     @ManyToMany
+    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "blog_entry_2_country",
             joinColumns = @JoinColumn(name = "be2c_blog_entry_id"),
             inverseJoinColumns = @JoinColumn(name = "be2c_country_id"))
     private List<Country> countries;
 
+    @ManyToMany
+    @JoinTable(name = "blog_entry_2_category",
+            joinColumns = @JoinColumn(name = "be2c_blog_entry_id"),
+            inverseJoinColumns = @JoinColumn(name = "be2c_category_id"))
+    private List<Category> categories;
+
     @Transient
     private Set<Tag> tags;
-    @Transient
-    private Set<Category> categories;
 }

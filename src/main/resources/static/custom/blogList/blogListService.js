@@ -30,6 +30,13 @@ angular.module("blogApp").service('BlogEntry', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/entry/" + params,
                 method: 'delete'
             })
+        },
+        generatePermalink: function(blogTitle) {
+            return $http({
+                url: BASE_URL + "/api/blog/entry/permalink",
+                method: "post",
+                data: blogTitle
+            })
         }
     }
 }]);

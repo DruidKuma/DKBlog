@@ -14,7 +14,23 @@
                             <a href="#"> <img class="media-object img-circle" alt="64x64" src="/dist/images/users/avatar-2.jpg" style="width: 48px; height: 48px;"> </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading m-b-0">{{postEntry.author}}</h4>
+                            <div class="col-md-1">
+                                <h4 class="media-heading m-b-0">{{postEntry.author}}</h4>
+                            </div>
+                            <div class="col-md-11">
+                                <button title="Post entry is published. Click to unpublish"
+                                        class="btn btn-circle btn-lg btn-success pull-right"
+                                        ng-show="postEntry.isPublished"
+                                        ng-click="postEntry.isPublished = !postEntry.isPublished">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <button title="Post entry is unpublished. Click to publish"
+                                        class="btn btn-circle btn-lg btn-danger pull-right"
+                                        ng-show="!postEntry.isPublished"
+                                        ng-click="postEntry.isPublished = !postEntry.isPublished">
+                                    <i class="fa fa-stop"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -22,17 +38,21 @@
                         <div class="col-sm-12">
                             <div class="card-box">
                                 <form class="form-horizontal" method="post">
+
                                     <div class="form-group">
                                         <label class="col-md-1 control-label">Blog Entry Title</label>
                                         <div class="col-md-11">
-                                            <input type="text" class="form-control" value="{{postEntry.title ? postEntry.title : 'Enter title...'}}">
+                                            <input type="text" class="form-control" ng-model="postEntry.title" placeholder="Enter title...">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-1 control-label">Permalink</label>
-                                        <div class="col-md-11">
-                                            <input type="text" class="form-control" value="Enter permalink (optional)...">
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" ng-model="postEntry.permalink" placeholder="Enter permalink...">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info center-block" ng-disabled="postEntry.permalink || !postEntry.title" ng-click="generatePermalink()">Generate Permalink</button>
                                         </div>
                                     </div>
 
@@ -47,17 +67,41 @@
                                     <div class="form-group">
                                         <label class="col-md-1 control-label">Countries</label>
                                         <div class="col-md-11">
-                                            <tags-input ng-model="chosenCountries"
+                                            <tags-input ng-model="postEntry.countries"
                                                         display-property="name"
                                                         placeholder="Add a country"
                                                         replace-spaces-with-dashes="false"
-                                                        template="tag-template">
+                                                        template="tag-country-template">
                                                 <auto-complete source="loadCountries($query)"
                                                                min-length="0"
                                                                load-on-focus="true"
                                                                load-on-empty="true"
                                                                max-results-to-show="32"
-                                                               template="autocomplete-template"></auto-complete>
+                                                               template="autocomplete-country-template"></auto-complete>
+                                            </tags-input>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-1 control-label">
+                                            <i class="fa fa-question-circle text-warning"
+                                               tooltip-placement="right-top"
+                                               tooltip-class="customTooltip"
+                                               uib-tooltip="Categories depend on chosen countries. You can choose only those categories that are available in ALL chosen countries. To edit category countries, please forward to category section."></i>
+                                            &nbsp;Categories
+                                        </label>
+                                        <div class="col-md-11">
+                                            <tags-input ng-model="postEntry.categories"
+                                                        display-property="nameKey"
+                                                        placeholder="Add a category"
+                                                        replace-spaces-with-dashes="false"
+                                                        template="tag-category-template">
+                                                <auto-complete source="loadCategories($query)"
+                                                               min-length="0"
+                                                               load-on-focus="true"
+                                                               load-on-empty="true"
+                                                               max-results-to-show="32"
+                                                               template="autocomplete-category-template"></auto-complete>
                                             </tags-input>
                                         </div>
                                     </div>
@@ -70,7 +114,7 @@
                         <div class="col-sm-12">
                             <div class="text-right m-t-30">
                                 <button type="submit" class="btn btn-success waves-effect waves-light">Save</button>
-                                <button type="button" class="btn btn-default waves-effect">Cancel</button>
+                                <button type="button" class="btn btn-default waves-effect" ng-click="closeEditPanel()">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -86,7 +130,7 @@
 
 </div> <!-- content -->
 
-<script type="text/ng-template" id="tag-template">
+<script type="text/ng-template" id="tag-country-template">
     <div class="tag-template">
         <div class="left-panel">
             <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
@@ -98,13 +142,30 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="autocomplete-template">
+<script type="text/ng-template" id="autocomplete-country-template">
     <div class="autocomplete-template">
         <div class="left-panel">
             <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
         </div>
         <div class="right-panel">
             <span ng-bind-html="$highlight($getDisplayText())"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="tag-category-template">
+    <div class="tag-template">
+        <div class="right-panel">
+            <span>{{$getDisplayText() | translate}}</span>
+            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-category-template">
+    <div class="autocomplete-template">
+        <div class="right-panel">
+            <span ng-bind-html="$highlight($getDisplayText() | translate)"></span>
         </div>
     </div>
 </script>
@@ -137,7 +198,7 @@
 
                 <div class="row port m-b-20 imageContainer">
                     <div class="col-sm-6 col-lg-3 col-md-4" ng-repeat="image in galleryImages">
-                        <div style="background: #2f3e47; margin-top: 20px; padding: 10px; border-radius: 3px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);">
+                        <div class="imageGalleryItem">
                             <div class="thumb" ng-class="{'chosen' : image == selectedImage}" ng-click="chooseImage(image)" ng-style="{backgroundImage: 'url('+ image.thumbImgSrc +')'}">
                             </div>
                         </div>

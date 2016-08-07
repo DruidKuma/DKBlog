@@ -655,6 +655,9 @@ div.mce-edit-area {
   background-color: rgba(255, 255, 255, 0.2) !important;
   border: none !important;
 }
+.mce-container.mce-panel .mce-widget.mce-last.mce-btn-has-text button {
+  background-color: grey;
+}
 .mce-container .mce-statusbar .mce-path .mce-path-item {
   color: #ffffff;
   font-size: 14px;
@@ -665,6 +668,9 @@ div.mce-edit-area {
   font-size: 14px;
   font-weight: 400;
   border-left: 1px solid transparent;
+}
+.mce-container .mce-widget.mce-wordcount {
+  color: #ffffff;
 }
 .mce-container .mce-btn-group {
   border: none;
@@ -748,6 +754,23 @@ div.mce-edit-area {
 .mce-container.mce-menu .mce-menu-item-sep {
   background-color: #d7dce5;
 }
+
+.mce-container.mce-toolbar.mce-abs-layout-item.mce-first.mce-last {
+  background-color: white;
+}
+
+.mce-container.mce-toolbar.mce-abs-layout-item.mce-first.mce-last button {
+  color: black;
+}
+
+.mce-container.mce-toolbar.mce-abs-layout-item.mce-first.mce-last button i {
+  color: black;
+}
+
+.mce-widget.mce-btn.mce-imagetool.mce-abs-layout-item button {
+  background-color: grey;
+}
+
 .mce-container.mce-menu .mce-menu-item-sep:hover {
   background-color: #d7dce5;
 }

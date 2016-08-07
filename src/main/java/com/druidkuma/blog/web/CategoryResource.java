@@ -10,6 +10,7 @@ import com.druidkuma.blog.web.dto.CategoryDetailedDto;
 import com.druidkuma.blog.web.dto.CategoryDto;
 import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
+import com.druidkuma.blog.web.transformer.CategoryTransformer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,25 +35,29 @@ public class CategoryResource {
     private CategoryService categoryService;
     private CountryService countryService;
     private TranslationService translationService;
+    private CategoryTransformer categoryTransformer;
 
     @Autowired
-    public CategoryResource(CategoryService categoryService, CountryService countryService, TranslationService translationService) {
+    public CategoryResource(CategoryService categoryService, CountryService countryService, TranslationService translationService, CategoryTransformer categoryTransformer) {
         this.categoryService = categoryService;
         this.countryService = countryService;
         this.translationService = translationService;
+        this.categoryTransformer = categoryTransformer;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CategoryDto> getCategoriesForCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
         return categoryService.getAvailableCategoriesForCountry(countryService.getCountryByIsoCode(currentCountryIso))
                 .stream()
-                .map(category -> CategoryDto.builder()
-                        .id(category.getId())
-                        .nameKey(category.getNameKey())
-                        .hexColor(category.getHexColor())
-                        .lastModified(category.getLastModified())
-                        .numPosts(category.getBlogEntries().size())
-                        .build())
+                .map(category -> categoryTransformer.tranformToDto(category))
+                .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/entry/edit", method = RequestMethod.GET)
+    public List<CategoryDto> getCategoryListForBlogEntryEdit(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return categoryService.getAvailableCategoriesForCountry(countryService.getCountryByIsoCode(currentCountryIso))
+                .stream()
+                .map(category -> categoryTransformer.tranformToBlogEditDto(category))
                 .collect(Collectors.toList());
     }
 

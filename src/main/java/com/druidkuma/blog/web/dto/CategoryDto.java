@@ -3,6 +3,7 @@ package com.druidkuma.blog.web.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -22,4 +23,5 @@ public class CategoryDto {
     private String hexColor;
     private Integer numPosts;
     private Instant lastModified;
+    private List<CountryFlagRenderDto> countries;
 }
