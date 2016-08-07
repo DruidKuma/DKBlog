@@ -1,0 +1,153 @@
+<div class="content" style="position: relative">
+    <div class="dk-loading" ng-show="loadingProcess">
+        <div class="dk-loading-animation"></div>
+    </div>
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="card-box">
+
+                <h4 class="header-title m-t-0 m-b-30">Categories</h4>
+
+                <p class="text-muted font-13 m-b-15">
+                    Be careful editing categories as any changes would influence all blog posts containing in edited category.
+                </p>
+
+                <div class="alert alert-success alert-dismissable" ng-show="isDeleteRequested">
+                    <button type="button" class="close" aria-hidden="true" ng-click="dismissCategoryDeletion()">×</button>
+                    Do you want to remove this category only for this country, or for all countries?
+                    <button type="button" class="btn btn-success waves-effect waves-light m-t-0" ng-click="deleteCountryFromCategory(categoryToDelete)">
+                        <i class="fa fa-globe"></i> Only for current country
+                    </button>
+                    <button type="button" class="btn btn-danger waves-effect m-t-0" ng-click="deleteCategory(categoryToDelete)">
+                        <i class="fa fa-trash"></i> Remove completely
+                    </button>
+                </div>
+
+
+                <table class="table m-b-15" id="categoryTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Category Name</th>
+                        <th>Number of Posts</th>
+                        <th>Last Modified</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="category in categories" ng-style="{'background-color': category.hexColor}">
+                        <th scope="row">{{category.id}}</th>
+                        <td>{{category.nameKey | translate}}</td>
+                        <td>{{category.numPosts}}</td>
+                        <td>{{category.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                        <td class="actions">
+                            <a href class="text-success" ng-click="openEditModal(category)"><i class="fa fa-pencil"></i></a>
+                            <a href class="text-danger" ng-click="showDeleteAlert(category)"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+    </div>
+</div>
+
+<script type="text/ng-template" id="editCategoryModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{category.nameKey ? (category.nameKey | translate) : 'New Category'}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="col-lg-12">
+                <form class="form-horizontal" novalidate name="categoryForm">
+                    <div class="form-group">
+                        <label class="col-md-2">Display color</label>
+                        <div class="col-md-10">
+                            <color-picker options="colorPickerOptions" ng-model="category.hexColor"></color-picker>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2">
+                            Name Key
+                        </label>
+                        <div class="col-md-10">
+                            <input name="nameKey" class="form-control" type="text" ng-model="category.nameKey" ng-disabled="category.nameKey" ng-if="category.nameKey" name="{{category.nameKey}}" required>
+                            <input name="nameKey" class="form-control" type="text" ng-model="newCategoryNameKey.value" ng-if="!category.nameKey" name="{{category.nameKey}}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2">
+                            Countries
+                        </label>
+                        <div class="col-md-10">
+                            <tags-input ng-model="category.countries"
+                                        display-property="name"
+                                        placeholder="Add a country"
+                                        replace-spaces-with-dashes="false"
+                                        template="tag-template">
+                                <auto-complete source="loadCountries($query)"
+                                               min-length="0"
+                                               load-on-focus="true"
+                                               load-on-empty="true"
+                                               max-results-to-show="32"
+                                               template="autocomplete-template"></auto-complete>
+                            </tags-input>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h4 class="modal-title m-b-15">Translations</h4>
+                    <div class="form-group" ng-repeat="translation in category.translations">
+                        <label class="col-md-2">
+                            {{translation.display}}
+                        </label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="translation.value" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <div ng-if="categoryForm.$invalid" class="layer-mask m-r-5" tooltip-placement="left" uib-tooltip="Please, fill in name key, choose at least one country and fill all translations">
+            <div class="layer"></div>
+            <button class="btn btn-primary" type="button" disabled>Save</button>
+        </div>
+
+        <button class="btn btn-primary" type="button" ng-click="saveCategory()" ng-if="!categoryForm.$invalid">Save</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="tag-template">
+    <div class="tag-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span>{{$getDisplayText()}}</span>
+            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+    <div class="autocomplete-template">
+        <div class="left-panel">
+            <i class="flag-icon flag-icon-{{data.isoCode | lowercase}}" ng-if="data.isoCode"></i>
+        </div>
+        <div class="right-panel">
+            <span ng-bind-html="$highlight($getDisplayText())"></span>
+        </div>
+    </div>
+</script>

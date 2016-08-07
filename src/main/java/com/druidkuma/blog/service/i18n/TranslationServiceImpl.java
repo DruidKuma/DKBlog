@@ -1,10 +1,14 @@
 package com.druidkuma.blog.service.i18n;
 
+import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
 import com.druidkuma.blog.dao.i18n.TranslationRepository;
+import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -22,17 +26,24 @@ public class TranslationServiceImpl implements TranslationService {
 
     private TranslationGroupRepository translationGroupRepository;
     private TranslationRepository translationRepository;
+    private LanguageRepository languageRepository;
 
     @Autowired
-    public TranslationServiceImpl(TranslationGroupRepository translationGroupRepository, TranslationRepository translationRepository) {
+    public TranslationServiceImpl(TranslationGroupRepository translationGroupRepository, TranslationRepository translationRepository, LanguageRepository languageRepository) {
         this.translationGroupRepository = translationGroupRepository;
         this.translationRepository = translationRepository;
+        this.languageRepository = languageRepository;
     }
 
     @Override
     public Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode) {
+        return getTranslationsForGroup(groupNameKey, languageIsoCode, true);
+    }
+
+    @Override
+    public Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode, Boolean strictResolve) {
         TranslationGroup group = resolveTranslationGroup(groupNameKey);
-        Assert.notNull(group);
+        if(strictResolve) Assert.notNull(group);
         return transformIntoTranslations(group, languageIsoCode);
     }
 
@@ -55,6 +66,21 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     public List<TranslationGroup> getTopLevelTranslationGroups() {
         return translationGroupRepository.findAllByParentIsNull();
+    }
+
+    @Override
+    public TranslationDto getForKeyAndLanguageIso(String key, String langIso) {
+        Map<String, Object> translationsForGroup = getTranslationsForGroup(StringUtils.substringBeforeLast(key, "."), langIso, false);
+        String translation = (String) translationsForGroup.get(StringUtils.substringAfterLast(key, "."));
+        return TranslationDto.builder()
+                .display(languageRepository.findByIsoCode(langIso).getName())
+                .lang(langIso)
+                .value(translation).build();
+    }
+
+    @Override
+    public Language getLanguageByIsoCode(String isoCode) {
+        return languageRepository.findByIsoCode(isoCode);
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {

@@ -192,3 +192,37 @@ img.post-list-caption {
 div.post-list-caption-holder {
     height: 11.7em;
 }
+
+td.actions a i {
+    font-size: 20px;
+    padding: 2px;
+}
+
+table#categoryTable tr td {
+    vertical-align: middle;
+}
+
+.layer-mask {
+    position: relative;
+    display: inline-block;
+}
+.layer {
+    position: absolute;
+    top: 0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index: 1;
+}
+.layer-mask button[disabled] {
+    position: relative;
+    z-index: 0;
+}
+
+div#imageGalleryModal div.custom-modal-text .content .container .imageContainer {
+    min-height: 400px;
+}
+
+div#imageGalleryModal div.custom-modal-text .content .container .imageContainer div.thumb.chosen {
+    border: 3px solid #71b6f9;
+}

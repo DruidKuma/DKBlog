@@ -661,7 +661,7 @@ div.mce-edit-area {
   font-weight: 400;
 }
 .mce-container .mce-widget {
-  color: #ffffff;
+  /*color: #ffffff;*/
   font-size: 14px;
   font-weight: 400;
   border-left: 1px solid transparent;

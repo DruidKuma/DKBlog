@@ -3,6 +3,7 @@ package com.druidkuma.blog.web;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.TranslatePanelDto;
+import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,11 @@ public class TranslateResource {
     @RequestMapping(value = "/translate/{part}/{lang}", method = RequestMethod.GET)
     public Map<String, Object> getPartialInterfaceTranslations(@PathVariable("part") String part, @PathVariable("lang") String lang) {
         return translationService.getTranslationsForGroup(part, lang);
+    }
+
+    @RequestMapping(value = "/get/{key}/{lang}", method = RequestMethod.GET)
+    public TranslationDto getTranslationForKeyAndLanguage(@PathVariable("key") String key, @PathVariable("lang") String langIso) {
+        return translationService.getForKeyAndLanguageIso(key, langIso);
     }
 
     @RequestMapping(value = "/panel/{langFrom}/{langTo}/{groupKey}")

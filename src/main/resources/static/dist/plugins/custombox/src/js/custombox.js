@@ -143,9 +143,11 @@
             switch ( item ) {
                 case 'container':
                     this.main = document.createElement('div');
-                    while ( document.body.firstChild ) {
-                        this.main.appendChild(document.body.firstChild);
-                    }
+
+                    //while ( document.body.firstChild ) {
+                    //    this.main.appendChild(document.body.firstChild);
+                    //}
+
                     document.body.appendChild(this.main);
                     break;
                 case 'overlay':

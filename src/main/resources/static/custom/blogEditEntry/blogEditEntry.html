@@ -39,7 +39,8 @@
                                     <div class="form-group">
                                         <label class="col-md-1 control-label">Contents</label>
                                         <div class="col-md-11">
-                                            <textarea ui-tinymce ng-model="editEntryModel"></textarea>
+                                            <button class="btn btn-info btn-xs pull-right waves-effect waves-light" ng-click="openImageGallery()"><i class="fa fa-image"></i></button>
+                                            <textarea ui-tinymce="tinyMceOptions" ng-model="postEntry.content"></textarea>
                                         </div>
                                     </div>
 
@@ -107,3 +108,57 @@
         </div>
     </div>
 </script>
+
+
+<div id="imageGalleryModal" class="modal-demo">
+    <button type="button" class="close" ng-click="closeImageGallery()">
+        <span>×</span><span class="sr-only">Close</span>
+    </button>
+    <h4 class="custom-modal-title">Image Gallery</h4>
+    <div class="custom-modal-text">
+        <div class="content" style="position: relative">
+
+            <div class="dk-loading" ng-show="loadingGalleryProcess">
+                <div class="dk-loading-animation"></div>
+            </div>
+
+            <div class="container">
+
+                <uib-pagination
+                        total-items="galleryPaging.totalItems"
+                        items-per-page="galleryPaging.itemsPerPage"
+                        ng-model="galleryPaging.currentPage"
+                        max-size="galleryPaging.maxSize"
+                        class="pagination-sm"
+                        boundary-link-numbers="true"
+                        rotate="false"
+                        ng-click="loadGalleryPart()">
+                </uib-pagination>
+
+                <div class="row port m-b-20 imageContainer">
+                    <div id="isotopeContainer" class="portfolioContainer" isotope-container>
+                        <div class="col-sm-6 col-lg-3 col-md-4" ng-repeat="image in galleryImages" isotope-item>
+                            <div class="thumb" ng-class="{'chosen' : image == selectedImage}" ng-click="chooseImage(image)">
+                                <img ng-src="{{image}}" class="thumb-img" alt="work-thumbnail">
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End row -->
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="pull-right">
+                            <button type="file" ngf-select="uploadImage($file, $invalidFiles)" accept="image/*" ngf-max-size="2MB" class="btn btn-xs btn-success waves-effect waves-light">Upload</button>
+                            <button class="btn btn-xs btn-info waves-effect waves-light" ng-click="addChosenImage()" ng-disabled="!selectedImage">OK</button>
+                            <button class="btn btn-xs btn-danger waves-effect waves-light" ng-click="closeImageGallery()">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+    </div>
+</div>

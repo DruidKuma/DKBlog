@@ -1,5 +1,6 @@
 package com.druidkuma.blog.domain.i18n;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -19,6 +20,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "translation_groups")
+@JsonIgnoreProperties(value = "childGroups")
 public class TranslationGroup {
 
     @Id
