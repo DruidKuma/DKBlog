@@ -18,13 +18,15 @@
                                 <h4 class="media-heading m-b-0">{{postEntry.author}}</h4>
                             </div>
                             <div class="col-md-11">
-                                <button title="Post entry is published. Click to unpublish"
+                                <button type="button"
+                                        title="Post entry is published. Click to unpublish"
                                         class="btn btn-circle btn-lg btn-success pull-right"
                                         ng-show="postEntry.isPublished"
                                         ng-click="postEntry.isPublished = !postEntry.isPublished">
                                     <i class="fa fa-check"></i>
                                 </button>
-                                <button title="Post entry is unpublished. Click to publish"
+                                <button type="button"
+                                        title="Post entry is unpublished. Click to publish"
                                         class="btn btn-circle btn-lg btn-danger pull-right"
                                         ng-show="!postEntry.isPublished"
                                         ng-click="postEntry.isPublished = !postEntry.isPublished">
@@ -37,26 +39,26 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box">
-                                <form class="form-horizontal" method="post" novalidate="novalidate" ng-submit="saveBlogEntry()">
+                                <form class="form-horizontal">
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.title}" ng-click="removeAttribute('title')">
                                         <label class="col-md-1 control-label">Blog Entry Title</label>
                                         <div class="col-md-11">
-                                            <input type="text" class="form-control" ng-model="postEntry.title" placeholder="Enter title...">
+                                            <input type="text" class="form-control" ng-model="postEntry.title" placeholder="Enter title..." >
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.permalink}" ng-click="removeAttribute('permalink')">
                                         <label class="col-md-1 control-label">Permalink</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" ng-model="postEntry.permalink" placeholder="Enter permalink...">
+                                            <input name="permalink" type="text" class="form-control" ng-model="postEntry.permalink" placeholder="Enter permalink..." >
                                         </div>
                                         <div class="col-md-2">
-                                            <button class="btn btn-info center-block" ng-disabled="postEntry.permalink || !postEntry.title" ng-click="generatePermalink()">Generate Permalink</button>
+                                            <button type="button" class="btn btn-info center-block" ng-disabled="postEntry.permalink || !postEntry.title" ng-click="generatePermalink()">Generate Permalink</button>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.caption}" ng-click="removeAttribute('caption')">
                                         <label class="col-md-1 control-label">Caption Image</label>
                                         <div class="col-md-11">
                                             <div class="captionHolder">
@@ -64,22 +66,22 @@
                                                     <img class="img-thumbnail caption-image" ng-src="{{postEntry.captionSrc}}" fallback-src>
                                                 </div>
                                                 <div class="col-md-2 btn-group">
-                                                    <button class="btn btn-info center-block waves-effect waves-light" ng-click="openImageGallery(true)"><i class="fa fa-image"></i></button>
-                                                    <button class="btn btn-danger center-block waves-effect waves-light" ng-click="deleteCaption()" ng-show="postEntry.captionSrc"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-info center-block waves-effect waves-light" ng-click="openImageGallery(true)"><i class="fa fa-image"></i></button>
+                                                    <button type="button" class="btn btn-danger center-block waves-effect waves-light" ng-click="deleteCaption()" ng-show="postEntry.captionSrc"><i class="fa fa-trash"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.content}" ng-click="removeAttribute('content')">
                                         <label class="col-md-1 control-label">Contents</label>
                                         <div class="col-md-11">
-                                            <button class="btn btn-info btn-xs pull-right waves-effect waves-light" ng-click="openImageGallery()"><i class="fa fa-image"></i></button>
+                                            <button type="button" class="btn btn-info btn-xs pull-right waves-effect waves-light" ng-click="openImageGallery()"><i class="fa fa-image"></i></button>
                                             <textarea ui-tinymce="tinyMceOptions" ng-model="postEntry.content"></textarea>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.countries}" ng-click="removeAttribute('countries')">
                                         <label class="col-md-1 control-label">Countries</label>
                                         <div class="col-md-11">
                                             <tags-input ng-model="postEntry.countries"
@@ -97,7 +99,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" ng-class="{'blog-entry-form-error' : postEntryFormError.categories}" ng-click="removeAttribute('categories')">
                                         <label class="col-md-1 control-label">
                                             <i class="fa fa-question-circle text-warning"
                                                tooltip-placement="right-top"
@@ -121,15 +123,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-12 pull-right m-t-15">
-                                        <div class="text-right">
-                                            <button type="submit" class="btn btn-success waves-effect waves-light">Save</button>
-                                            <button type="button" class="btn btn-default waves-effect" ng-click="closeEditPanel()">Cancel</button>
-                                        </div>
-                                    </div>
+
                                 </form>
                             </div>
                         </div><!-- end col -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 pull-right">
+                            <div class="text-right">
+                                <button type="button" class="btn btn-success waves-effect waves-light" ng-click="saveBlogEntry()">Save</button>
+                                <button type="button" class="btn btn-default waves-effect" ng-click="closeEditPanel()">Cancel</button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -222,8 +228,8 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="pull-right">
                             <button type="file" ngf-select="uploadImage($file, $invalidFiles)" accept="image/*" ngf-max-size="2MB" class="btn btn-xs btn-success waves-effect waves-light">Upload</button>
-                            <button class="btn btn-xs btn-info waves-effect waves-light" ng-click="addChosenImage()" ng-disabled="!selectedImage">OK</button>
-                            <button class="btn btn-xs btn-danger waves-effect waves-light" ng-click="closeImageGallery()">Cancel</button>
+                            <button type="button" class="btn btn-xs btn-info waves-effect waves-light" ng-click="addChosenImage()" ng-disabled="!selectedImage">OK</button>
+                            <button type="button" class="btn btn-xs btn-danger waves-effect waves-light" ng-click="closeImageGallery()">Cancel</button>
                         </div>
 
                     </div>

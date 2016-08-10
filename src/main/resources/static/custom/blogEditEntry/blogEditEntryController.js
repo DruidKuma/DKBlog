@@ -155,5 +155,37 @@ angular.module("blogApp")
             });
         };
 
+        $scope.saveBlogEntry = function() {
+            if($scope.validateBlogEntryForm()) {
+
+            }
+        };
+
+        $scope.postEntryFormError = {};
+        $scope.validateBlogEntryForm = function() {
+            if(!$scope.postEntry.permalink) {
+                $scope.postEntryFormError.permalink = {error: true}
+            }
+            if(!$scope.postEntry.title) {
+                $scope.postEntryFormError.title = {error: true}
+            }
+            if(!$scope.postEntry.captionSrc) {
+                $scope.postEntryFormError.caption = {error: true}
+            }
+            if(!$scope.postEntry.content) {
+                $scope.postEntryFormError.content = {error: true}
+            }
+            if(!$scope.postEntry.countries || $scope.postEntry.countries.length < 1) {
+                $scope.postEntryFormError.countries = {error: true}
+            }
+            if(!$scope.postEntry.categories || $scope.postEntry.categories.length < 1) {
+                $scope.postEntryFormError.categories = {error: true}
+            }
+        };
+
+        $scope.removeAttribute = function(attribute) {
+            delete $scope.postEntryFormError[attribute];
+        };
+
         $scope.loadBlogPost();
     }]);
