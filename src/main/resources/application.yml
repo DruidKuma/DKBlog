@@ -13,6 +13,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/druidkuma-blog
     username: postgres
     password: postgres
-
 server:
   port: 8081
