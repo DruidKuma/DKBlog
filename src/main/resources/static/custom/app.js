@@ -19,6 +19,11 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         controller: 'BlogEntryController'
     }).
 
+    when('/entry/edit/new', {
+        templateUrl: '/custom/blogEditEntry/blogEditEntry.html',
+        controller: 'BlogEditEntryController'
+    }).
+
     when('/entry/edit/:id', {
         templateUrl: '/custom/blogEditEntry/blogEditEntry.html',
         controller: 'BlogEditEntryController'
@@ -42,7 +47,6 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
     otherwise({
         redirectTo: '/'
     });
-
 
     $translateProvider.useLoader('$translatePartialLoader', {
         urlTemplate: '/api/blog/i18n/translate/{part}/{lang}'

@@ -29,8 +29,12 @@ angular.module("blogApp")
             maxSize: 5
         };
 
+        $scope.deleteCaption = function() {
+            delete $scope.postEntry.captionSrc;
+        };
+
         $scope.loadBlogPost = function() {
-            if($routeParams.id) {
+            if($routeParams.id && $routeParams.id != 'new') {
                 $scope.loadingProcess = true;
                 BlogEntry.single($routeParams.id).then(function(response) {
                     $scope.postEntry = response.data;
@@ -81,7 +85,7 @@ angular.module("blogApp")
             $location.path("/entry/" + $routeParams.id);
         };
 
-        $scope.openImageGallery = function() {
+        $scope.openImageGallery = function(isCaption) {
             Custombox.open({
                 target: "#imageGalleryModal",
                 effect: "push",
@@ -92,6 +96,7 @@ angular.module("blogApp")
 
             $scope.galleryImages = [];
             $scope.selectedImage = {};
+            $scope.isForCaption = isCaption;
             $scope.loadGalleryPart();
         };
 
@@ -100,13 +105,19 @@ angular.module("blogApp")
         };
 
         $scope.addChosenImage = function() {
-            $scope.postEntry.content += '<img src="'+$scope.selectedImage.fullImgSrc+'"/>';
+            if($scope.isForCaption) {
+                $scope.postEntry.captionSrc = $scope.selectedImage.fullImgSrc;
+            }
+            else {
+                $scope.postEntry.content += '<img src="'+$scope.selectedImage.fullImgSrc+'"/>';
+            }
             $scope.closeImageGallery();
         };
 
         $scope.closeImageGallery = function() {
             delete $scope.selectedImage;
             delete $scope.galleryImages;
+            delete $scope.isForCaption;
             Custombox.close();
         };
 

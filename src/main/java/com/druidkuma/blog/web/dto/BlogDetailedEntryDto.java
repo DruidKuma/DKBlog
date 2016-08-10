@@ -21,6 +21,7 @@ public class BlogDetailedEntryDto {
     private Long id;
     private String title;
     private String permalink;
+    private String captionSrc;
     private String author;
     private Instant creationDate;
     private String content;

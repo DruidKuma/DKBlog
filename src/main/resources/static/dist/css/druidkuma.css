@@ -274,3 +274,7 @@ div.imageContainer div.thumb {
 .customTooltip {
     min-width: 200px;
 }
+
+img.caption-image {
+    height: 320px;
+}

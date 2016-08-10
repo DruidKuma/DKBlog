@@ -46,6 +46,7 @@ public class BlogEntryResource {
         return BlogDetailedEntryDto.builder()
                 .title(entry.getContent().getTitle())
                 .permalink(entry.getPermalink())
+                .captionSrc(entry.getContent().getImageUrl())
                 .creationDate(entry.getCreationDate())
                 .author(entry.getAuthor())
                 .content(entry.getContent().getContents())
