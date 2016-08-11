@@ -66,10 +66,12 @@
 
                     <div class="m-b-20 font-13">
 
-                        <div class="dropdown category-list-dropdown" uib-dropdown>
+                        <div class="dropdown category-list-dropdown" uib-dropdown is-open="status.isOpen">
                             <a href class="dropdown-toggle card-drop" aria-expanded="false" uib-dropdown-toggle>
                                 <span class="text-uppercase text-success">
-                                    Categories <i class="ti-angle-right"></i>
+                                    Categories
+                                    <i class="ti-angle-down" ng-show="status.isOpen"></i>
+                                    <i class="ti-angle-right" ng-show="!status.isOpen"></i>
                                 </span>
                             </a>
                             <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
