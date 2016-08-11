@@ -1,6 +1,7 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.exception.PermalinkExistsException;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.util.NormalizationUtil;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
@@ -95,6 +96,13 @@ public class BlogEntryResource {
     @RequestMapping(value = "/permalink", method = RequestMethod.POST)
     public Map<String, String> generatePermalink(@RequestBody String blogTitle) {
         return Collections.singletonMap("permalink", NormalizationUtil.normalizeUrlNameKey(blogTitle));
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public BlogDetailedEntryDto saveBlogEntry(@RequestBody BlogDetailedEntryDto blogEntryDto) {
+        //TODO
+        if(true) throw new PermalinkExistsException();
+        return blogEntryDto;
     }
 
     private Pageable buildPageRequest(BlogPostFilter blogPostFilter) {

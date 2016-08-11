@@ -150,37 +150,54 @@ angular.module("blogApp")
 
         $scope.generatePermalink = function() {
             BlogEntry.generatePermalink($scope.postEntry.title).then(function(response) {
-                console.log(response);
                 $scope.postEntry.permalink = response.data.permalink;
             });
         };
 
         $scope.saveBlogEntry = function() {
             if($scope.validateBlogEntryForm()) {
-
+                BlogEntry.savePost($scope.postEntry).then(function(response) {
+                    $location.path('/entry/' + response.data.id);
+                }, function(error, status) {
+                    if(error.data.status == 409) {
+                        $scope.postEntryFormError.permalink = {
+                            error: true,
+                            message: 'Blog Entry with such permalink already exists'
+                        };
+                    }
+                });
             }
         };
 
         $scope.postEntryFormError = {};
         $scope.validateBlogEntryForm = function() {
+            var isValid = true;
             if(!$scope.postEntry.permalink) {
-                $scope.postEntryFormError.permalink = {error: true}
+                $scope.postEntryFormError.permalink = {error: true};
+                isValid = false;
             }
             if(!$scope.postEntry.title) {
-                $scope.postEntryFormError.title = {error: true}
+                $scope.postEntryFormError.title = {error: true};
+                isValid = false;
             }
             if(!$scope.postEntry.captionSrc) {
-                $scope.postEntryFormError.caption = {error: true}
+                $scope.postEntryFormError.caption = {error: true};
+                isValid = false;
             }
             if(!$scope.postEntry.content) {
-                $scope.postEntryFormError.content = {error: true}
+                $scope.postEntryFormError.content = {error: true};
+                isValid = false;
             }
             if(!$scope.postEntry.countries || $scope.postEntry.countries.length < 1) {
-                $scope.postEntryFormError.countries = {error: true}
+                $scope.postEntryFormError.countries = {error: true};
+                isValid = false;
             }
             if(!$scope.postEntry.categories || $scope.postEntry.categories.length < 1) {
-                $scope.postEntryFormError.categories = {error: true}
+                $scope.postEntryFormError.categories = {error: true};
+                isValid = false;
             }
+
+            return isValid;
         };
 
         $scope.removeAttribute = function(attribute) {
