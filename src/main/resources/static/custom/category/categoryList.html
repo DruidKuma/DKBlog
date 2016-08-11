@@ -52,6 +52,19 @@
                     <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
                 </div>
 
+
+                <div class="row categorySortOrder text-center">
+
+                    <ul dnd-list="testList">
+                        <li ng-repeat="item in testList"
+                            dnd-draggable="item"
+                            dnd-moved="testList.splice($index, 1)"
+                            dnd-effect-allowed="move">
+                            {{item.label}}
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div><!-- end col -->
     </div>

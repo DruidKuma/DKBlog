@@ -86,6 +86,15 @@ angular.module("blogApp")
         });
 
         $scope.loadCategories();
+
+
+        $scope.testList = [
+            {label: 'Category 1'},
+            {label: 'Category 2'},
+            {label: 'Category 3'},
+            {label: 'Category 4'}
+        ];
+
     }])
     .controller('EditCategoryController', function ($scope, $uibModalInstance, Country, Category, I18NService, category, currentCountry) {
 
@@ -144,5 +153,4 @@ angular.module("blogApp")
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
-
     });
