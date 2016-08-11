@@ -1,9 +1,10 @@
 package com.druidkuma.blog.web.transformer;
 
+import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by Iurii Miedviediev
@@ -14,9 +15,17 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 @Component
 public class CountryTransformer implements DtoTransformer<Country, CountryFlagRenderDto> {
+
+    private CountryRepository countryRepository;
+
+    @Autowired
+    public CountryTransformer(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
+
     @Override
     public Country transformFromDto(CountryFlagRenderDto dto) {
-        throw new NotImplementedException();
+        return countryRepository.findByIsoAlpha2Code(dto.getIsoCode());
     }
 
     @Override

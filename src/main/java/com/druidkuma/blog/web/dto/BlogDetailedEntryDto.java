@@ -27,6 +27,7 @@ public class BlogDetailedEntryDto {
     private String content;
     private Long numComments;
     private Boolean isPublished;
+    private Boolean isCommentEnabled;
     private List<CountryFlagRenderDto> countries;
     private List<CategoryDto> categories;
 }

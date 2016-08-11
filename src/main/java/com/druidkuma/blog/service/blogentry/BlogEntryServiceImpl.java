@@ -65,4 +65,9 @@ public class BlogEntryServiceImpl implements BlogEntryService {
         }
         return false;
     }
+
+    @Override
+    public BlogEntry saveBlogEntry(BlogEntry blogEntry) {
+        return blogEntryRepository.saveAndFlush(blogEntry);
+    }
 }

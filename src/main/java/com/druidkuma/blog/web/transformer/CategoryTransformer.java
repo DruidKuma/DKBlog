@@ -1,10 +1,10 @@
 package com.druidkuma.blog.web.transformer;
 
+import com.druidkuma.blog.dao.category.CategoryRepository;
 import com.druidkuma.blog.domain.Category;
 import com.druidkuma.blog.web.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.stream.Collectors;
 
@@ -19,15 +19,17 @@ import java.util.stream.Collectors;
 public class CategoryTransformer implements DtoTransformer<Category, CategoryDto> {
 
     private CountryTransformer countryTransformer;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryTransformer(CountryTransformer countryTransformer) {
+    public CategoryTransformer(CountryTransformer countryTransformer, CategoryRepository categoryRepository) {
         this.countryTransformer = countryTransformer;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public Category transformFromDto(CategoryDto dto) {
-        throw new NotImplementedException();
+        return categoryRepository.findOne(dto.getId());
     }
 
     @Override

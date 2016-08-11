@@ -22,4 +22,6 @@ public interface BlogEntryService {
     void deleteBlogPost(Long id);
 
     boolean permalinkExists(String permalink, List<String> countriesToCheck, Long id);
+
+    BlogEntry saveBlogEntry(BlogEntry blogEntry);
 }

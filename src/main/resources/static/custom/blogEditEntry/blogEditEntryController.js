@@ -43,7 +43,9 @@ angular.module("blogApp")
                 });
             }
             else {
-                $scope.postEntry = {};
+                $scope.postEntry = {
+                    countries: [$scope.currentCountry]
+                };
             }
         };
 
