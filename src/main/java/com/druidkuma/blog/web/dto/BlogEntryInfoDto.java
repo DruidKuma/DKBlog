@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -22,7 +23,7 @@ public class BlogEntryInfoDto {
     private Long views;
     private long comments;
     private Boolean status;
-    private String category;
+    private List<CategoryDto> categories;
     private String imageUrl;
     private Instant creationDate;
 }

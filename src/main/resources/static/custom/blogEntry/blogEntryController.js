@@ -1,5 +1,10 @@
 angular.module("blogApp")
-    .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', function($scope, BlogEntry, $routeParams, $sce, $location) {
+    .controller('BlogEntryController',['$scope', 'BlogEntry', '$routeParams', '$sce', '$location', '$translatePartialLoader', '$translate', function($scope, BlogEntry, $routeParams, $sce, $location, $translatePartialLoader, $translate) {
+
+        $scope.$on('$routeChangeSuccess', function () {
+            $translatePartialLoader.addPart('components.category');
+            $translate.refresh();
+        });
 
         $scope.loadBlogPost = function() {
             $scope.loadingProcess = true;

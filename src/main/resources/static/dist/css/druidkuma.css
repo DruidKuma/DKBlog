@@ -300,3 +300,18 @@ img.caption-image {
 .form-group.blog-entry-form-error div.host input {
     box-shadow: none;
 }
+
+.blog-entry-list-category {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 5px;
+}
+
+.category-list-dropdown a span {
+    font-size: 10px;
+}
+
+.category-list-dropdown ul.dropdown-menu li {
+    color: black;
+}

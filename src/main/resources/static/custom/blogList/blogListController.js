@@ -2,11 +2,13 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('BlogListController',['$scope', '$routeParams', function($scope, $routeParams) {
+    .controller('BlogListController',['$scope', '$routeParams', '$translatePartialLoader', '$translate', function($scope, $routeParams, $translatePartialLoader, $translate) {
 
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "All posts";
+            $translatePartialLoader.addPart('components.category');
+            $translate.refresh();
         });
 
         // Blog List Filter Options

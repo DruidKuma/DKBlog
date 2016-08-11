@@ -9,6 +9,7 @@ import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
 import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
 import com.druidkuma.blog.web.transformer.BlogEntryTransformer;
+import com.druidkuma.blog.web.transformer.CategoryTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,11 @@ public class BlogEntryResource {
 
     private BlogEntryService blogEntryService;
     private BlogEntryTransformer blogEntryTransformer;
+    private CategoryTransformer categoryTransformer;
 
     @Autowired
-    public BlogEntryResource(BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer) {
+    public BlogEntryResource(CategoryTransformer categoryTransformer, BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer) {
+        this.categoryTransformer = categoryTransformer;
         this.blogEntryService = blogEntryService;
         this.blogEntryTransformer = blogEntryTransformer;
     }
@@ -59,7 +62,9 @@ public class BlogEntryResource {
                         .id(entry.getId())
                         .views(entry.getNumViews())
                         .comments(entry.getNumComments())
-                        .category("Test Category")
+                        .categories(entry.getCategories().stream()
+                                .map(category -> categoryTransformer.tranformToSimpleDto(category))
+                                .collect(Collectors.toList()))
                         .title(entry.getContent().getTitle())
                         .status(entry.getIsPublished())
                         .imageUrl(entry.getContent().getImageUrl())

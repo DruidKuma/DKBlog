@@ -28,7 +28,9 @@
                         <div class="media-body">
 
                             <h4 class="media-heading m-b-0">{{postEntry.author}}</h4>
-                            <span class="label label-danger">Test Category</span>
+                            <span ng-repeat="category in postEntry.categories" class="label m-l-5" ng-style="{'background-color': category.hexColor}">
+                                {{category.nameKey | translate}}
+                            </span>
                         </div>
                     </div>
 
@@ -53,16 +55,6 @@
                         TODO
                         <!--<input type="text" value="Amsterdam,Washington,Sydney" data-role="tagsinput" placeholder="add tags"/>-->
                     </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="text-right m-t-30">
-                                <button type="submit" class="btn btn-success waves-effect waves-light">Save</button>
-                                <button type="button" class="btn btn-default waves-effect">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div><!-- end col -->
 

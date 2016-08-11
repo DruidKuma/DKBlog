@@ -65,7 +65,22 @@
                     <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | characters:28}}</a></h4>
 
                     <div class="m-b-20 font-13">
-                        <span class="text-success text-uppercase">{{post.category}}</span>
+
+                        <div class="dropdown category-list-dropdown" uib-dropdown>
+                            <a href class="dropdown-toggle card-drop" aria-expanded="false" uib-dropdown-toggle>
+                                <span class="text-uppercase text-success">
+                                    Categories <i class="ti-angle-right"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                                <li ng-repeat="category in post.categories" class="blog-entry-list-category text-uppercase" ng-style="{'background-color': category.hexColor}">
+                                    {{category.nameKey | translate}}
+                                </li>
+                                <li ng-show="post.categories.length == 0" class="blog-entry-list-category text-uppercase" style="background-color: white">
+                                    No categories
+                                </li>
+                            </ul>
+                        </div>
                         <span class="text-warning pull-right">{{post.creationDate | date:'dd/MM/yyyy'}}</span>
                     </div>
 

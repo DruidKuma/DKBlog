@@ -43,6 +43,13 @@ public class CategoryTransformer implements DtoTransformer<Category, CategoryDto
                 .build();
     }
 
+    public CategoryDto tranformToSimpleDto(Category category) {
+        return CategoryDto.builder()
+                .nameKey(category.getNameKey())
+                .hexColor(category.getHexColor())
+                .build();
+    }
+
     public CategoryDto tranformToBlogEditDto(Category category) {
         return CategoryDto.builder()
                 .id(category.getId())
