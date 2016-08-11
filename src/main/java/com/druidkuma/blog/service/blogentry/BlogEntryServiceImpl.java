@@ -54,4 +54,9 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     public void deleteBlogPost(Long id) {
         blogEntryRepository.delete(id);
     }
+
+    @Override
+    public boolean permalinkExists(String permalink) {
+        return false;
+    }
 }

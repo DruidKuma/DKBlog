@@ -14,4 +14,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BlogEntryRepository extends JpaRepository<BlogEntry, Long>, JpaSpecificationExecutor<BlogEntry> {
+    BlogEntry findByPermalink(String  permalink);
 }

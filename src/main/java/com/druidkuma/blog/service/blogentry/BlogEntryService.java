@@ -18,4 +18,6 @@ public interface BlogEntryService {
     void switchPublishStatus(Long id);
 
     void deleteBlogPost(Long id);
+
+    boolean permalinkExists(String permalink);
 }

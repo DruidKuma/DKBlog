@@ -100,8 +100,9 @@ public class BlogEntryResource {
 
     @RequestMapping(method = RequestMethod.POST)
     public BlogDetailedEntryDto saveBlogEntry(@RequestBody BlogDetailedEntryDto blogEntryDto) {
-        //TODO
-        if(true) throw new PermalinkExistsException();
+        if(blogEntryService.permalinkExists(blogEntryDto.getPermalink())) {
+            throw new PermalinkExistsException();
+        }
         return blogEntryDto;
     }
 
