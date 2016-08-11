@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Iurii Miedviediev
  *
@@ -56,7 +58,11 @@ public class BlogEntryServiceImpl implements BlogEntryService {
     }
 
     @Override
-    public boolean permalinkExists(String permalink) {
+    public boolean permalinkExists(String permalink, List<String> countriesToCheck, Long id) {
+        for (String countryIso : countriesToCheck) {
+            BlogEntry blogEntry = blogEntryRepository.findByPermalinkInCountry(permalink, countryRepository.findByIsoAlpha2Code(countryIso));
+            if(blogEntry != null && !blogEntry.getId().equals(id)) return true;
+        }
         return false;
     }
 }

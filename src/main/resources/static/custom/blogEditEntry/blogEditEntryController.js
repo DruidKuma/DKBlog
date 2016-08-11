@@ -156,6 +156,7 @@ angular.module("blogApp")
 
         $scope.saveBlogEntry = function() {
             if($scope.validateBlogEntryForm()) {
+                $scope.loadingProcess = true;
                 BlogEntry.savePost($scope.postEntry).then(function(response) {
                     $location.path('/entry/' + response.data.id);
                 }, function(error, status) {
@@ -165,6 +166,8 @@ angular.module("blogApp")
                             message: 'Blog Entry with such permalink already exists'
                         };
                     }
+                }).finally(function() {
+                    $scope.loadingProcess = false;
                 });
             }
         };
