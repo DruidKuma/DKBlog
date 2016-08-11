@@ -53,6 +53,14 @@ public class CategoryResource {
                 .collect(Collectors.toList());
     }
 
+    @RequestMapping(value = "/simple", method = RequestMethod.GET)
+    public List<CategoryDto> getSimpleCategoriesForCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return categoryService.getAvailableCategoriesForCountry(countryService.getCountryByIsoCode(currentCountryIso))
+                .stream()
+                .map(category -> categoryTransformer.tranformToSimpleDto(category))
+                .collect(Collectors.toList());
+    }
+
     @RequestMapping(value = "/entry/edit", method = RequestMethod.GET)
     public List<CategoryDto> getCategoryListForBlogEntryEdit(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
         return categoryService.getAvailableCategoriesForCountry(countryService.getCountryByIsoCode(currentCountryIso))

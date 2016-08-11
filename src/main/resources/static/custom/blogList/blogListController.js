@@ -2,13 +2,20 @@
  * Created by DruidKuma on 7/12/16.
  */
 angular.module("blogApp")
-    .controller('BlogListController',['$scope', '$routeParams', '$translatePartialLoader', '$translate', function($scope, $routeParams, $translatePartialLoader, $translate) {
+    .controller('BlogListController',['$scope', '$routeParams', '$translatePartialLoader', '$translate', 'Category', function($scope, $routeParams, $translatePartialLoader, $translate, Category) {
 
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "All posts";
             $translatePartialLoader.addPart('components.category');
             $translate.refresh();
+
+            Category.simple().then(function(response) {
+                $scope.categoryOptions = response.data;
+                $scope.categoryOptions.unshift({
+                    nameKey: 'All posts'
+                });
+            });
         });
 
         // Blog List Filter Options
@@ -46,7 +53,7 @@ angular.module("blogApp")
         $scope.resetBlogListFilter = function(partialReload) {
             $scope.blogListFilter.currentPage = 1;
             $scope.blogListFilter.entriesOnPage = 10;
-            $scope.blogListFilter.category = '';
+            $scope.blogListFilter.category = 'All posts';
             $scope.blogListFilter.sort = 'creationDate DESC';
             $scope.blogListFilter.totalItems = 0;
             $scope.blogListFilter.filterPublished = '';

@@ -3,6 +3,7 @@ package com.druidkuma.blog.service.blogentry;
 import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
 import com.druidkuma.blog.dao.blogEntry.specification.BlogEntrySpecification;
 import com.druidkuma.blog.dao.blogEntry.specification.SearchCriteria;
+import com.druidkuma.blog.dao.category.CategoryRepository;
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.BlogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,13 @@ public class BlogEntryServiceImpl implements BlogEntryService {
 
     private BlogEntryRepository blogEntryRepository;
     private CountryRepository countryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public BlogEntryServiceImpl(BlogEntryRepository blogEntryRepository, CountryRepository countryRepository) {
+    public BlogEntryServiceImpl(BlogEntryRepository blogEntryRepository, CountryRepository countryRepository, CategoryRepository categoryRepository) {
         this.blogEntryRepository = blogEntryRepository;
         this.countryRepository = countryRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class BlogEntryServiceImpl implements BlogEntryService {
         return blogEntryRepository.findAll(new BlogEntrySpecification(
                 new SearchCriteria(search,
                         filterPublished,
-                        categoryName,
+                        categoryRepository.findByNameKey(categoryName),
                         countryRepository.findByIsoAlpha2Code(currentCountryIso))), pageable);
     }
 

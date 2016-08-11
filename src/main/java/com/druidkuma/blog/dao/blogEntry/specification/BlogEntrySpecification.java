@@ -44,6 +44,9 @@ public class BlogEntrySpecification implements Specification<BlogEntry> {
         if(StringUtils.isNotBlank(criteria.getSearch())) {
             result.add(builder.like(builder.lower(root.<Content>get("content").<String>get("title")), "%" + criteria.getSearch().toLowerCase() + "%"));
         }
+        if(criteria.getCategory() != null) {
+            result.add(builder.isMember(criteria.getCategory(), root.get("categories")));
+        }
 
         return result;
     }
