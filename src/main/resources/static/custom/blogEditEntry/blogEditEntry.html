@@ -32,6 +32,21 @@
                                         ng-click="postEntry.isPublished = !postEntry.isPublished">
                                     <i class="fa fa-stop"></i>
                                 </button>
+
+                                <button type="button"
+                                        title="Post entry is allowed to comment. Click to deny"
+                                        class="btn btn-circle btn-lg btn-success pull-right m-r-10"
+                                        ng-show="postEntry.isCommentEnabled"
+                                        ng-click="postEntry.isCommentEnabled = !postEntry.isCommentEnabled">
+                                    <i class="zmdi zmdi-comments"></i>
+                                </button>
+                                <button type="button"
+                                        title="Post entry is denied to coment. Click to allow"
+                                        class="btn btn-circle btn-lg btn-danger pull-right m-r-10"
+                                        ng-show="!postEntry.isCommentEnabled"
+                                        ng-click="postEntry.isCommentEnabled = !postEntry.isCommentEnabled">
+                                    <i class="zmdi zmdi-comment-alert"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
