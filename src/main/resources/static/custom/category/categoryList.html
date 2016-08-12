@@ -55,12 +55,13 @@
 
                 <div class="row categorySortOrder text-center">
 
-                    <ul dnd-list="testList">
-                        <li ng-repeat="item in testList"
+                    <ul dnd-list="categories">
+                        <li ng-repeat="item in categories"
                             dnd-draggable="item"
-                            dnd-moved="testList.splice($index, 1)"
-                            dnd-effect-allowed="move">
-                            {{item.label}}
+                            dnd-moved="categories.splice($index, 1)"
+                            dnd-effect-allowed="move"
+                            class="text-uppercase">
+                            {{item.nameKey | translate}}
                         </li>
                     </ul>
                 </div>
