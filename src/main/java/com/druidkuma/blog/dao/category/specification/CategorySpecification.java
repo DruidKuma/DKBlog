@@ -1,6 +1,6 @@
 package com.druidkuma.blog.dao.category.specification;
 
-import com.druidkuma.blog.domain.Category;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;

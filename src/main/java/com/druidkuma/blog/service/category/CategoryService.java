@@ -1,7 +1,7 @@
 package com.druidkuma.blog.service.category;
 
 import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Category;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.web.dto.CategoryDetailedDto;
 
@@ -17,6 +17,10 @@ import java.util.List;
 public interface CategoryService {
     List<Category> getAvailableCategoriesForEntry(BlogEntry entry);
     List<Category> getAvailableCategoriesForCountry(Country country);
+
+    List<Category> getAvailableCategoriesForCountryInOrder(String countryIso);
+    void updateCategorySortOrderForCountry(List<Category> categories, String countryIso);
+
     List<Category> getAvailableCategoriesForCountries(List<Country> countries);
     boolean isCategoryAvailableInCountries(Category category, List<Country> countries);
     boolean isCategoryAvailableInCountry(Category category, Country country);

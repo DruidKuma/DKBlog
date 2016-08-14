@@ -1,6 +1,6 @@
 package com.druidkuma.blog.web;
 
-import com.druidkuma.blog.domain.Category;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.service.category.CategoryService;
@@ -47,7 +47,7 @@ public class CategoryResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CategoryDto> getCategoriesForCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        return categoryService.getAvailableCategoriesForCountry(countryService.getCountryByIsoCode(currentCountryIso))
+        return categoryService.getAvailableCategoriesForCountryInOrder(currentCountryIso)
                 .stream()
                 .map(category -> categoryTransformer.tranformToDto(category))
                 .collect(Collectors.toList());

@@ -81,6 +81,13 @@ angular.module("blogApp")
             });
         };
 
+        
+        $scope.orderChanged = false;
+        $scope.categoryOrderChanged = function(index) {
+            $scope.categories.splice(index, 1);
+            $scope.orderChanged = true;
+        };
+
         $scope.$on('countryChanged', function(event, data) {
             $scope.loadCategories();
         });

@@ -3,7 +3,7 @@ package com.druidkuma.blog.service.category;
 import com.druidkuma.blog.dao.category.CategoryRepository;
 import com.druidkuma.blog.dao.category.specification.CategorySpecification;
 import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Category;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.web.dto.CategoryDetailedDto;
@@ -47,6 +47,21 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAvailableCategoriesForCountry(Country country) {
         return getAvailableCategoriesForCountries(Lists.newArrayList(country));
     }
+
+    @Override
+    public List<Category> getAvailableCategoriesForCountryInOrder(String countryIso) {
+        return categoryRepository.findCategoriesForCountryOrdered(countryIso);
+    }
+
+    @Override
+    public void updateCategorySortOrderForCountry(List<Category> categories, String countryIso) {
+        int order = 1;
+        for (Category category : categories) {
+            categoryRepository.updateCategorySortOrderForCountry(category.getId(), order, countryIso);
+            order++;
+        }
+    }
+
 
     @Override
     public List<Category> getAvailableCategoriesForCountries(List<Country> countries) {

@@ -1,5 +1,6 @@
-package com.druidkuma.blog.domain;
+package com.druidkuma.blog.domain.category;
 
+import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.i18n.Translation;
 import lombok.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -57,7 +59,7 @@ public class Category implements Serializable {
     private List<BlogEntry> blogEntries;
 
     @ManyToMany
-    @Fetch(FetchMode.SUBSELECT)
+//    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "category_2_country",
             joinColumns = @JoinColumn(name = "c2c_category_id"),
             inverseJoinColumns = @JoinColumn(name = "c2c_country_id"))

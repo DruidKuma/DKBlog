@@ -48,22 +48,23 @@
                     </tbody>
                 </table>
 
-                <div class="row">
-                    <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
-                </div>
-
 
                 <div class="row categorySortOrder text-center">
 
                     <ul dnd-list="categories">
                         <li ng-repeat="item in categories"
                             dnd-draggable="item"
-                            dnd-moved="categories.splice($index, 1)"
+                            dnd-moved="categoryOrderChanged($index)"
                             dnd-effect-allowed="move"
                             class="text-uppercase">
                             {{item.nameKey | translate}}
                         </li>
                     </ul>
+                </div>
+
+                <div class="row">
+                    <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
+                    <button class="btn btn-info waves-effect m-r-10 waves-light btn-circle pull-right" title="Save categories order"><i class="fa fa-save"></i></button>
                 </div>
 
             </div>

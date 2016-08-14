@@ -1,7 +1,7 @@
 package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.category.CategoryRepository;
-import com.druidkuma.blog.domain.Category;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.web.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
