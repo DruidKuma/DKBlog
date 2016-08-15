@@ -39,4 +39,14 @@ public class PropertyServiceImpl implements PropertyService {
 
         return propertiesForCountry;
     }
+
+    @Override
+    public void saveProperty(Property property) {
+        propertyRepository.saveAndFlush(property);
+    }
+
+    @Override
+    public void deleteProperty(Long id) {
+        propertyRepository.delete(id);
+    }
 }

@@ -4,10 +4,7 @@ import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,5 +34,15 @@ public class PropertyResource {
         return propertyService.getPropertyListForCountry(currentCountryIso).stream()
                 .map(property -> propertyTransformer.tranformToDto(property))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void saveProperty(@RequestBody PropertyDto propertyDto) {
+        propertyService.saveProperty(propertyTransformer.transformFromDto(propertyDto));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteProperty(@PathVariable("id") Long id) {
+        propertyService.deleteProperty(id);
     }
 }

@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface PropertyService {
     List<Property> getPropertyListForCountry(String countryIso);
+    void saveProperty(Property property);
+
+    void deleteProperty(Long id);
 }

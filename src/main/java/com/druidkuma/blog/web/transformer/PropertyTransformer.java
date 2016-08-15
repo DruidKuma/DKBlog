@@ -1,5 +1,6 @@
 package com.druidkuma.blog.web.transformer;
 
+import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.property.Property;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,23 @@ import org.springframework.stereotype.Component;
 public class PropertyTransformer implements DtoTransformer<Property, PropertyDto> {
 
     private CountryTransformer countryTransformer;
+    private CountryRepository countryRepository;
 
     @Autowired
-    public PropertyTransformer(CountryTransformer countryTransformer) {
+    public PropertyTransformer(CountryTransformer countryTransformer, CountryRepository countryRepository) {
         this.countryTransformer = countryTransformer;
+        this.countryRepository = countryRepository;
     }
 
     @Override
     public Property transformFromDto(PropertyDto dto) {
-        return null;
+        return Property.builder()
+                .id(dto.getId())
+                .key(dto.getKey())
+                .value(dto.getValue())
+                .lastModified(dto.getLastModified())
+                .country(countryRepository.findByIsoAlpha2Code(dto.getCountry().getIsoCode()))
+                .build();
     }
 
     @Override

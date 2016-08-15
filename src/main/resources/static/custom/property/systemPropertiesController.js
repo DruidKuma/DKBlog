@@ -18,11 +18,23 @@ angular.module("blogApp")
         };
 
         $scope.saveProperty = function(data, id) {
-           console.log(data);
+            Property.save(
+                {
+                    id: id,
+                    key: data.key,
+                    value: data.value,
+                    lastModified: new Date(),
+                    country: $scope.currentCountry
+                }
+            ).then(function(response) {
+                $scope.loadProperties();
+            });
         };
 
         $scope.removeProperty = function(property) {
-            console.log(property);
+            Property.delete(property).then(function(response) {
+                $scope.loadProperties();
+            });
         };
 
         $scope.addNewProperty = function() {
