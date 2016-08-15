@@ -32,7 +32,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<CountryDto> getCountryDataForFlags() {
-        return countryRepository.getCountryDataForFlags();
+        return countryRepository.getCountryData();
     }
 
     @Override

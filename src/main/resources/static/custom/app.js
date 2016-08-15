@@ -44,6 +44,11 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         controller: 'MediaGalleryController'
     }).
 
+    when('/system', {
+        templateUrl: '/custom/property/systemProperties.html',
+        controller: 'SystemPropertiesController'
+    }).
+
     otherwise({
         redirectTo: '/'
     });
