@@ -75,7 +75,7 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                                <li ng-repeat="category in post.categories" class="blog-entry-list-category text-uppercase" ng-style="{'background-color': category.hexColor}">
+                                <li ng-repeat="category in post.categories" class="blog-entry-list-category text-uppercase" ng-style="{'background-color': category.hexColor, 'color': category.textColor}">
                                     {{category.nameKey | translate}}
                                 </li>
                                 <li ng-show="post.categories.length == 0" class="blog-entry-list-category text-uppercase" style="background-color: white">

@@ -1,0 +1,1 @@
+ALTER TABLE category ADD COLUMN ct_text_color TEXT NOT NULL DEFAULT '#000';

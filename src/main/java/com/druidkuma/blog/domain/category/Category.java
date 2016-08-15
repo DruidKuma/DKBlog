@@ -12,7 +12,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,6 +41,9 @@ public class Category implements Serializable {
 
     @Column(name = "ct_hex_color")
     private String hexColor;
+
+    @Column(name = "ct_text_color")
+    private String textColor;
 
     @Column(name = "ct_last_modified")
     private Instant lastModified;

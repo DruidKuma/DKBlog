@@ -38,6 +38,7 @@ public class CategoryTransformer implements DtoTransformer<Category, CategoryDto
                 .id(category.getId())
                 .nameKey(category.getNameKey())
                 .hexColor(category.getHexColor())
+                .textColor(category.getTextColor())
                 .lastModified(category.getLastModified())
                 .numPosts(category.getBlogEntries().size())
                 .build();
@@ -47,6 +48,7 @@ public class CategoryTransformer implements DtoTransformer<Category, CategoryDto
         return CategoryDto.builder()
                 .nameKey(category.getNameKey())
                 .hexColor(category.getHexColor())
+                .textColor(category.getTextColor())
                 .build();
     }
 
@@ -55,6 +57,7 @@ public class CategoryTransformer implements DtoTransformer<Category, CategoryDto
                 .id(category.getId())
                 .nameKey(category.getNameKey())
                 .hexColor(category.getHexColor())
+                .textColor(category.getTextColor())
                 .countries(category.getCountries()
                         .stream()
                         .map(country -> countryTransformer.tranformToDto(country))

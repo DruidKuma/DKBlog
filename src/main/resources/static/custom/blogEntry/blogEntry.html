@@ -28,7 +28,7 @@
                         <div class="media-body">
 
                             <h4 class="media-heading m-b-0">{{postEntry.author}}</h4>
-                            <span ng-repeat="category in postEntry.categories" class="label m-l-5" ng-style="{'background-color': category.hexColor}">
+                            <span ng-repeat="category in postEntry.categories" class="label m-l-5" ng-style="{'background-color': category.hexColor, 'color': category.textColor}">
                                 {{category.nameKey | translate}}
                             </span>
                         </div>

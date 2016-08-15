@@ -19,6 +19,7 @@ import java.util.List;
 public class CategoryDetailedDto {
     private Long id;
     private String hexColor;
+    private String textColor;
     private String nameKey;
     private List<CountryFlagRenderDto> countries;
     private List<TranslationDto> translations;

@@ -21,6 +21,7 @@ public class CategoryDto {
     private Long id;
     private String nameKey;
     private String hexColor;
+    private String textColor;
     private Integer numPosts;
     private Instant lastModified;
     private List<CountryFlagRenderDto> countries;

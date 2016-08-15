@@ -83,6 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findOne(id);
         return CategoryDetailedDto.builder()
                 .hexColor(category.getHexColor())
+                .textColor(category.getTextColor())
                 .nameKey(category.getNameKey())
                 .id(category.getId())
                 .countries(getCountryFlagData(category.getCountries()))

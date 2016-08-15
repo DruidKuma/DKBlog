@@ -87,6 +87,7 @@ public class CategoryResource {
             category.getCountries().add(countryService.getCountryByIsoCode(flagRenderDto.getIsoCode()));
         }
         category.setHexColor(categoryDto.getHexColor());
+        category.setTextColor(categoryDto.getTextColor());
         category.setLastModified(Instant.now());
 
         TranslationGroup translationGroup = translationService.resolveTranslationGroup("components.category");
