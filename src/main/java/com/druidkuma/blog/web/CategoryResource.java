@@ -121,7 +121,12 @@ public class CategoryResource {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteCountryFromCategory(@PathVariable("id") Long id) {
+    public void deleteCategory(@PathVariable("id") Long id) {
         categoryService.removeCategory(id);
+    }
+
+    @RequestMapping(value = "/priority", method = RequestMethod.PUT)
+    public void updateCategoriesOrder(List<CategoryDto> categories) {
+
     }
 }
