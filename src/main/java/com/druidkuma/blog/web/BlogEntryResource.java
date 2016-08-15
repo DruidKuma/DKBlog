@@ -7,7 +7,7 @@ import com.druidkuma.blog.util.NormalizationUtil;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
-import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.CountryDto;
 import com.druidkuma.blog.web.transformer.BlogEntryTransformer;
 import com.druidkuma.blog.web.transformer.CategoryTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +92,7 @@ public class BlogEntryResource {
     public BlogDetailedEntryDto saveBlogEntry(@RequestBody BlogDetailedEntryDto blogEntryDto) {
         if(blogEntryService.permalinkExists(
                 blogEntryDto.getPermalink(),
-                blogEntryDto.getCountries().stream().map(CountryFlagRenderDto::getIsoCode).collect(Collectors.toList()),
+                blogEntryDto.getCountries().stream().map(CountryDto::getIsoCode).collect(Collectors.toList()),
                 blogEntryDto.getId())) {
             throw new PermalinkExistsException();
         }

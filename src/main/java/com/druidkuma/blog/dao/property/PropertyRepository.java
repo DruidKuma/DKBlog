@@ -4,6 +4,8 @@ import com.druidkuma.blog.domain.property.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Iurii Miedviediev
  *
@@ -13,4 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
+    List<Property> findAllByCountry_IsoAlpha2Code(String countryIso2AlphaCode);
+    List<Property> findAllByCountryIsNull();
 }

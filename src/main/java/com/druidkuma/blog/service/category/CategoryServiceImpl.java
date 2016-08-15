@@ -7,7 +7,7 @@ import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.web.dto.CategoryDetailedDto;
-import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.CountryDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.druidkuma.blog.web.transformer.CountryTransformer;
 import com.google.common.collect.Lists;
@@ -128,7 +128,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .build()).collect(Collectors.toList());
     }
 
-    private List<CountryFlagRenderDto> getCountryFlagData(Set<Country> countries) {
+    private List<CountryDto> getCountryFlagData(Set<Country> countries) {
         return countries.stream().map(country -> countryTransformer.tranformToDto(country)).collect(Collectors.toList());
     }
 }

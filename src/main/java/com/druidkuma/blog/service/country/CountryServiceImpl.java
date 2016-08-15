@@ -2,7 +2,7 @@ package com.druidkuma.blog.service.country;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.country.Country;
-import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public List<CountryFlagRenderDto> getCountryDataForFlags() {
+    public List<CountryDto> getCountryDataForFlags() {
         return countryRepository.getCountryDataForFlags();
     }
 

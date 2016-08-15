@@ -8,7 +8,7 @@ import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.CategoryDetailedDto;
 import com.druidkuma.blog.web.dto.CategoryDto;
-import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.CountryDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.druidkuma.blog.web.transformer.CategoryTransformer;
 import com.google.common.collect.Lists;
@@ -83,7 +83,7 @@ public class CategoryResource {
 
         if(category.getCountries() == null) category.setCountries(Sets.newHashSet());
         category.getCountries().clear();
-        for (CountryFlagRenderDto flagRenderDto : categoryDto.getCountries()) {
+        for (CountryDto flagRenderDto : categoryDto.getCountries()) {
             category.getCountries().add(countryService.getCountryByIsoCode(flagRenderDto.getIsoCode()));
         }
         category.setHexColor(categoryDto.getHexColor());

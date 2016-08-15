@@ -21,6 +21,6 @@ public class CategoryDetailedDto {
     private String hexColor;
     private String textColor;
     private String nameKey;
-    private List<CountryFlagRenderDto> countries;
+    private List<CountryDto> countries;
     private List<TranslationDto> translations;
 }

@@ -28,6 +28,6 @@ public class BlogDetailedEntryDto {
     private Long numComments;
     private Boolean isPublished;
     private Boolean isCommentEnabled;
-    private List<CountryFlagRenderDto> countries;
+    private List<CountryDto> countries;
     private List<CategoryDto> categories;
 }

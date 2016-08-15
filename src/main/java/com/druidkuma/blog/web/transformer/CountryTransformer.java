@@ -2,7 +2,7 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.country.Country;
-import com.druidkuma.blog.web.dto.CountryFlagRenderDto;
+import com.druidkuma.blog.web.dto.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @since 8/5/16
  */
 @Component
-public class CountryTransformer implements DtoTransformer<Country, CountryFlagRenderDto> {
+public class CountryTransformer implements DtoTransformer<Country, CountryDto> {
 
     private CountryRepository countryRepository;
 
@@ -24,13 +24,14 @@ public class CountryTransformer implements DtoTransformer<Country, CountryFlagRe
     }
 
     @Override
-    public Country transformFromDto(CountryFlagRenderDto dto) {
+    public Country transformFromDto(CountryDto dto) {
         return countryRepository.findByIsoAlpha2Code(dto.getIsoCode());
     }
 
     @Override
-    public CountryFlagRenderDto tranformToDto(Country country) {
-        return CountryFlagRenderDto.builder()
+    public CountryDto tranformToDto(Country country) {
+        if(country == null) return null;
+        return CountryDto.builder()
                 .id(country.getId())
                 .defaultLanguageIso(country.getDefaultLanguage().getIsoCode())
                 .isoCode(country.getIsoAlpha2Code())

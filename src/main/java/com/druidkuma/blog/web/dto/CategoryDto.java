@@ -24,5 +24,5 @@ public class CategoryDto {
     private String textColor;
     private Integer numPosts;
     private Instant lastModified;
-    private List<CountryFlagRenderDto> countries;
+    private List<CountryDto> countries;
 }
