@@ -126,7 +126,10 @@ public class CategoryResource {
     }
 
     @RequestMapping(value = "/priority", method = RequestMethod.PUT)
-    public void updateCategoriesOrder(List<CategoryDto> categories) {
-
+    public void updateCategoriesOrder(@RequestBody List<CategoryDto> categories,
+                                      @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        categoryService.updateCategorySortOrderForCountry(categories.stream()
+                .map(CategoryDto::getId)
+                .collect(Collectors.toList()), currentCountryIso);
     }
 }

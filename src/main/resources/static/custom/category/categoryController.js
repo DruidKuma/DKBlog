@@ -83,9 +83,18 @@ angular.module("blogApp")
 
         
         $scope.orderChanged = false;
+        $scope.orderChangeBtnDisable = false;
         $scope.categoryOrderChanged = function(index) {
             $scope.categories.splice(index, 1);
             $scope.orderChanged = true;
+        };
+
+        $scope.saveCategoryOrder = function() {
+            $scope.orderChangeBtnDisable = true;
+            Category.saveOrder($scope.categories).then(function(response) {
+                $scope.orderChanged = false;
+                $scope.orderChangeBtnDisable = false;
+            })
         };
 
         $scope.$on('countryChanged', function(event, data) {

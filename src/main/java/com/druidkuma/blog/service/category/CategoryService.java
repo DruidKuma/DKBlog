@@ -19,7 +19,7 @@ public interface CategoryService {
     List<Category> getAvailableCategoriesForCountry(Country country);
 
     List<Category> getAvailableCategoriesForCountryInOrder(String countryIso);
-    void updateCategorySortOrderForCountry(List<Category> categories, String countryIso);
+    void updateCategorySortOrderForCountry(List<Long> categorIds, String countryIso);
 
     List<Category> getAvailableCategoriesForCountries(List<Country> countries);
     boolean isCategoryAvailableInCountries(Category category, List<Country> countries);

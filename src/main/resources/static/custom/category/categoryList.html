@@ -64,7 +64,11 @@
 
                 <div class="row">
                     <button class="btn btn-rounded btn-success w-sm pull-right m-r-10 waves-effect waves-light" ng-click="openEditModal()">New Category</button>
-                    <button class="btn btn-info waves-effect m-r-10 waves-light btn-circle pull-right" title="Save categories order"><i class="fa fa-save"></i></button>
+                    <button class="btn btn-info waves-effect m-r-10 waves-light btn-circle pull-right"
+                            title="Save categories order"
+                            ng-show="orderChanged"
+                            ng-click="saveCategoryOrder()"
+                            ng-disabled="orderChangeBtnDisable"><i class="fa fa-save"></i></button>
                 </div>
 
             </div>

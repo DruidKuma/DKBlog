@@ -54,10 +54,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategorySortOrderForCountry(List<Category> categories, String countryIso) {
+    public void updateCategorySortOrderForCountry(List<Long> categoryIds, String countryIso) {
         int order = 1;
-        for (Category category : categories) {
-            categoryRepository.updateCategorySortOrderForCountry(category.getId(), order, countryIso);
+        for (Long categoryId : categoryIds) {
+            categoryRepository.updateCategorySortOrderForCountry(categoryId, order, countryIso);
             order++;
         }
     }

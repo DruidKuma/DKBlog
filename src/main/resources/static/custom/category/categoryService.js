@@ -45,6 +45,13 @@ angular.module("blogApp").service('Category', ["$http", function($http) {
                 url: BASE_URL + "/api/blog/category/" + categoryId,
                 method: "delete"
             })
+        },
+        saveOrder: function(categories) {
+            return $http({
+                url: BASE_URL + "/api/blog/category/priority",
+                method: "put",
+                data: JSON.stringify(categories)
+            })
         }
     }
 }]);
