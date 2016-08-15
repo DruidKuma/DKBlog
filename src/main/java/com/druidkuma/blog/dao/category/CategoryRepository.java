@@ -28,12 +28,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
             "  JOIN category_2_country c2c ON ct.ct_id = c2c.c2c_category_id " +
             "  JOIN country c ON c2c.c2c_country_id = c.c_id " +
             "WHERE c.c_iso_2_alpha = :countryIso " +
-            "ORDER BY sort_order", nativeQuery = true)
+            "ORDER BY c2c_sort_order", nativeQuery = true)
     List<Category> findCategoriesForCountryOrdered(@Param("countryIso") String countryIso);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE category_2_country SET sort_order = :sortOrder " +
+    @Query(value = "UPDATE category_2_country SET c2c_sort_order = :sortOrder " +
             "WHERE c2c_category_id = :categoryId AND c2c_country_id = " +
             "(SELECT c_id FROM country WHERE c_iso_2_alpha = :countryIso)", nativeQuery = true)
     Integer updateCategorySortOrderForCountry(@Param("categoryId") Long categoryId,

@@ -1,0 +1,1 @@
+ALTER TABLE category_2_country ADD COLUMN c2c_sort_order INTEGER NOT NULL DEFAULT 0;
