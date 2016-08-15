@@ -7,7 +7,7 @@
             <div class="card-box">
 
                 <h4 class="header-title m-t-0 m-b-30">Properties
-                    <button class="btn btn-circle btn-success waves-effect waves-light pull-right" title="Add new Property"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-circle btn-success waves-effect waves-light pull-right" title="Add new Property" ng-click="addNewProperty()"><i class="fa fa-plus"></i></button>
                 </h4>
 
                 <table class="table m-b-0" id="propertyTable">
@@ -32,21 +32,27 @@
                             <i class="fa fa-check text-success" ng-show="!property.country"></i>
                             <i class="fa fa-minus text-info" ng-show="property.country"></i>
                         </td>
-                        <td>{{property.key}}</td>
-                        <td editable-text="property.value" e-name="value" e-form="propertyForm">{{property.value}}</td>
+                        <td>
+                            <span editable-text="property.key" e-name="key" e-form="propertyForm" e-ng-disabled="!inserted.new">
+                                {{property.key}}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="property.value" e-name="value" e-form="propertyForm">
+                                {{property.value}}
+                            </span>
+                        </td>
                         <td>{{property.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
                         <td class="actions">
                             <!-- form -->
-                            <form editable-form name="propertyForm" onbeforesave="saveProperty($data, property.id)" ng-show="propertyForm.$visible" class="form-buttons form-inline" shown="inserted == property">
+                            <form editable-form name="propertyForm" onbeforesave="saveProperty($data, property.id)" ng-show="propertyForm.$visible" shown="inserted == property">
                                 <a href class="text-success" ng-disabled="propertyForm.$waiting" ng-click="propertyForm.$submit()"><i class="fa fa-save"></i></a>
-                                <a href class="text-danger" ng-disabled="propertyForm.$waiting" ng-click="propertyForm.$cancel()"><i class="fa fa-times"></i></a>
+                                <a href class="text-danger" ng-disabled="propertyForm.$waiting" ng-click="cancelFormEditing(propertyForm)"><i class="fa fa-times"></i></a>
                             </form>
                             <div class="buttons" ng-show="!propertyForm.$visible">
                                 <a href class="text-success" ng-click="propertyForm.$show()"><i class="fa fa-pencil"></i></a>
                                 <a href class="text-danger" ng-click="removeProperty(property)"><i class="fa fa-trash-o"></i></a>
                             </div>
-
-
                         </td>
                     </tr>
                     </tbody>

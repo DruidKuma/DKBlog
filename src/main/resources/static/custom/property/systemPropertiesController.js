@@ -25,5 +25,24 @@ angular.module("blogApp")
             console.log(property);
         };
 
+        $scope.addNewProperty = function() {
+            $scope.inserted = {
+                country: $scope.currentCountry,
+                key: '',
+                value: '',
+                lastModified: new Date(),
+                new: true
+            };
+            $scope.allProperties.push($scope.inserted);
+        };
+
+        $scope.cancelFormEditing = function(form) {
+            form.$cancel();
+            if($scope.inserted) {
+                $scope.allProperties.pop();
+            }
+            delete $scope.inserted;
+        };
+
         $scope.loadProperties();
     }]);
