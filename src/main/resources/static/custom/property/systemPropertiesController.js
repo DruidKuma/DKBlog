@@ -7,6 +7,9 @@ angular.module("blogApp")
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "System Properties";
         });
+        $scope.$on('countryChanged', function(event, data) {
+            $scope.loadProperties();
+        });
 
         $scope.loadProperties = function() {
             $scope.loadingProcess = true;
