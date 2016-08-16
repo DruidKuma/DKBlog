@@ -2,7 +2,7 @@
  * Created by DruidKuma on 8/15/16.
  */
 angular.module("blogApp")
-    .controller('SystemPropertiesController',['$scope', 'Property', function($scope, Property) {
+    .controller('SystemPropertiesController',['$scope', 'Property', 'SweetAlert', function($scope, Property, SweetAlert) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "System Properties";
@@ -27,14 +27,27 @@ angular.module("blogApp")
                     country: $scope.currentCountry
                 }
             ).then(function(response) {
+                delete $scope.inserted;
                 $scope.loadProperties();
             });
         };
 
         $scope.removeProperty = function(property) {
-            Property.delete(property).then(function(response) {
-                $scope.loadProperties();
-            });
+            SweetAlert.swal({
+                    title: "Are you sure?",
+                    text: "This action will delete this property and can influence the work of the whole application!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: true},
+                function(){
+                    Property.delete(property).then(function(response) {
+                        $scope.loadProperties();
+                    }, function(error) {
+                        $scope.showError();
+                    });
+                });
         };
 
         $scope.addNewProperty = function() {

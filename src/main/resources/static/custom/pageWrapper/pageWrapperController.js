@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/20/16.
  */
 angular.module("blogApp")
-    .controller('PageWrapperController',['$scope', '$location', 'BlogEntry', '$cookies', '$rootScope', function($scope, $location, BlogEntry, $cookies, $rootScope) {
+    .controller('PageWrapperController',['$scope', '$location', 'BlogEntry', '$cookies', 'SweetAlert', function($scope, $location, BlogEntry, $cookies, SweetAlert) {
 
         var currentCountryIso = $cookies.get('currentCountryIso');
         if(!currentCountryIso) $cookies.put('currentCountryIso', 'US');
@@ -30,4 +30,11 @@ angular.module("blogApp")
             $scope.blogListFilter.filterChanged = true;
             $scope.reloadBlogPosts();
         };
+
+        $scope.showError = function() {
+            SweetAlert.swal({
+                title: "Error!",
+                text: "Something went wrong...",
+                imageUrl: "/dist/images/error.gif" });
+        }
     }]);

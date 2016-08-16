@@ -373,6 +373,10 @@
   position: relative;
   box-sizing: content-box;
 }
+.sweet-alert .icon.custom {
+  width: 150px !important;
+  height: 120px !important;
+}
 .sweet-alert .icon.error {
   border-color: #d43f3a;
 }

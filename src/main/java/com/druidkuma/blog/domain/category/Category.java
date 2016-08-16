@@ -61,7 +61,6 @@ public class Category implements Serializable {
     private List<BlogEntry> blogEntries;
 
     @ManyToMany
-//    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "category_2_country",
             joinColumns = @JoinColumn(name = "c2c_category_id"),
             inverseJoinColumns = @JoinColumn(name = "c2c_country_id"))
