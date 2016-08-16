@@ -389,3 +389,9 @@ img.caption-image {
     background-color: #dff0d8;
     color: #3c763d;
 }
+
+button.btn.extra-small {
+    width: 20px;
+    height: 20px;
+    font-size: 8px;
+}

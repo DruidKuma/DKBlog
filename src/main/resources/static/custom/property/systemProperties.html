@@ -21,16 +21,18 @@
                                uib-tooltip="Check sign indicates that there is no specific property for such key in current country and default value is taken"></i>
                         </th>
                         <th>Property Key</th>
-                        <th>Property Value</th>
+                        <th width="50%">Property Value</th>
                         <th>Last Modified</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="property in allProperties">
-                        <td>
+                        <td ng-mouseenter="showDefaultBtn=true" ng-mouseleave="showDefaultBtn=false">
                             <i class="fa fa-check text-success" ng-show="!property.country"></i>
                             <i class="fa fa-minus text-info" ng-show="property.country"></i>
+
+                            <button ng-show="showDefaultBtn" class="btn btn-xs extra-small btn-circle btn-warning waves-effect waves-light" title="Make this value default" ng-click="makeDefault(property)"><i class="fa fa-check"></i></button>
                         </td>
                         <td>
                             <span editable-text="property.key" e-name="key" e-form="propertyForm" e-ng-disabled="!inserted.new">
@@ -38,7 +40,7 @@
                             </span>
                         </td>
                         <td>
-                            <span editable-text="property.value" e-name="value" e-form="propertyForm">
+                            <span editable-text="property.value" e-name="value" e-form="propertyForm" style="word-break: break-all">
                                 {{property.value}}
                             </span>
                         </td>

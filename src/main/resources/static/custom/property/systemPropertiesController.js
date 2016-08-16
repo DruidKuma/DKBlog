@@ -33,15 +33,10 @@ angular.module("blogApp")
         };
 
         $scope.removeProperty = function(property) {
-            SweetAlert.swal({
-                    title: "Are you sure?",
-                    text: "This action will delete this property and can influence the work of the whole application!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: true},
-                function(){
+            $scope.executeWithWarning("Are you sure?",
+                "This action will delete this property and can influence the work of the whole application!",
+                "Yes, delete it!",
+                function() {
                     Property.delete(property).then(function(response) {
                         $scope.loadProperties();
                     }, function(error) {
@@ -67,6 +62,27 @@ angular.module("blogApp")
                 $scope.allProperties.pop();
             }
             delete $scope.inserted;
+        };
+
+        $scope.makeDefault = function(property) {
+            Property.getDefault(property.key).then(function(response) {
+                var defaultProperty = response.data;
+                if(!defaultProperty) {
+                    Property.makeDefault(property.id).then(function(response) {
+                        $scope.loadProperties();
+                    }, function(error) {$scope.showError()});
+                }
+                else {
+                    $scope.executeWithWarning("Are you sure?",
+                        "This action will override the default value for this property: " + defaultProperty.value,
+                        "Yes, override it!",
+                        function() {
+                            Property.makeDefault(property.id).then(function(response) {
+                                $scope.loadProperties();
+                            }, function(error) {$scope.showError()});
+                        });
+                }
+            }, function(error) {$scope.showError()});
         };
 
         $scope.loadProperties();

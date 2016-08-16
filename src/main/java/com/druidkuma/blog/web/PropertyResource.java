@@ -45,4 +45,14 @@ public class PropertyResource {
     public void deleteProperty(@PathVariable("id") Long id) {
         propertyService.deleteProperty(id);
     }
+
+    @RequestMapping(value = "/default/{key}", method = RequestMethod.GET)
+    public PropertyDto getDefaultProperty(@PathVariable("key") String key) {
+        return propertyTransformer.tranformToDto(propertyService.getDefaultPropertyByKey(key));
+    }
+
+    @RequestMapping(value = "/default/{id}", method = RequestMethod.PUT)
+    public void makePropertyDefault(@PathVariable("id") Long id) {
+        propertyService.makeDefaultPropertyById(id);
+    }
 }

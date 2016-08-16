@@ -2,6 +2,7 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.property.Property;
+import com.druidkuma.blog.util.NormalizationUtil;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class PropertyTransformer implements DtoTransformer<Property, PropertyDto
     public Property transformFromDto(PropertyDto dto) {
         return Property.builder()
                 .id(dto.getId())
-                .key(dto.getKey())
+                .key(dto.getId() == null ? NormalizationUtil.normalizeNameKey(dto.getKey()) : dto.getKey())
                 .value(dto.getValue())
                 .lastModified(dto.getLastModified())
                 .country(countryRepository.findByIsoAlpha2Code(dto.getCountry().getIsoCode()))
@@ -38,6 +39,7 @@ public class PropertyTransformer implements DtoTransformer<Property, PropertyDto
 
     @Override
     public PropertyDto tranformToDto(Property entity) {
+        if(entity == null) return null;
         return PropertyDto.builder()
                 .id(entity.getId())
                 .country(countryTransformer.tranformToDto(entity.getCountry()))

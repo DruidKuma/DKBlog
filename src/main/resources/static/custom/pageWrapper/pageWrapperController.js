@@ -36,5 +36,21 @@ angular.module("blogApp")
                 title: "Error!",
                 text: "Something went wrong...",
                 imageUrl: "/dist/images/error.gif" });
-        }
+        };
+
+        $scope.executeWithWarning = function(titleText, message, buttonText, callback) {
+            SweetAlert.swal({
+                    title: titleText,
+                    text: message,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: buttonText,
+                    closeOnConfirm: true},
+                function(isConfirm){
+                    if(isConfirm) {
+                        callback();
+                    }
+                });
+        };
     }]);

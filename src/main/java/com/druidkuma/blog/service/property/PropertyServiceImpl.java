@@ -5,6 +5,7 @@ import com.druidkuma.blog.domain.property.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -47,6 +48,27 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public void deleteProperty(Long id) {
+        propertyRepository.delete(id);
+    }
+
+    @Override
+    public Property getDefaultPropertyByKey(String key) {
+        return propertyRepository.findByKeyAndCountryIsNull(key);
+    }
+
+    @Override
+    public void makeDefaultPropertyById(Long id) {
+        Property property = propertyRepository.findOne(id);
+        Property currentDefault = propertyRepository.findByKeyAndCountryIsNull(property.getKey());
+
+        if(currentDefault == null) {
+            currentDefault = new Property();
+            currentDefault.setKey(property.getKey());
+        }
+
+        currentDefault.setValue(property.getValue());
+        currentDefault.setLastModified(Instant.now());
+        propertyRepository.saveAndFlush(currentDefault);
         propertyRepository.delete(id);
     }
 }

@@ -16,4 +16,6 @@ public interface PropertyService {
     void saveProperty(Property property);
 
     void deleteProperty(Long id);
+    Property getDefaultPropertyByKey(String key);
+    void makeDefaultPropertyById(Long id);
 }

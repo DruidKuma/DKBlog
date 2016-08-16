@@ -17,4 +17,5 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findAllByCountry_IsoAlpha2Code(String countryIso2AlphaCode);
     List<Property> findAllByCountryIsNull();
+    Property findByKeyAndCountryIsNull(String key);
 }
