@@ -35,6 +35,13 @@ angular.module("blogApp").service('Property', ["$http", function($http) {
                 url: API_PROPERTY_URL + "/default/" + id,
                 method: "put"
             })
+        },
+        createCopyForCountry: function(property) {
+            return $http({
+                url: API_PROPERTY_URL + "/copy",
+                method: "post",
+                data: JSON.stringify(property)
+            })
         }
     }
 }]);

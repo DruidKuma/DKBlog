@@ -86,7 +86,9 @@ angular.module("blogApp")
         };
 
         $scope.copyForCountry = function(property) {
-
+            Property.createCopyForCountry(property).then(function(reponse) {
+                $scope.loadProperties();
+            }, function(error) {$scope.showError()})
         };
 
         $scope.loadProperties();

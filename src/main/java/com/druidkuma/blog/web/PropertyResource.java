@@ -1,5 +1,7 @@
 package com.druidkuma.blog.web;
 
+import com.druidkuma.blog.domain.property.Property;
+import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
@@ -22,11 +24,13 @@ public class PropertyResource {
 
     private PropertyService propertyService;
     private PropertyTransformer propertyTransformer;
+    private CountryService countryService;
 
     @Autowired
-    public PropertyResource(PropertyService propertyService, PropertyTransformer propertyTransformer) {
+    public PropertyResource(PropertyService propertyService, PropertyTransformer propertyTransformer, CountryService countryService) {
         this.propertyService = propertyService;
         this.propertyTransformer = propertyTransformer;
+        this.countryService = countryService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -54,5 +58,14 @@ public class PropertyResource {
     @RequestMapping(value = "/default/{id}", method = RequestMethod.PUT)
     public void makePropertyDefault(@PathVariable("id") Long id) {
         propertyService.makeDefaultPropertyById(id);
+    }
+
+    @RequestMapping(value = "/copy", method = RequestMethod.POST)
+    public void createCopyForCountry(@RequestBody PropertyDto propertyDto,
+                                     @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        Property property = propertyTransformer.transformFromDto(propertyDto);
+        property.setId(null);
+        property.setCountry(countryService.getCountryByIsoCode(currentCountryIso));
+        propertyService.saveProperty(property);
     }
 }
