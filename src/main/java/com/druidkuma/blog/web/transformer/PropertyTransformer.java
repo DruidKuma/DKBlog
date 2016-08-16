@@ -33,7 +33,7 @@ public class PropertyTransformer implements DtoTransformer<Property, PropertyDto
                 .key(dto.getId() == null ? NormalizationUtil.normalizeNameKey(dto.getKey()) : dto.getKey())
                 .value(dto.getValue())
                 .lastModified(dto.getLastModified())
-                .country(countryRepository.findByIsoAlpha2Code(dto.getCountry().getIsoCode()))
+                .country(dto.getCountry() != null ? countryRepository.findByIsoAlpha2Code(dto.getCountry().getIsoCode()) : null)
                 .build();
     }
 

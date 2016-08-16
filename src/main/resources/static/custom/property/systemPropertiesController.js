@@ -17,19 +17,19 @@ angular.module("blogApp")
             });
         };
 
-        $scope.saveProperty = function(data, id) {
+        $scope.saveProperty = function(data, property) {
             Property.save(
                 {
-                    id: id,
+                    id: property.id,
                     key: data.key,
                     value: data.value,
                     lastModified: new Date(),
-                    country: $scope.currentCountry
+                    country: property.country
                 }
             ).then(function(response) {
                 delete $scope.inserted;
                 $scope.loadProperties();
-            });
+            }, function(error) {$scope.showError()});
         };
 
         $scope.removeProperty = function(property) {
@@ -83,6 +83,10 @@ angular.module("blogApp")
                         });
                 }
             }, function(error) {$scope.showError()});
+        };
+
+        $scope.copyForCountry = function(property) {
+
         };
 
         $scope.loadProperties();
