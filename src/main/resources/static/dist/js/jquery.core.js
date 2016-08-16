@@ -4,92 +4,13 @@
 * Module/App: Core js
 */
 
-
-//portlets
-!function($) {
-    "use strict";
-
-    /**
-    Portlet Widget
-    */
-    var Portlet = function() {
-        this.$body = $("body"),
-        this.$portletIdentifier = ".portlet",
-        this.$portletCloser = '.portlet a[data-toggle="remove"]',
-        this.$portletRefresher = '.portlet a[data-toggle="reload"]'
-    };
-
-    //on init
-    Portlet.prototype.init = function() {
-        // Panel closest
-        var $this = this;
-        $(document).on("click",this.$portletCloser, function (ev) {
-            ev.preventDefault();
-            var $portlet = $(this).closest($this.$portletIdentifier);
-                var $portlet_parent = $portlet.parent();
-
-
-            $portlet.slideUp("slow", function() {
-                $(this).remove();
-            });
-            if ($portlet_parent.children().length == 0) {
-                $portlet_parent.slideUp("slow", function() {
-                   $(this).remove();
-                });
-            }
-        });
-
-        // Panel Reload
-        $(document).on("click",this.$portletRefresher, function (ev) {
-            ev.preventDefault();
-            var $portlet = $(this).closest($this.$portletIdentifier);
-            // This is just a simulation, nothing is going to be reloaded
-            $portlet.append('<div class="panel-disabled"><div class="loader-1"></div></div>');
-            var $pd = $portlet.find('.panel-disabled');
-            setTimeout(function () {
-                $pd.fadeOut('fast', function () {
-                    $pd.remove();
-                });
-            }, 500 + 300 * (Math.random() * 5));
-        });
-    },
-    //
-    $.Portlet = new Portlet, $.Portlet.Constructor = Portlet
-
-}(window.jQuery),
-
-
-
 /**
  * Components
  */
-function($) {
+!function($) {
     "use strict";
 
     var Components = function() {};
-
-    //initializing tooltip
-    Components.prototype.initTooltipPlugin = function() {
-        $.fn.tooltip && $('[data-toggle="tooltip"]').tooltip()
-    },
-
-    //initializing popover
-    Components.prototype.initPopoverPlugin = function() {
-        $.fn.popover && $('[data-toggle="popover"]').popover()
-    },
-
-    //initializing custom modal
-    Components.prototype.initCustomModalPlugin = function() {
-        $('[data-plugin="custommodal"]').on('click', function(e) {
-        	Custombox.open({
-                target: $(this).attr("href"),
-                effect: $(this).attr("data-animation"),
-                overlaySpeed: $(this).attr("data-overlaySpeed"),
-                overlayColor: $(this).attr("data-overlayColor")
-            });
-        	e.preventDefault();
-        });
-    },
 
     //initializing nicescroll
     Components.prototype.initNiceScrollPlugin = function() {
@@ -110,11 +31,6 @@ function($) {
         $('[data-plugin="switchery"]').each(function (idx, obj) {
             new Switchery($(this)[0], $(this).data());
         });
-    },
-    //multiselect
-    Components.prototype.initMultiSelect = function() {
-        if($('[data-plugin="multiselect"]').length > 0)
-            $('[data-plugin="multiselect"]').multiSelect($(this).data());
     },
 
      /* -------------
@@ -192,19 +108,13 @@ function($) {
     //initilizing
     Components.prototype.init = function() {
         var $this = this;
-        this.initTooltipPlugin(),
-        this.initPopoverPlugin(),
         this.initNiceScrollPlugin(),
-        this.initCustomModalPlugin(),
         this.initRangeSlider(),
         this.initSwitchery(),
-        this.initMultiSelect(),
         this.initPeityCharts(),
         this.initKnob(),
         this.initCircliful(),
-        this.initCounterUp(),
-        //creating portles
-        $.Portlet.init();
+        this.initCounterUp()
     },
 
     $.Components = new Components, $.Components.Constructor = Components

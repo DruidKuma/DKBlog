@@ -3,8 +3,6 @@
 * Author: Coderthemes
 * Module/App: Main Js
 */
-
-
 !function($) {
     "use strict";
 
@@ -29,7 +27,6 @@
         $(".subdrop").siblings("ul:first").show();
       }
 
-      toggle_slimscroll(".slimscrollleft");
       $("body").trigger("resize");
     },
     //menu item click
@@ -82,64 +79,6 @@
 
 }(window.jQuery),
 
-
-function($) {
-    "use strict";
-
-    var FullScreen = function() {
-        this.$body = $("body"),
-        this.$fullscreenBtn = $("#btn-fullscreen")
-    };
-
-    //turn on full screen
-    // Thanks to http://davidwalsh.name/fullscreen
-    FullScreen.prototype.launchFullscreen  = function(element) {
-      if(element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if(element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      } else if(element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      } else if(element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      }
-    },
-    FullScreen.prototype.exitFullscreen = function() {
-      if(document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if(document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if(document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
-    },
-    //toggle screen
-    FullScreen.prototype.toggle_fullscreen  = function() {
-      var $this = this;
-      var fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled;
-      if(fullscreenEnabled) {
-        if(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-          $this.launchFullscreen(document.documentElement);
-        } else{
-          $this.exitFullscreen();
-        }
-      }
-    },
-    //init sidemenu
-    FullScreen.prototype.init = function() {
-      var $this  = this;
-      //bind
-      $this.$fullscreenBtn.on('click', function() {
-        $this.toggle_fullscreen();
-      });
-    },
-     //init FullScreen
-    $.FullScreen = new FullScreen, $.FullScreen.Constructor = FullScreen
-
-}(window.jQuery),
-
-
-
 //main app module
  function($) {
     "use strict";
@@ -155,7 +94,6 @@ function($) {
      //on doc load
     App.prototype.onDocReady = function(e) {
       FastClick.attach(document.body);
-      resizefunc.push("initscrolls");
       resizefunc.push("changeptype");
 
       $('.animate-number').each(function(){
@@ -179,10 +117,6 @@ function($) {
         var $this = this;
         //document load initialization
         $(document).ready($this.onDocReady);
-        //init side bar - left
-        //$.Sidemenu.init();
-        //init fullscreen
-        $.FullScreen.init();
     },
 
     $.App = new App, $.App.Constructor = App
@@ -192,20 +126,6 @@ function($) {
 
 
 /* ------------ some utility functions ----------------------- */
-//this full screen
-var toggle_fullscreen = function () {
-
-}
-
-function executeFunctionByName(functionName, context /*, args */) {
-  var args = [].slice.call(arguments).splice(2);
-  var namespaces = functionName.split(".");
-  var func = namespaces.pop();
-  for(var i = 0; i < namespaces.length; i++) {
-    context = context[namespaces[i]];
-  }
-  return context[func].apply(this, args);
-}
 var w,h,dw,dh;
 var changeptype = function(){
     w = $(window).width();
@@ -233,8 +153,7 @@ var changeptype = function(){
       }
 
   }
-  toggle_slimscroll(".slimscrollleft");
-}
+};
 
 
 var debounce = function(func, wait, immediate) {
@@ -251,7 +170,7 @@ var debounce = function(func, wait, immediate) {
     if (callNow) result = func.apply(context, args);
     return result;
   };
-}
+};
 
 function resizeitems(){
   if($.isArray(resizefunc)){
@@ -259,31 +178,4 @@ function resizeitems(){
         window[resizefunc[i]]();
     }
   }
-}
-
-function initscrolls(){
-    if(jQuery.browser.mobile !== true){
-      //SLIM SCROLL
-      $('.slimscroller').slimscroll({
-        height: 'auto',
-        size: "5px"
-      });
-
-      $('.slimscrollleft').slimScroll({
-          height: 'auto',
-          position: 'right',
-          size: "5px",
-          color: '#dcdcdc',
-          wheelStep: 5
-      });
-  }
-}
-function toggle_slimscroll(item){
-    if($("#wrapper").hasClass("enlarged")){
-      $(item).css("overflow","inherit").parent().css("overflow","inherit");
-      $(item). siblings(".slimScrollBar").css("visibility","hidden");
-    }else{
-      $(item).css("overflow","hidden").parent().css("overflow","hidden");
-      $(item). siblings(".slimScrollBar").css("visibility","visible");
-    }
 }

@@ -10,6 +10,14 @@ angular.module("blogApp").directive('leftSidebar', function() {
             $scope.currentState = $location.path();
             $.Sidemenu.init();
 
+            $scope.slimScrollOptions = {
+                height: 'auto',
+                position: 'right',
+                size: "5px",
+                color: '#dcdcdc',
+                wheelStep: 5
+            };
+
             $rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
                 $scope.currentState = $location.path();
             });

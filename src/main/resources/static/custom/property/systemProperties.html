@@ -3,65 +3,93 @@
         <div class="dk-loading-animation"></div>
     </div>
     <div class="container">
-        <div class="col-lg-12">
-            <div class="card-box">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-box">
 
-                <h4 class="header-title m-t-0 m-b-30">Properties
-                    <button class="btn btn-circle btn-success waves-effect waves-light pull-right" title="Add new Property" ng-click="addNewProperty()"><i class="fa fa-plus"></i></button>
-                </h4>
+                    <h4 class="header-title m-t-0 m-b-30">Properties
+                        <button class="btn btn-circle btn-success waves-effect waves-light pull-right" title="Add new Property" ng-click="addNewProperty()"><i class="fa fa-plus"></i></button>
+                    </h4>
 
-                <table class="table m-b-0" id="propertyTable">
-                    <thead>
-                    <tr>
-                        <th>
-                            Default
-                            <i class="fa fa-question-circle text-warning"
-                               tooltip-placement="right-top"
-                               tooltip-class="customTooltip"
-                               uib-tooltip="Check sign indicates that there is no specific property for such key in current country and default value is taken"></i>
-                        </th>
-                        <th>Property Key</th>
-                        <th width="50%">Property Value</th>
-                        <th>Last Modified</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="property in allProperties">
-                        <td ng-mouseenter="showDefaultBtn=true" ng-mouseleave="showDefaultBtn=false">
-                            <i class="fa fa-check text-success" ng-show="!property.country"></i>
-                            <i class="fa fa-minus text-info" ng-show="property.country"></i>
+                    <table class="table m-b-0" id="propertyTable">
+                        <thead>
+                        <tr>
+                            <th>
+                                Default
+                                <i class="fa fa-question-circle text-warning"
+                                   tooltip-placement="right-top"
+                                   tooltip-class="customTooltip"
+                                   uib-tooltip="Check sign indicates that there is no specific property for such key in current country and default value is taken"></i>
+                            </th>
+                            <th>Property Key</th>
+                            <th width="50%">Property Value</th>
+                            <th>Last Modified</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="property in allProperties">
+                            <td ng-mouseenter="showDefaultBtn=true" ng-mouseleave="showDefaultBtn=false">
+                                <i class="fa fa-check text-success" ng-show="!property.country"></i>
+                                <i class="fa fa-minus text-info" ng-show="property.country"></i>
 
-                            <button ng-show="showDefaultBtn && property.country" class="btn btn-xs extra-small btn-circle btn-success waves-effect waves-light" title="Make this value default" ng-click="makeDefault(property)"><i class="fa fa-check"></i></button>
-                            <button ng-show="showDefaultBtn && !property.country" class="btn btn-xs extra-small btn-circle btn-info waves-effect waves-light" title="Create a copy for current country" ng-click="copyForCountry(property)"><i class="fa fa-minus"></i></button>
-                        </td>
-                        <td>
+                                <button ng-show="showDefaultBtn && property.country" class="btn btn-xs extra-small btn-circle btn-success waves-effect waves-light" title="Make this value default" ng-click="makeDefault(property)"><i class="fa fa-check"></i></button>
+                                <button ng-show="showDefaultBtn && !property.country" class="btn btn-xs extra-small btn-circle btn-info waves-effect waves-light" title="Create a copy for current country" ng-click="copyForCountry(property)"><i class="fa fa-minus"></i></button>
+                            </td>
+                            <td>
                             <span editable-text="property.key" e-name="key" e-form="propertyForm" e-ng-disabled="!inserted.new">
                                 {{property.key}}
                             </span>
-                        </td>
-                        <td>
+                            </td>
+                            <td>
                             <span editable-text="property.value" e-name="value" e-form="propertyForm" style="word-break: break-all">
                                 {{property.value}}
                             </span>
-                        </td>
-                        <td>{{property.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
-                        <td class="actions">
-                            <!-- form -->
-                            <form editable-form name="propertyForm" onbeforesave="saveProperty($data, property)" ng-show="propertyForm.$visible" shown="inserted == property">
-                                <a href class="text-success" ng-disabled="propertyForm.$waiting" ng-click="propertyForm.$submit()"><i class="fa fa-save"></i></a>
-                                <a href class="text-danger" ng-disabled="propertyForm.$waiting" ng-click="cancelFormEditing(propertyForm)"><i class="fa fa-times"></i></a>
-                            </form>
-                            <div class="buttons" ng-show="!propertyForm.$visible">
-                                <a href class="text-success" ng-click="propertyForm.$show()"><i class="fa fa-pencil"></i></a>
-                                <a href class="text-danger" ng-click="removeProperty(property)"><i class="fa fa-trash-o"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            </td>
+                            <td>{{property.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                            <td class="actions">
+                                <!-- form -->
+                                <form editable-form name="propertyForm" onbeforesave="saveProperty($data, property)" ng-show="propertyForm.$visible" shown="inserted == property">
+                                    <a href class="text-success" ng-disabled="propertyForm.$waiting" ng-click="propertyForm.$submit()"><i class="fa fa-save"></i></a>
+                                    <a href class="text-danger" ng-disabled="propertyForm.$waiting" ng-click="cancelFormEditing(propertyForm)"><i class="fa fa-times"></i></a>
+                                </form>
+                                <div class="buttons" ng-show="!propertyForm.$visible">
+                                    <a href class="text-success" ng-click="propertyForm.$show()"><i class="fa fa-pencil"></i></a>
+                                    <a href class="text-danger" ng-click="removeProperty(property)"><i class="fa fa-trash-o"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
+                </div>
+            </div><!-- end col -->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="portlet">
+                    <div class="portlet-heading bg-purple">
+                        <h3 class="portlet-title">
+                            Default Heading
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="zmdi zmdi-save"></i></a>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i class="zmdi zmdi-minus"></i></a>
+                            <a href="#" data-toggle="remove"><i class="zmdi zmdi-close"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="bg-default" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                            Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                            unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        </div>
+                    </div>
+                    <div class="panel-disabled"><div class="loader-1"></div></div>
+                </div>
             </div>
-        </div><!-- end col -->
+        </div>
     </div>
 </div>
