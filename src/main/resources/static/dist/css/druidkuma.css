@@ -395,3 +395,7 @@ button.btn.extra-small {
     height: 20px;
     font-size: 8px;
 }
+
+.permalink-config div.panel-collapse div.portlet-body div.row p small {
+    word-break: break-all;
+}

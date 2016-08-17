@@ -3,7 +3,10 @@ var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce'
                                         'dndLists', 'xeditable', 'ngSweetAlert', 'ui.slimscroll', 'uiSwitch']);
 var BASE_URL = 'http://localhost:8081';
 
-blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoaderProvider', function($routeProvider, $translateProvider, $translatePartialLoaderProvider) {
+blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoaderProvider', '$locationProvider', function($routeProvider, $translateProvider, $translatePartialLoaderProvider, $locationProvider) {
+
+    $locationProvider.html5Mode(true).hashPrefix('#');
+
     $routeProvider.
 
     when('/', {

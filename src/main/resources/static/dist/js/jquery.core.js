@@ -23,16 +23,6 @@
         $.fn.slider && $('[data-plugin="range-slider"]').slider({});
     },
 
-    /* -------------
-     * Form related controls
-     */
-    //switch
-    Components.prototype.initSwitchery = function() {
-        $('[data-plugin="switchery"]').each(function (idx, obj) {
-            new Switchery($(this)[0], $(this).data());
-        });
-    },
-
      /* -------------
      * small charts related widgets
      */
@@ -110,7 +100,6 @@
         var $this = this;
         this.initNiceScrollPlugin(),
         this.initRangeSlider(),
-        this.initSwitchery(),
         this.initPeityCharts(),
         this.initKnob(),
         this.initCircliful(),
