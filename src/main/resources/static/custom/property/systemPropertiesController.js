@@ -94,5 +94,7 @@ angular.module("blogApp")
             }, function(error) {$scope.showError()})
         };
 
+        $scope.propertyLoadingProcess = false;
+
         $scope.loadProperties();
     }]);

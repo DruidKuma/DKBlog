@@ -70,24 +70,24 @@
             <div class="col-lg-4">
                 <div class="portlet">
                     <div class="portlet-heading bg-purple">
-                        <h3 class="portlet-title">
-                            Default Heading
-                        </h3>
-                        <div class="portlet-widgets">
-                            <a href="javascript:;" data-toggle="reload"><i class="zmdi zmdi-save"></i></a>
-                            <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i class="zmdi zmdi-minus"></i></a>
-                            <a href="#" data-toggle="remove"><i class="zmdi zmdi-close"></i></a>
-                        </div>
+                        <h5 class="portlet-title">
+                            Create Default Properties Automatically
+                        </h5>
                         <div class="clearfix"></div>
                     </div>
                     <div id="bg-default" class="panel-collapse collapse in">
                         <div class="portlet-body">
+
+                            <p>
+                                <switch id="enabled" name="enabled" ng-model="enabled" class="green"></switch>
+                            </p>
+
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
                             Ipsum has been the industry's standard dummy text ever since the 1500s, when an
                             unknown printer took a galley of type and scrambled it to make a type specimen book.
                         </div>
                     </div>
-                    <div class="panel-disabled"><div class="loader-1"></div></div>
+                    <div class="panel-disabled" ng-show="propertyLoadingProcess"><div class="loader-1"></div></div>
                 </div>
             </div>
         </div>
