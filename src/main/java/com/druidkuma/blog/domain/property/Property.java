@@ -2,6 +2,8 @@ package com.druidkuma.blog.domain.property;
 
 import com.druidkuma.blog.domain.country.Country;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -33,6 +35,7 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "pr_country_id")
+    @Fetch(FetchMode.SELECT)
     private Country country;
 
     @Column(name = "pr_value")

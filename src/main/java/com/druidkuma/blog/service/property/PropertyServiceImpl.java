@@ -27,18 +27,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<Property> getPropertyListForCountry(String countryIso) {
-
-        //find all for country
-        List<Property> propertiesForCountry = propertyRepository.findAllByCountry_IsoAlpha2Code(countryIso);
-
-        //populate with generic properties for missing
-        propertyRepository.findAllByCountryIsNull()
-                .stream()
-                .filter(genericProperty -> !propertiesForCountry.stream()
-                        .anyMatch(property -> property.getKey().equals(genericProperty.getKey())))
-                .forEach(propertiesForCountry::add);
-
-        return propertiesForCountry;
+        return propertyRepository.findAllForCountryOrDefault(countryIso);
     }
 
     @Override
