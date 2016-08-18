@@ -60,4 +60,10 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepository.saveAndFlush(currentDefault);
         propertyRepository.delete(id);
     }
+
+    @Override
+    public Property getPropertyByKeyForCountry(String key, String countryIso) {
+        Property property = propertyRepository.findByKeyAndCountry_IsoAlpha2Code(key, countryIso);
+        return property != null ? property : propertyRepository.findByKeyAndCountryIsNull(key);
+    }
 }

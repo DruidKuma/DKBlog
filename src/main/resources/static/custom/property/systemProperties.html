@@ -85,7 +85,7 @@
                                     <p><small>(http://www.reifen.de/magazin/?p=123)</small></p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled" class="green"></switch>
+                                    <switch ng-model="specificProperties.permalinkGenerationStrategy.value" value="default" ng-change="updateProperty(specificProperties.permalinkGenerationStrategy)" class="green"></switch>
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@
                                     <p><small>(http://www.reifen.de/magazin/2016/08/17/sample-post/)</small></p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled2" class="green"></switch>
+                                    <switch ng-model="specificProperties.permalinkGenerationStrategy.value" value="dayAndName" ng-change="updateProperty(specificProperties.permalinkGenerationStrategy)" class="green"></switch>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                                     <p><small>(http://www.reifen.de/magazin/2016/08/sample-post/)</small></p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled2" class="green"></switch>
+                                    <switch ng-model="specificProperties.permalinkGenerationStrategy.value" value="monthAndName" ng-change="updateProperty(specificProperties.permalinkGenerationStrategy)" class="green"></switch>
                                 </div>
                             </div>
 
@@ -121,7 +121,7 @@
                                     <p><small>(http://www.reifen.de/magazin/archives/123)</small></p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled2" class="green"></switch>
+                                    <switch ng-model="specificProperties.permalinkGenerationStrategy.value" value="numeric" ng-change="updateProperty(specificProperties.permalinkGenerationStrategy)" class="green"></switch>
                                 </div>
                             </div>
 
@@ -133,7 +133,7 @@
                                     <p><small>(http://www.reifen.de/magazin/sample-post/)</small></p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled2" class="green"></switch>
+                                    <switch ng-model="specificProperties.permalinkGenerationStrategy.value" value="postName" ng-change="updateProperty(specificProperties.permalinkGenerationStrategy)" class="green"></switch>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,12 @@
                                     Auto create default property for new properties
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled" class="green"></switch>
+                                    <span class="green switch green ng-valid ng-not-empty"
+                                          ng-click="toggleProperty(specificProperties.autoCreateDefault)"
+                                          ng-class="{ checked: (specificProperties.autoCreateDefault.value == 'true'), disabled:undefined }"
+                                          ng-model="specificProperties.autoCreateDefault.value">
+                                        <small></small>
+                                    </span>
                                 </div>
                             </div>
 
@@ -166,10 +171,15 @@
 
                             <div class="row">
                                 <div class="col-lg-9">
-                                    Delete also default property by default
+                                    Auto delete default properties
                                 </div>
                                 <div class="col-lg-3">
-                                    <switch ng-model="enabled2" class="green"></switch>
+                                    <span class="green switch green ng-valid ng-not-empty"
+                                          ng-click="toggleProperty(specificProperties.autoDeleteDefault)"
+                                          ng-class="{ checked: (specificProperties.autoDeleteDefault.value == 'true'), disabled:undefined }"
+                                          ng-model="specificProperties.autoDeleteDefault.value">
+                                        <small></small>
+                                    </span>
                                 </div>
                             </div>
                         </div>

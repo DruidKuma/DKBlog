@@ -13,11 +13,17 @@ angular.module("blogApp")
 
         $scope.loadProperties = function() {
             $scope.loadingProcess = true;
+            $scope.propertyLoadingProcess = true;
             Property.all().then(function(response) {
                 $scope.allProperties = response.data;
-            }).finally(function() {
+            }, function(error) {$scope.showError()}).finally(function() {
                 $scope.loadingProcess = false;
             });
+            Property.specificForPanel().then(function(response) {
+                $scope.specificProperties = response.data;
+            }, function(error) {$scope.showError()}).finally(function() {
+                $scope.propertyLoadingProcess = false;
+            })
         };
 
         $scope.saveProperty = function(data, property) {
@@ -94,7 +100,19 @@ angular.module("blogApp")
             }, function(error) {$scope.showError()})
         };
 
-        $scope.propertyLoadingProcess = false;
+        $scope.updateProperty = function(property) {
+            Property.save(property).then(
+                function(response) {$scope.loadProperties();},
+                function(error) {$scope.showError()}
+            );
+        };
+
+        $scope.toggleProperty = function(property) {
+            console.log(property);
+            property.value = property.value == 'true' ? 'false' : 'true';
+            console.log(property);
+            $scope.updateProperty(property);
+        };
 
         $scope.loadProperties();
     }]);

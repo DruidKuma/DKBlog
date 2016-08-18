@@ -2,10 +2,11 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.property.Property;
-import com.druidkuma.blog.util.NormalizationUtil;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 
 /**
  * Created by Iurii Miedviediev
@@ -30,9 +31,9 @@ public class PropertyTransformer implements DtoTransformer<Property, PropertyDto
     public Property transformFromDto(PropertyDto dto) {
         return Property.builder()
                 .id(dto.getId())
-                .key(dto.getId() == null ? NormalizationUtil.normalizeNameKey(dto.getKey()) : dto.getKey())
+                .key(dto.getKey())
                 .value(dto.getValue())
-                .lastModified(dto.getLastModified())
+                .lastModified(Instant.now())
                 .country(dto.getCountry() != null ? countryRepository.findByIsoAlpha2Code(dto.getCountry().getIsoCode()) : null)
                 .build();
     }

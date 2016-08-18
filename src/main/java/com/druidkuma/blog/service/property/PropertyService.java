@@ -18,4 +18,5 @@ public interface PropertyService {
     void deleteProperty(Long id);
     Property getDefaultPropertyByKey(String key);
     void makeDefaultPropertyById(Long id);
+    Property getPropertyByKeyForCountry(String key, String countryIso);
 }

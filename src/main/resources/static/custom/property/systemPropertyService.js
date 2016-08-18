@@ -42,6 +42,12 @@ angular.module("blogApp").service('Property', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(property)
             })
+        },
+        specificForPanel: function() {
+            return $http({
+                url: API_PROPERTY_URL + "/specific",
+                method: "get"
+            })
         }
     }
 }]);
