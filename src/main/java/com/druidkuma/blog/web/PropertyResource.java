@@ -56,7 +56,7 @@ public class PropertyResource {
 
     @RequestMapping(value = "/default/{key}", method = RequestMethod.GET)
     public PropertyDto getDefaultProperty(@PathVariable("key") String key) {
-        return propertyTransformer.tranformToDto(propertyService.getDefaultPropertyByKey(key));
+        return propertyTransformer.tranformToDto(propertyService.getProperty(key));
     }
 
     @RequestMapping(value = "/default/{id}", method = RequestMethod.PUT)
@@ -79,7 +79,7 @@ public class PropertyResource {
         for (String key : Lists.newArrayList(CommonKeys.PERMALINK_GENERATION_STRATEGY,
                                              CommonKeys.AUTO_CREATE_DEFAULT,
                                              CommonKeys.AUTO_DELETE_DEFAULT)) {
-            result.put(key, propertyTransformer.tranformToDto(propertyService.getPropertyByKeyForCountry(key, currentCountryIso)));
+            result.put(key, propertyTransformer.tranformToDto(propertyService.getProperty(key, currentCountryIso)));
         }
         return result;
     }

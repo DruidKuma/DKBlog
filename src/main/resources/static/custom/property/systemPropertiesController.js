@@ -108,9 +108,7 @@ angular.module("blogApp")
         };
 
         $scope.toggleProperty = function(property) {
-            console.log(property);
             property.value = property.value == 'true' ? 'false' : 'true';
-            console.log(property);
             $scope.updateProperty(property);
         };
 

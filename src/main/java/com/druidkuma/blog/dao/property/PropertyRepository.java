@@ -20,6 +20,8 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Long> {
     Property findByKeyAndCountryIsNull(String key);
     Property findByKeyAndCountry_IsoAlpha2Code(String key, String isoCode);
+    List<Property> findAllByCountryIsNull();
+    List<Property> findAllByCountry_IsoAlpha2Code(String isoCode);
 
     @Query(value = "SELECT pr FROM Property pr LEFT OUTER JOIN Country c ON pr.country.id = c.id WHERE " +
            "(EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c2 ON pr2.country.id = c2.id " +
