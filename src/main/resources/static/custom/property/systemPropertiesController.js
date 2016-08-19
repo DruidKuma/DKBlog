@@ -13,17 +13,23 @@ angular.module("blogApp")
 
         $scope.loadProperties = function() {
             $scope.loadingProcess = true;
-            $scope.propertyLoadingProcess = true;
             Property.all().then(function(response) {
                 $scope.allProperties = response.data;
+                $scope.specificProperties = $scope.filterSpecific($scope.allProperties);
+
             }, function(error) {$scope.showError()}).finally(function() {
                 $scope.loadingProcess = false;
             });
-            Property.specificForPanel().then(function(response) {
-                $scope.specificProperties = response.data;
-            }, function(error) {$scope.showError()}).finally(function() {
-                $scope.propertyLoadingProcess = false;
-            })
+        };
+
+        $scope.filterSpecific = function(properties) {
+            var result = {};
+            angular.forEach(properties, function(value, index) {
+                if(['permalinkGenerationStrategy', 'autoCreateDefault', 'autoDeleteDefault'].indexOf(value.key) > -1) {
+                    result[value.key] = value;
+                }
+            });
+            return result;
         };
 
         $scope.saveProperty = function(data, property) {
@@ -101,8 +107,9 @@ angular.module("blogApp")
         };
 
         $scope.updateProperty = function(property) {
+            $scope.propertyLoadingProcess = true;
             Property.save(property).then(
-                function(response) {$scope.loadProperties();},
+                function(response) { $scope.propertyLoadingProcess = false; },
                 function(error) {$scope.showError()}
             );
         };
