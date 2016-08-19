@@ -42,11 +42,23 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public void saveProperty(Property property) {
+        if(property.getCountry() != null && getBoolean(CommonKeys.AUTO_CREATE_DEFAULT) && getProperty(property.getKey()) == null) {
+            propertyRepository.saveAndFlush(Property.builder()
+                    .key(property.getKey())
+                    .value(property.getValue())
+                    .lastModified(Instant.now())
+                    .build());
+        }
         propertyRepository.saveAndFlush(property);
     }
 
     @Override
     public void deleteProperty(Long id) {
+        Property property = propertyRepository.findOne(id);
+        if(property.getCountry() != null && getBoolean(CommonKeys.AUTO_DELETE_DEFAULT)) {
+            Property defaultProperty = getProperty(property.getKey());
+            if(defaultProperty != null) propertyRepository.delete(defaultProperty);
+        }
         propertyRepository.delete(id);
     }
 
