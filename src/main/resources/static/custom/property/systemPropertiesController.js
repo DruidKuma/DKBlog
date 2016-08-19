@@ -25,7 +25,11 @@ angular.module("blogApp")
         $scope.filterSpecific = function(properties) {
             var result = {};
             angular.forEach(properties, function(value, index) {
-                if(['permalinkGenerationStrategy', 'autoCreateDefault', 'autoDeleteDefault'].indexOf(value.key) > -1) {
+                if(['permalinkGenerationStrategy',
+                        'autoCreateDefault',
+                        'autoDeleteDefault',
+                        'useSystemProperties',
+                        'useFileProperties'].indexOf(value.key) > -1) {
                     result[value.key] = value;
                 }
             });
@@ -38,7 +42,6 @@ angular.module("blogApp")
                     id: property.id,
                     key: data.key,
                     value: data.value,
-                    lastModified: new Date(),
                     country: property.country
                 }
             ).then(function(response) {

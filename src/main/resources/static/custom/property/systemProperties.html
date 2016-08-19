@@ -182,6 +182,38 @@
                                     </span>
                                 </div>
                             </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    Use System Property Resource
+                                </div>
+                                <div class="col-lg-3">
+                                    <span class="green switch green ng-valid ng-not-empty"
+                                          ng-click="toggleProperty(specificProperties.useSystemProperties)"
+                                          ng-class="{ checked: (specificProperties.useSystemProperties.value == 'true'), disabled:undefined }"
+                                          ng-model="specificProperties.useSystemProperties.value">
+                                        <small></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    Use File Property Resource
+                                </div>
+                                <div class="col-lg-3">
+                                    <span class="green switch green ng-valid ng-not-empty"
+                                          ng-click="toggleProperty(specificProperties.useFileProperties)"
+                                          ng-class="{ checked: (specificProperties.useFileProperties.value == 'true'), disabled:undefined }"
+                                          ng-model="specificProperties.useFileProperties.value">
+                                        <small></small>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-disabled" ng-show="propertyLoadingProcess"><div class="loader-1"></div></div>

@@ -25,10 +25,12 @@ import java.util.stream.Collectors;
 public class PropertyServiceImpl implements PropertyService {
 
     private PropertyRepository propertyRepository;
+    private FilePropertiesHolder filePropertiesHolder;
 
     @Autowired
-    public PropertyServiceImpl(PropertyRepository propertyRepository) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, FilePropertiesHolder filePropertiesHolder) {
         this.propertyRepository = propertyRepository;
+        this.filePropertiesHolder = filePropertiesHolder;
     }
 
     @Override
@@ -113,11 +115,22 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public String getString(String key, String countryIsoCode, String defaultValue) {
 
+        //Try to find property in system properties (if configured)
+        Property useSystemProperties = countryIsoCode == null ? getProperty(CommonKeys.USE_SYSTEM_PROPERTIES) : getProperty(CommonKeys.USE_SYSTEM_PROPERTIES, countryIsoCode);
+        if(Boolean.valueOf(useSystemProperties.getValue())) {
+            String value = System.getProperty(key);
+            if(value != null) return value;
+        }
+
+        //Try to find property in file properties (if configured)
+        Property useFileProperties = countryIsoCode == null ? getProperty(CommonKeys.USE_FILE_PROPERTIES) : getProperty(CommonKeys.USE_FILE_PROPERTIES, countryIsoCode);
+        if(Boolean.valueOf(useFileProperties.getValue())) {
+            String value = filePropertiesHolder.getProperty(key);
+            if(value != null) return value;
+        }
 
         Property property = countryIsoCode == null ? getProperty(key) : getProperty(key, countryIsoCode);
         return property == null ? defaultValue : property.getValue();
-
-
     }
 
     @Override
