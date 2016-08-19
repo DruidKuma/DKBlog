@@ -1,5 +1,7 @@
 package com.druidkuma.blog.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
@@ -49,9 +51,11 @@ public class NormalizationUtil {
      */
     public static String normalizeUrlNameKey(String unnormalizedString) {
         // decompose special characters
-        String normalizedString = Normalizer.normalize(unnormalizedString, Normalizer.Form.NFD).toLowerCase();
+        String normalizedString = Normalizer.normalize(unnormalizedString, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
         // replace all non alpha numeric characters
-        return ALPHANUMERIC_URL_KEY_PATTERN.matcher(normalizedString).replaceAll("_");
+        String replacedPunctuation = ALPHANUMERIC_URL_KEY_PATTERN.matcher(normalizedString).replaceAll("_");
+
+        return StringUtils.strip(replacedPunctuation, "_").replaceAll("_+", "_");
     }
 
     /**

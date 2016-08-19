@@ -3,7 +3,7 @@ package com.druidkuma.blog.web;
 import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.exception.PermalinkExistsException;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
-import com.druidkuma.blog.util.NormalizationUtil;
+import com.druidkuma.blog.service.permalink.PermalinkGenerationService;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,12 +33,14 @@ public class BlogEntryResource {
     private BlogEntryService blogEntryService;
     private BlogEntryTransformer blogEntryTransformer;
     private CategoryTransformer categoryTransformer;
+    private PermalinkGenerationService permalinkGenerationService;
 
     @Autowired
-    public BlogEntryResource(CategoryTransformer categoryTransformer, BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer) {
-        this.categoryTransformer = categoryTransformer;
+    public BlogEntryResource(BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer, CategoryTransformer categoryTransformer, PermalinkGenerationService permalinkGenerationService) {
         this.blogEntryService = blogEntryService;
         this.blogEntryTransformer = blogEntryTransformer;
+        this.categoryTransformer = categoryTransformer;
+        this.permalinkGenerationService = permalinkGenerationService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -84,8 +87,14 @@ public class BlogEntryResource {
     }
 
     @RequestMapping(value = "/permalink", method = RequestMethod.POST)
-    public Map<String, String> generatePermalink(@RequestBody String blogTitle) {
-        return Collections.singletonMap("permalink", NormalizationUtil.normalizeUrlNameKey(blogTitle));
+    public Map<String, String> generatePermalink(@RequestBody BlogEntryInfoDto blogInfoDto,
+                                                 @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return Collections.singletonMap("permalink",
+                permalinkGenerationService.generatePermalink(
+                        blogInfoDto.getTitle(),
+                        blogInfoDto.getId(),
+                        blogInfoDto.getCreationDate() == null ? Instant.now() : blogInfoDto.getCreationDate(),
+                        currentCountryIso));
     }
 
     @RequestMapping(method = RequestMethod.POST)

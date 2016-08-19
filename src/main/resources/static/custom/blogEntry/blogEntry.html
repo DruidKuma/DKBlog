@@ -14,7 +14,7 @@
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                            <li><a href="#/entry/edit/{{postEntry.id}}"><i class="fa fa-edit"></i> Edit Post</a></li>
+                            <li><a href="/entry/edit/{{postEntry.id}}"><i class="fa fa-edit"></i> Edit Post</a></li>
                             <li ng-show="!postEntry.isPublished" ng-click="switchPublishStatus()"><a href><i class="fa fa-play"></i> Publish</a></li>
                             <li ng-show="postEntry.isPublished" ng-click="switchPublishStatus()"><a href><i class="fa fa-stop"></i> Unpublish</a></li>
                             <li class="divider"></li>

@@ -151,7 +151,7 @@ angular.module("blogApp")
         };
 
         $scope.generatePermalink = function() {
-            BlogEntry.generatePermalink($scope.postEntry.title).then(function(response) {
+            BlogEntry.generatePermalink($scope.postEntry.title, $scope.postEntry.id, $scope.postEntry.creationDate).then(function(response) {
                 $scope.postEntry.permalink = response.data.permalink;
             });
         };

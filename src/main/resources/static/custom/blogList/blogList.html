@@ -6,7 +6,7 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <a href="#/entry/edit/new" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">New Post</a>
+                <a href="/entry/edit/new" class="btn btn-purple btn-rounded w-md waves-effect waves-light m-b-20">New Post</a>
                 <button ng-click="resetBlogListFilter()"
                         ng-show="blogListFilter.filterChanged"
                         type="button"
@@ -62,7 +62,7 @@
                     <div class="label" ng-class="post.status ? 'label-success' : 'label-danger'">
                         {{post.status ? 'Published' : 'Not published'}}
                     </div>
-                    <h4 class="m-t-0 m-b-5"><a href="#/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | characters:28}}</a></h4>
+                    <h4 class="m-t-0 m-b-5"><a href="/entry/{{post.id}}" class="text-white" title="{{post.title}}">{{post.title | characters:28}}</a></h4>
 
                     <div class="m-b-20 font-13">
 
@@ -88,7 +88,7 @@
 
                     <div class="row">
                         <div class="col-lg-8 post-list-caption-holder">
-                            <a href="#/entry/{{post.id}}">
+                            <a href="/entry/{{post.id}}">
                                 <img ng-src="{{post.imageUrl}}" class="img-responsive post-list-caption" fallback-src loading-src>
                             </a>
                         </div>

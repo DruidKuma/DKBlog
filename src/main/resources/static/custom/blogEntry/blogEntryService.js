@@ -25,11 +25,15 @@ angular.module("blogApp").service('BlogEntry', ["$http", function($http) {
                 method: 'delete'
             })
         },
-        generatePermalink: function(blogTitle) {
+        generatePermalink: function(blogTitle, id, date) {
             return $http({
                 url: BASE_URL + "/api/blog/entry/permalink",
                 method: "post",
-                data: blogTitle
+                data: JSON.stringify({
+                    id: id,
+                    title: blogTitle,
+                    creationDate: date
+                })
             })
         },
         savePost: function(blogEntry) {

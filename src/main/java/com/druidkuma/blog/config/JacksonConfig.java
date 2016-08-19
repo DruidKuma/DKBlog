@@ -1,6 +1,11 @@
 package com.druidkuma.blog.config;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +32,14 @@ public class JacksonConfig {
             @Override
             public void serialize(Instant value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
                 gen.writeNumber(value.toEpochMilli());
+            }
+        });
+        mapperBuilder.deserializerByType(Instant.class, new JsonDeserializer<Instant>() {
+            @Override
+            public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+                ObjectCodec codec = p.getCodec();
+                Long millis = codec.readValue(p, Long.class);
+                return Instant.ofEpochMilli(millis);
             }
         });
         return mapperBuilder;

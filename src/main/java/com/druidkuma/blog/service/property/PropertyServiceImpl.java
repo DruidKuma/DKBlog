@@ -31,10 +31,6 @@ public class PropertyServiceImpl implements PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
-    private String extractValue(Property property) {
-        return property == null ? null : property.getValue();
-    }
-
     @Override
     public List<Property> getPropertyListForCountry(String countryIso) {
         return propertyRepository.findAllForCountryOrDefault(countryIso);
@@ -85,7 +81,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Property getProperty(String key, String countryIso) {
-        return getProperty(key, countryIso, getProperty(key));
+        return getProperty(key, countryIso, null);
     }
 
     @Override
@@ -106,18 +102,22 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public String getString(String key) {
-        return extractValue(getProperty(key));
+        return getString(key, null, null);
     }
 
     @Override
     public String getString(String key, String countryIso) {
-        return extractValue(getProperty(key, countryIso));
+        return getString(key, countryIso, null);
     }
 
     @Override
     public String getString(String key, String countryIsoCode, String defaultValue) {
-        String value = getString(key, countryIsoCode);
-        return value == null ? defaultValue : value;
+
+
+        Property property = countryIsoCode == null ? getProperty(key) : getProperty(key, countryIsoCode);
+        return property == null ? defaultValue : property.getValue();
+
+
     }
 
     @Override
@@ -142,7 +142,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<String> getStringList(String key, String countryIso, String separator, List<String> defaultValue) {
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         if(separator == null) separator = ",";
         return value == null ? defaultValue : Arrays.asList(value.split(separator));
     }
@@ -164,7 +164,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Integer getInteger(String key, String countryIso, Integer defaultValue) {
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         return value == null ? defaultValue : Integer.valueOf(value);
     }
 
@@ -185,7 +185,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Long getLong(String key, String countryIso, Long defaultValue) {
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         return value == null ? defaultValue : Long.valueOf(value);
     }
 
@@ -206,7 +206,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Double getDouble(String key, String countryIso, Double defaultValue) {
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         return value == null ? defaultValue : Double.valueOf(value);
     }
 
@@ -227,7 +227,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Boolean getBoolean(String key, String countryIso, Boolean defaultValue) {
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         return value == null ? defaultValue : Boolean.valueOf(value);
     }
 
@@ -249,7 +249,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Map<String, String> getStringMap(String key, String countryIso, Map<String, String> defaultValue, String separator) {
         if (separator == null) separator = ",";
-        String value = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String value = getString(key, countryIso);
         if(value == null) return defaultValue;
 
         Map<String, String> stringMap = Maps.newHashMap();
@@ -308,7 +308,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @SneakyThrows
     public <T> T getJSON(String key, String countryIso, Class<T> type, T defaultValue) {
-        String jsonString = countryIso == null ? extractValue(getProperty(key)) : extractValue(getProperty(key, countryIso));
+        String jsonString = getString(key, countryIso);
         return jsonString == null ? defaultValue : new ObjectMapper().readValue(jsonString, type);
     }
 }
