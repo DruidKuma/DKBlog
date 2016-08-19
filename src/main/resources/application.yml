@@ -15,3 +15,6 @@ spring:
     password: postgres
 server:
   port: 8081
+
+properties:
+  filenames: classpath:application.yml
