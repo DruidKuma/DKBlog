@@ -399,3 +399,21 @@ button.btn.extra-small {
 .permalink-config div.panel-collapse div.portlet-body div.row p small {
     word-break: break-all;
 }
+
+.i18n-dropdown-toggle {
+    font-size: 21px;
+    margin-right: 10px;
+}
+
+.i18n-portlet {
+    min-height: 500px;
+}
+
+.i18n-country {
+    display: inline-block;
+    font-size: 30px;
+}
+
+.i18n-widget {
+    font-size: 15px;
+}
