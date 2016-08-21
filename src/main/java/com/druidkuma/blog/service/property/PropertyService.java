@@ -18,6 +18,8 @@ public interface PropertyService {
     void saveProperty(Property property);
     void deleteProperty(Long id);
     void makeDefaultPropertyById(Long id);
+    Map<String,Object> getAllFileProperties();
+    Map<String,String> getAllSystemProperties();
 
     /**
      * Property object

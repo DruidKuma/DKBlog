@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -67,5 +68,15 @@ public class PropertyResource {
         property.setId(null);
         property.setCountry(countryService.getCountryByIsoCode(currentCountryIso));
         propertyService.saveProperty(property);
+    }
+
+    @RequestMapping(value = "/file/all", method = RequestMethod.GET)
+    public Map<String, Object> getAllFileProperties() {
+        return propertyService.getAllFileProperties();
+    }
+
+    @RequestMapping(value = "/system/all", method = RequestMethod.GET)
+    public Map<String, String> getAllSystemProperties() {
+        return propertyService.getAllSystemProperties();
     }
 }

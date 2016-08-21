@@ -77,6 +77,17 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
+    public Map<String, Object> getAllFileProperties() {
+        return filePropertiesHolder.getProperties();
+    }
+
+    @Override
+    public Map<String, String> getAllSystemProperties() {
+        //TODO
+        return null;
+    }
+
+    @Override
     public Property getProperty(String key) {
         return propertyRepository.findByKeyAndCountryIsNull(key);
     }
