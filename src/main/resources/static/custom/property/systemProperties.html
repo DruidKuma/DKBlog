@@ -189,13 +189,16 @@
                                 <div class="col-lg-9">
                                     Use System Property Resource
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <span class="green switch green ng-valid ng-not-empty"
                                           ng-click="toggleProperty(specificProperties.useSystemProperties)"
                                           ng-class="{ checked: (specificProperties.useSystemProperties.value == 'true'), disabled:undefined }"
                                           ng-model="specificProperties.useSystemProperties.value">
                                         <small></small>
                                     </span>
+                                </div>
+                                <div class="col-lg-1">
+                                    <button class="btn btn-info btn-xs btn-circle" title="Show all properties" ng-click="openSystemPropertyList()"><i class="fa fa-list"></i></button>
                                 </div>
                             </div>
 
@@ -205,13 +208,16 @@
                                 <div class="col-lg-9">
                                     Use File Property Resource
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <span class="green switch green ng-valid ng-not-empty"
                                           ng-click="toggleProperty(specificProperties.useFileProperties)"
                                           ng-class="{ checked: (specificProperties.useFileProperties.value == 'true'), disabled:undefined }"
                                           ng-model="specificProperties.useFileProperties.value">
                                         <small></small>
                                     </span>
+                                </div>
+                                <div class="col-lg-1">
+                                    <button class="btn btn-info btn-xs btn-circle" title="Show all properties" ng-click="openFilePropertyList()"><i class="fa fa-list"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -222,3 +228,34 @@
         </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="propertyListModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Property List</h3>
+    </div>
+    <div class="modal-body">
+
+        <div class="container">
+            <div class="col-lg-12">
+                <table class="table table-striped m-0" style="word-break: break-all">
+                    <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(key, value) in propertyList">
+                        <td width="40%">{{key}}</td>
+                        <td width="60%">{{value}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" type="button" ng-click="$dismiss('cancel')">OK</button>
+    </div>
+</script>

@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,8 +84,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Map<String, String> getAllSystemProperties() {
-        //TODO
-        return null;
+        Map<String, String> result = Maps.newHashMap();
+        for (String key : System.getProperties().stringPropertyNames()) {
+            result.put(key, System.getProperty(key));
+        }
+        return result;
     }
 
     @Override

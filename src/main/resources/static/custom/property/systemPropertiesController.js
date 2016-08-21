@@ -2,7 +2,7 @@
  * Created by DruidKuma on 8/15/16.
  */
 angular.module("blogApp")
-    .controller('SystemPropertiesController',['$scope', 'Property', function($scope, Property) {
+    .controller('SystemPropertiesController',['$scope', 'Property', '$uibModal', function($scope, Property, $uibModal) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "System Properties";
@@ -120,6 +120,28 @@ angular.module("blogApp")
         $scope.toggleProperty = function(property) {
             property.value = property.value == 'true' ? 'false' : 'true';
             $scope.updateProperty(property);
+        };
+        
+        $scope.openSystemPropertyList = function() {
+            Property.systemProperties().then(function(response) {
+                $scope.showPropertyList(response.data);
+            }, function(error) {$scope.showError()});
+        };
+
+        $scope.openFilePropertyList = function() {
+            Property.fileProperties().then(function(response) {
+                $scope.showPropertyList(response.data);
+            }, function(error) {$scope.showError()});
+        };
+        
+        $scope.showPropertyList = function(properties) {
+            $scope.propertyList = properties;
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'propertyListModal.html',
+                size: 'lg',
+                scope: $scope
+            });
         };
 
         $scope.loadProperties();

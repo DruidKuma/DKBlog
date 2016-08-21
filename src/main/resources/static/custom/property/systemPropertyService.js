@@ -42,6 +42,18 @@ angular.module("blogApp").service('Property', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(property)
             })
+        },
+        systemProperties: function() {
+            return $http({
+                url: API_PROPERTY_URL + "/system/all",
+                method: "get"
+            })
+        },
+        fileProperties: function() {
+            return $http({
+                url: API_PROPERTY_URL + "/file/all",
+                method: "get"
+            })
         }
     }
 }]);
