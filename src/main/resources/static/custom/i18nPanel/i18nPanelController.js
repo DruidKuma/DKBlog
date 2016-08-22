@@ -7,6 +7,9 @@ angular.module("blogApp")
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "I18N Panel";
         });
+        $scope.$on('countryChanged', function(event, data) {
+            $scope.loadPanelView();
+        });
         $scope.targetCountry = $scope.currentCountry;
         $scope.translationLoading = false;
 
@@ -42,7 +45,14 @@ angular.module("blogApp")
         };
 
         $scope.saveTranslation = function(data, translation) {
-
+            I18NService.saveTranslation({
+                group: $scope.chosenGroupParts.join('.'),
+                key: data.key,
+                value: data.target,
+                countryIso: $scope.targetCountry.isoCode
+            }).then(function(response) {
+                translation.lastModified = new Date();
+            }, function(error) { $scope.showError() })
         };
 
         $scope.removeTranslation = function(translation) {

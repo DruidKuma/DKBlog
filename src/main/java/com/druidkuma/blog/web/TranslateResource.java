@@ -3,6 +3,7 @@ package com.druidkuma.blog.web;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.i18n.TranslationService;
+import com.druidkuma.blog.web.dto.NewTranslationDto;
 import com.druidkuma.blog.web.dto.TranslatePanelDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Lists;
@@ -65,6 +66,12 @@ public class TranslateResource {
     public TranslatePanelDto getTopLevelTranslatePanelDto(@PathVariable("targetCountry") String targetCountry) {
         List<String> groupNames = translationService.getChildGroupNames(null);
         return TranslatePanelDto.builder().groups(groupNames).translations(Lists.newArrayList()).build();
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public void saveTranslation(@RequestBody NewTranslationDto newTranslationDto) {
+        //TODO
+        System.out.println("Implement me!");
     }
 
 }

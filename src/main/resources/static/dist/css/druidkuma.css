@@ -410,9 +410,19 @@ button.btn.extra-small {
     min-height: 500px;
 }
 
-.i18n-country {
+.country-block.i18n-country {
     display: inline-block;
     font-size: 30px;
+}
+
+.country-block.i18n-country ul {
+    left: unset;
+    right: 0;
+    width: 350%;
+}
+
+.country-block.i18n-country ul li {
+    padding: 5px;
 }
 
 .i18n-widget {

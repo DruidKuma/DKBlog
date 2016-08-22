@@ -21,6 +21,11 @@
                                 <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Download in TSV</a></li>
                                 <li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Download in XLS</a></li>
                                 <li class="divider"></li>
+                                <li><a href="#"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in CSV</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in TSV</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>
+                                <li class="divider"></li>
                                 <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for current
                                     destination country (Russian)</a></li>
                                 <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for all countries
@@ -41,7 +46,7 @@
 
                             Target:
 
-                            <div class="i18n-country" uib-dropdown>
+                            <div class="country-block i18n-country" uib-dropdown>
                                 <a href class="dropdown-toggle card-drop" aria-expanded="false" uib-dropdown-toggle>
                                     <i class="flag-icon flag-icon-{{targetCountry.isoCode | lowercase}}"></i>
                                 </a>
@@ -100,13 +105,15 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" ng-show="chosenGroupParts.length">
                                 <div class="col-lg-12">
                                     <div class="panel panel-custom panel-border">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">Translations
-                                                <button class="btn btn-success extra-small i18n-add-button btn-circle" ng-click="addNewTranslation()"><i
-                                                        class="fa fa-plus"></i></button>
+                                                <button class="btn btn-success extra-small i18n-add-button btn-circle"
+                                                        ng-click="addNewTranslation()">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
