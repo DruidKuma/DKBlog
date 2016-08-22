@@ -424,3 +424,12 @@ button.btn.extra-small {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.i18n-counterup {
+    border: 1px solid rgba(255, 255, 255, 0.23);
+}
+
+.i18n-nested-groups span {
+    font-size: 100%;
+    cursor: pointer;
+}
