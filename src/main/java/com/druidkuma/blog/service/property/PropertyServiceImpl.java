@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +102,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Property getProperty(String key, String countryIso, Property defaultValue) {
+        if(countryIso == null) return defaultValue;
         Property property = propertyRepository.findByKeyAndCountry_IsoAlpha2Code(key, countryIso);
         return property != null ? property : defaultValue;
     }
@@ -131,20 +131,20 @@ public class PropertyServiceImpl implements PropertyService {
     public String getString(String key, String countryIsoCode, String defaultValue) {
 
         //Try to find property in system properties (if configured)
-        Property useSystemProperties = countryIsoCode == null ? getProperty(CommonKeys.USE_SYSTEM_PROPERTIES) : getProperty(CommonKeys.USE_SYSTEM_PROPERTIES, countryIsoCode);
+        Property useSystemProperties = getProperty(CommonKeys.USE_SYSTEM_PROPERTIES, countryIsoCode, getProperty(CommonKeys.USE_SYSTEM_PROPERTIES));
         if(Boolean.valueOf(useSystemProperties.getValue())) {
             String value = System.getProperty(key);
             if(value != null) return value;
         }
 
         //Try to find property in file properties (if configured)
-        Property useFileProperties = countryIsoCode == null ? getProperty(CommonKeys.USE_FILE_PROPERTIES) : getProperty(CommonKeys.USE_FILE_PROPERTIES, countryIsoCode);
+        Property useFileProperties = getProperty(CommonKeys.USE_FILE_PROPERTIES, countryIsoCode, getProperty(CommonKeys.USE_FILE_PROPERTIES));
         if(Boolean.valueOf(useFileProperties.getValue())) {
             String value = filePropertiesHolder.getProperty(key);
             if(value != null) return value;
         }
 
-        Property property = countryIsoCode == null ? getProperty(key) : getProperty(key, countryIsoCode);
+        Property property = getProperty(key, countryIsoCode, getProperty(key));
         return property == null ? defaultValue : property.getValue();
     }
 

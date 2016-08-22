@@ -40,7 +40,8 @@ public class PermalinkGenerationService {
 
 
     public String generatePermalink(String blogEntryTitle, Long blogEntryId, Instant creationDate, String countryIso) {
-        String generationStrategyName = propertyService.getString(CommonKeys.PERMALINK_GENERATION_STRATEGY, countryIso, "default");
+        String generationStrategyName = propertyService.getString(CommonKeys.PERMALINK_GENERATION_STRATEGY, countryIso,
+                propertyService.getString(CommonKeys.PERMALINK_GENERATION_STRATEGY));
         PermalinkGenerationStrategy generationStrategy = strategies.get(generationStrategyName);
         if(generationStrategy == null) throw new PermalinkStrategyNotFoundException(generationStrategyName);
 
