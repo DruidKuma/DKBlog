@@ -417,3 +417,10 @@ button.btn.extra-small {
 .i18n-widget {
     font-size: 15px;
 }
+
+.i18n-chosen-part:hover {
+    background-color: rgba(70, 70, 70, 0.83);
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
