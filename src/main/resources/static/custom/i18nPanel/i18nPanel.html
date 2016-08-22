@@ -7,9 +7,10 @@
                 <div class="portlet i18n-portlet">
                     <div class="portlet-heading bg-primary">
 
-                        <button class="btn btn-xs btn-danger btn-circle pull-left" ng-click="resetFilter()" ng-show="chosenGroupParts.length"><i class="fa fa-times"></i></button>
+                        <button class="btn btn-xs btn-danger btn-circle pull-left" ng-click="resetFilter()"
+                                ng-show="chosenGroupParts.length"><i class="fa fa-times"></i></button>
                         <div class="dropdown pull-left" uib-dropdown>
-                            <a class="i18n-dropdown-toggle" uib-dropdown-toggle><i class="zmdi zmdi-more-vert"></i></a>
+                            <a class="i18n-dropdown-toggle" uib-dropdown-toggle><i class="zmdi zmdi-attachment"></i></a>
 
                             <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
                                 <li><a href="#"><i class="zmdi zmdi-translate"></i> Translate via Yandex API</a></li>
@@ -20,8 +21,10 @@
                                 <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Download in TSV</a></li>
                                 <li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Download in XLS</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for current destination country (Russian)</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for all countries (except current)</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for current
+                                    destination country (Russian)</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for all countries
+                                    (except current)</a></li>
                             </ul>
                         </div>
                         <h3 class="portlet-title">
@@ -33,6 +36,7 @@
                             </span>
 
                         </h3>
+
                         <div class="portlet-widgets i18n-widget">
 
                             Target:
@@ -42,7 +46,8 @@
                                     <i class="flag-icon flag-icon-{{targetCountry.isoCode | lowercase}}"></i>
                                 </a>
                                 <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                                    <li ng-repeat="country in availableCountries" ng-click="changeTargetCountry(country)">
+                                    <li ng-repeat="country in availableCountries"
+                                        ng-click="changeTargetCountry(country)">
                                         <a href>
                                             <i class="flag-icon flag-icon-{{country.isoCode | lowercase}}"></i>
                                             <span class="country-name">{{country.name}}</span>
@@ -60,7 +65,8 @@
                             <div class="col-lg-6">
                                 <div class="card-box widget-user i18n-counterup">
                                     <div class="text-center">
-                                        <h2 class="text-custom" count-to="10" value="0" duration="0.5"></h2>
+                                        <h2 class="text-custom" count-to="{{currentGroupView.groups.length}}" value="0"
+                                            duration="0.5"></h2>
                                         <h5>Groups</h5>
                                     </div>
                                 </div>
@@ -69,7 +75,8 @@
                             <div class="col-lg-6">
                                 <div class="card-box widget-user i18n-counterup">
                                     <div class="text-center">
-                                        <h2 class="text-custom" count-to="10" value="0" duration="0.5"></h2>
+                                        <h2 class="text-custom" count-to="{{currentGroupView.translations.length}}"
+                                            value="0" duration="0.5"></h2>
                                         <h5>Properties</h5>
                                     </div>
                                 </div>
@@ -78,33 +85,86 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-custom panel-border">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Nested Groups</h3>
+                                        <h3 class="panel-title">Nested Groups
+                                            <button class="btn btn-success extra-small i18n-add-button btn-circle"><i
+                                                    class="fa fa-plus"></i></button>
+                                        </h3>
                                     </div>
                                     <div class="panel-body">
                                         <p class="i18n-nested-groups">
-                                            <span class="label label-inverse">sidebar</span>
-                                            <span class="label label-inverse">menu</span>
-                                            <span class="label label-inverse">pizda</span>
+                                            <span class="label label-inverse"
+                                                  ng-repeat="group in currentGroupView.groups"
+                                                  ng-click="openGroup(group)">{{group}}</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
-                                <div class="panel panel-custom panel-border">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Translations</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p>
-                                            Lorem ipsdoshgakjfhblakjfblahbvklbkjh
-                                        </p>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-custom panel-border">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Translations
+                                                <button class="btn btn-success extra-small i18n-add-button btn-circle" ng-click="addNewTranslation()"><i
+                                                        class="fa fa-plus"></i></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="table m-b-0" id="translationsTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Translation Key</th>
+                                                    <th width="25%">Source</th>
+                                                    <th width="25%">Target</th>
+                                                    <th>Last modified</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="translation in currentGroupView.translations">
+                                                    <td>
+                                                    <span editable-text="translation.key" e-name="key" e-form="translationForm"
+                                                          e-ng-disabled="!inserted.new">
+                                                        {{translation.key}}
+                                                    </span>
+                                                    </td>
+                                                    <td>{{translation.src}}</td>
+                                                    <td>
+                                                    <span editable-text="translation.target" e-name="target" e-form="translationForm"
+                                                          style="word-break: break-all">
+                                                        {{translation.target}}
+                                                    </span>
+                                                    </td>
+                                                    <td>{{translation.lastModified | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                                                    <td class="actions">
+                                                        <!-- form -->
+                                                        <form editable-form name="translationForm"
+                                                              onbeforesave="saveTranslation($data, translation)"
+                                                              ng-show="translationForm.$visible" shown="inserted == translation">
+                                                            <a href class="text-success" ng-disabled="translationForm.$waiting"
+                                                               ng-click="translationForm.$submit()"><i class="fa fa-save"></i></a>
+                                                            <a href class="text-danger" ng-disabled="translationForm.$waiting"
+                                                               ng-click="cancelFormEditing(translationForm)"><i
+                                                                    class="fa fa-times"></i></a>
+                                                        </form>
+                                                        <div class="buttons" ng-show="!translationForm.$visible">
+                                                            <a href class="text-success" ng-click="translationForm.$show()"><i
+                                                                    class="fa fa-pencil"></i></a>
+                                                            <a href class="text-danger" ng-click="removeTranslation(translation)"><i
+                                                                    class="fa fa-trash-o"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="panel-disabled" ng-show="false"><div class="loader-1"></div></div>
+                        <div class="panel-disabled" ng-show="false">
+                            <div class="loader-1"></div>
+                        </div>
                     </div>
                 </div>
 

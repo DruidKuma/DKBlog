@@ -403,6 +403,7 @@ button.btn.extra-small {
 .i18n-dropdown-toggle {
     font-size: 21px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .i18n-portlet {
@@ -432,4 +433,10 @@ button.btn.extra-small {
 .i18n-nested-groups span {
     font-size: 100%;
     cursor: pointer;
+    margin: 5px;
+}
+
+.btn.i18n-add-button i {
+    font-size: 13px;
+    margin-top: -3px;
 }

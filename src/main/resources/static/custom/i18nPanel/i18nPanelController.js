@@ -14,28 +14,37 @@ angular.module("blogApp")
 
         $scope.currentGroupView = {
             groups: ['links', 'labels', 'siska', 'sosiska'],
-            translations: {
-                firstTranslation: {
+            translations: [
+                {
+                    key: 'firstTranslation',
                     src: 'Source',
-                    target: 'Target Translation'
+                    target: 'Target Translation',
+                    lastModified: new Date()
                 },
-                secondTranslation: {
+                {
+                    key: 'secondTranslation',
                     src: 'Siska',
-                    target: 'Sosiska'
+                    target: 'Sosiska',
+                    lastModified: new Date()
                 },
-                thirdTranslation: {
+                {
+                    key: 'thirdTranslation',
                     src: 'Piska',
-                    target: 'Pipiska'
+                    target: 'Pipiska',
+                    lastModified: new Date()
                 },
-                fourthTranslation: {
+                {
+                    key: 'fourthTranslation',
                     src: 'Java',
-                    target: 'Python'
-                },
-                fifthTranslation: {
+                    target: 'Python',
+                    lastModified: new Date()
+                },{
+                    key: 'fifthTranslation',
                     src: 'Light',
-                    target: 'Dark SIDE...'
+                    target: 'Dark SIDE...',
+                    lastModified: new Date()
                 }
-            }
+            ]
         };
 
         $scope.changeTargetCountry = function(country) {
@@ -48,6 +57,42 @@ angular.module("blogApp")
 
         $scope.removeGroupParts = function(index) {
             $scope.chosenGroupParts.splice(index+1, $scope.chosenGroupParts.length);
+        };
+
+        $scope.openGroup = function(group) {
+            $scope.chosenGroupParts.push(group);
+        };
+
+        $scope.saveTranslation = function(data, translation) {
+
+        };
+
+        $scope.removeTranslation = function(translation) {
+            $scope.executeWithWarning("Are you sure?",
+                "This action will delete this translation key with all translations and can influence the work of the whole application!",
+                "Yes, delete it!",
+                function() {
+                    console.log('Implement me');
+                });
+        };
+
+        $scope.addNewTranslation = function() {
+            $scope.inserted = {
+                key: '',
+                src: '',
+                target: '',
+                lastModified: new Date(),
+                new: true
+            };
+            $scope.currentGroupView.translations.push($scope.inserted);
+        };
+
+        $scope.cancelFormEditing = function(form) {
+            form.$cancel();
+            if($scope.inserted) {
+                $scope.currentGroupView.translations.pop();
+            }
+            delete $scope.inserted;
         };
 
     }]);
