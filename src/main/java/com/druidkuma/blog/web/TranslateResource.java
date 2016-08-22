@@ -1,19 +1,16 @@
 package com.druidkuma.blog.web;
 
-import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import com.druidkuma.blog.domain.i18n.Translation;
+import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.TranslatePanelDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author DruidKuma
@@ -24,10 +21,12 @@ import java.util.stream.Collectors;
 public class TranslateResource {
 
     private TranslationService translationService;
+    private CountryService countryService;
 
     @Autowired
-    public TranslateResource(TranslationService translationService) {
+    public TranslateResource(TranslationService translationService, CountryService countryService) {
         this.translationService = translationService;
+        this.countryService = countryService;
     }
 
     @RequestMapping(value = "/translate/{part}/{lang}", method = RequestMethod.GET)
@@ -40,51 +39,32 @@ public class TranslateResource {
         return translationService.getForKeyAndLanguageIso(key, langIso);
     }
 
-    @RequestMapping(value = "/panel/{langFrom}/{langTo}/{groupKey}")
-    public Map<String, Object> getDataForTranslationPanel(@PathVariable("langFrom") String langFrom,
-                                                          @PathVariable("langTo") String langTo,
-                                                          @PathVariable("groupKey") String groupKey) {
-        Map<String, Object> menu = Maps.newHashMap();
-        menu.put("allPosts", "AllPosts");
-        menu.put("i18nPanel", "I18N Panel");
-        menu.put("dashboard", "Dashboard");
-
-        Map<String, Object> sidebar = Maps.newHashMap();
-        sidebar.put("menu", menu);
-        sidebar.put("switcher", "Country Switcher");
-        sidebar.put("Siska", "Sosiska");
-
-        Map<String, Object> home = Maps.newHashMap();
-        home.put("sidebar", sidebar);
-
-        return home;
+    @RequestMapping(value = "/panel/{targetCountry}/{groupName:.+}", method = RequestMethod.GET)
+    public TranslatePanelDto getTranslatePanelDto(@PathVariable("targetCountry") String targetCountry,
+                                                  @PathVariable("groupName") String groupName,
+                                                  @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        List<String> groupNames = translationService.getChildGroupNames(groupName);
+        List<TranslatePanelDto.TPTranslation> translations = Lists.newArrayList();
+        Map<String, Translation> sourceTranslations = translationService.getTranslationsFromDb(groupName,
+                countryService.getCountryByIsoCode(currentCountryIso).getDefaultLanguage().getIsoCode());
+        Map<String, Translation> targetTranslations = translationService.getTranslationsFromDb(groupName,
+                countryService.getCountryByIsoCode(targetCountry).getDefaultLanguage().getIsoCode());
+        for (String key : translationService.getTranslationKeysForGroup(groupName)) {
+            TranslatePanelDto.TPTranslation translation = TranslatePanelDto.TPTranslation.builder().key(key).build();
+            if(sourceTranslations.get(key) != null) translation.setSrc(sourceTranslations.get(key).getValue());
+            if(targetTranslations.get(key) != null) {
+                translation.setTarget(targetTranslations.get(key).getValue());
+                translation.setLastModified(targetTranslations.get(key).getLastModified());
+            }
+            translations.add(translation);
+        }
+        return TranslatePanelDto.builder().groups(groupNames).translations(translations).build();
     }
 
-    @RequestMapping(value = "/panel/data/{langFrom}/{langTo}/{groupKey}")
-    public TranslatePanelDto getData(@PathVariable("langFrom") String langFrom, @PathVariable("langTo") String langTo, @PathVariable("groupKey") String groupKey) {
-        TranslationGroup translationGroup = translationService.resolveTranslationGroup(groupKey);
-        return TranslatePanelDto
-                .builder()
-                .displayName(groupKey)
-                .translations(translationService.getTranslationsFromDb(translationGroup, "en"))
-                .groupId(translationGroup.getId())
-                .childGroupNames(translationGroup.getChildGroups().stream().map(TranslationGroup::getName).collect(Collectors.toList()))
-                .build();
+    @RequestMapping(value = "/panel/{targetCountry}", method = RequestMethod.GET)
+    public TranslatePanelDto getTopLevelTranslatePanelDto(@PathVariable("targetCountry") String targetCountry) {
+        List<String> groupNames = translationService.getChildGroupNames(null);
+        return TranslatePanelDto.builder().groups(groupNames).translations(Lists.newArrayList()).build();
     }
-
-    @RequestMapping(value = "/panel/names/{parentGroupKey}", method = RequestMethod.GET)
-    public List<String> getGroupNames(@PathVariable("parentGroupKey") String parentGroupKey) {
-        return translationService.resolveTranslationGroup(parentGroupKey).getChildGroups().stream()
-                .map(TranslationGroup::getName)
-                .collect(Collectors.toList());
-    }
-
-    @RequestMapping(value = "/panel/names", method = RequestMethod.GET)
-    public List<String> getGroupNames() {
-        return translationService.getTopLevelTranslationGroups().stream()
-                .map(TranslationGroup::getName)
-                .collect(Collectors.toList());
-    }
-
 
 }

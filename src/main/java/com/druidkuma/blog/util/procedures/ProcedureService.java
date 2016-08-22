@@ -9,4 +9,5 @@ package com.druidkuma.blog.util.procedures;
  */
 public interface ProcedureService {
     void createRandomBlogEntryCountryMappings();
+    Long resolveTranslationGroup(String groupNameKey);
 }

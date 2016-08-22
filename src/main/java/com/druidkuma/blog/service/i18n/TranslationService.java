@@ -23,8 +23,14 @@ public interface TranslationService {
     Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode);
     Map<String, Object> getTranslationsForGroup(String groupNameKey, String languageIsoCode, Boolean strictResolve);
     List<Translation> getTranslationsFromDb(TranslationGroup translationGroup, String languageIsoCode);
+
+    Map<String, Translation> getTranslationsFromDb(String groupName, String languageIsoCode);
+
     TranslationGroup resolveTranslationGroup(String groupNameKey);
     List<TranslationGroup> getTopLevelTranslationGroups();
     TranslationDto getForKeyAndLanguageIso(String key, String langIso);
     Language getLanguageByIsoCode(String isoCode);
+
+    List<String> getChildGroupNames(String groupNameKey);
+    List<String> getTranslationKeysForGroup(String groupNameKey);
 }

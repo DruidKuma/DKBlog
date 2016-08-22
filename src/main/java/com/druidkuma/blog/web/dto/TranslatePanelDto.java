@@ -1,8 +1,8 @@
 package com.druidkuma.blog.web.dto;
 
-import com.druidkuma.blog.domain.i18n.Translation;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -18,8 +18,18 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class TranslatePanelDto {
-    private Long groupId;
-    private String displayName;
-    private List<String> childGroupNames;
-    private List<Translation> translations;
+    private List<String> groups;
+    private List<TPTranslation> translations;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class TPTranslation {
+        private String key;
+        private String src;
+        private String target;
+        private Instant lastModified;
+    }
 }

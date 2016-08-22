@@ -8,59 +8,37 @@ angular.module("blogApp")
             $scope.pageHeading.title = "I18N Panel";
         });
         $scope.targetCountry = $scope.currentCountry;
+        $scope.translationLoading = false;
 
 
-        $scope.chosenGroupParts = ['layout', 'sidebar', 'menu'];
+        $scope.chosenGroupParts = [];
 
-        $scope.currentGroupView = {
-            groups: ['links', 'labels', 'siska', 'sosiska'],
-            translations: [
-                {
-                    key: 'firstTranslation',
-                    src: 'Source',
-                    target: 'Target Translation',
-                    lastModified: new Date()
-                },
-                {
-                    key: 'secondTranslation',
-                    src: 'Siska',
-                    target: 'Sosiska',
-                    lastModified: new Date()
-                },
-                {
-                    key: 'thirdTranslation',
-                    src: 'Piska',
-                    target: 'Pipiska',
-                    lastModified: new Date()
-                },
-                {
-                    key: 'fourthTranslation',
-                    src: 'Java',
-                    target: 'Python',
-                    lastModified: new Date()
-                },{
-                    key: 'fifthTranslation',
-                    src: 'Light',
-                    target: 'Dark SIDE...',
-                    lastModified: new Date()
-                }
-            ]
+        $scope.loadPanelView = function() {
+            $scope.translationLoading = true;
+            I18NService.getTranslationPanelView($scope.chosenGroupParts.join('.'), $scope.targetCountry.isoCode).then(function(response) {
+                $scope.currentGroupView = response.data;
+                $scope.translationLoading = false;
+            }, function(error) { $scope.showError() });
         };
 
         $scope.changeTargetCountry = function(country) {
             $scope.targetCountry = country;
+            $scope.loadPanelView();
         };
 
         $scope.resetFilter = function() {
             $scope.chosenGroupParts = [];
+            $scope.loadPanelView();
         };
 
         $scope.removeGroupParts = function(index) {
             $scope.chosenGroupParts.splice(index+1, $scope.chosenGroupParts.length);
+            $scope.loadPanelView();
         };
 
         $scope.openGroup = function(group) {
             $scope.chosenGroupParts.push(group);
+            $scope.loadPanelView();
         };
 
         $scope.saveTranslation = function(data, translation) {
@@ -95,4 +73,5 @@ angular.module("blogApp")
             delete $scope.inserted;
         };
 
+        $scope.loadPanelView();
     }]);
