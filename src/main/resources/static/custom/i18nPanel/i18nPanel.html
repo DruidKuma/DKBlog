@@ -7,6 +7,7 @@
                 <div class="portlet i18n-portlet">
                     <div class="portlet-heading bg-primary">
 
+                        <button class="btn btn-xs btn-danger btn-circle pull-left" ng-click="resetFilter()" ng-show="chosenGroupParts.length"><i class="fa fa-times"></i></button>
                         <div class="dropdown pull-left" uib-dropdown>
                             <a class="i18n-dropdown-toggle" uib-dropdown-toggle><i class="zmdi zmdi-more-vert"></i></a>
 
@@ -24,9 +25,13 @@
                             </ul>
                         </div>
                         <h3 class="portlet-title">
-                            <span class="i18n-chosen-part" ng-repeat="part in chosenGroupParts">
-                                {{part}}.
+                            <span ng-repeat="part in chosenGroupParts">
+                                <span class="i18n-chosen-part">
+                                {{part}}
+                                </span>
+                                <span ng-if="!$last">.</span>
                             </span>
+
                         </h3>
                         <div class="portlet-widgets i18n-widget">
 
@@ -34,10 +39,10 @@
 
                             <div class="i18n-country" uib-dropdown>
                                 <a href class="dropdown-toggle card-drop" aria-expanded="false" uib-dropdown-toggle>
-                                    <i class="flag-icon flag-icon-{{currentCountry.isoCode | lowercase}}"></i>
+                                    <i class="flag-icon flag-icon-{{targetCountry.isoCode | lowercase}}"></i>
                                 </a>
                                 <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                                    <li ng-repeat="country in availableCountries" ng-click="changeLanguage(country)">
+                                    <li ng-repeat="country in availableCountries" ng-click="changeTargetCountry(country)">
                                         <a href>
                                             <i class="flag-icon flag-icon-{{country.isoCode | lowercase}}"></i>
                                             <span class="country-name">{{country.name}}</span>
