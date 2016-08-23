@@ -6,6 +6,7 @@ import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import com.druidkuma.blog.web.dto.SimplePaginationFilter;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -100,6 +101,14 @@ public class PropertyResource {
         Integer page = paginationFilter.getCurrentPage() - 1;
         Integer pageSize = paginationFilter.getEntriesOnPage();
 
-        return new PageRequest(page, pageSize, Sort.Direction.DESC, "lastModified");
+        String[] sort;
+        if(StringUtils.isBlank(paginationFilter.getSort()) || paginationFilter.getSort().split(" ").length != 2) {
+            sort = "lastModified DESC".split(" ");
+        }
+        else {
+            sort = paginationFilter.getSort().split(" ");
+        }
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        return new PageRequest(page, pageSize, direction, sort[0]);
     }
 }

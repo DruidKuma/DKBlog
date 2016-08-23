@@ -13,14 +13,22 @@ angular.module("blogApp")
 
         $scope.propertiesFilter = {
             search: '',
+            sort: '',
             currentPage: 1,
-            entriesOnPage: 3,
+            entriesOnPage: 10,
             totalItems: 0
         };
 
         $scope.resetPaginationAndReload = function() {
             $scope.propertiesFilter.currentPage = 1;
             $scope.propertiesFilter.totalItems = 0;
+            $scope.loadProperties();
+        };
+
+        $scope.changePropertySort = function(sortField) {
+            if($scope.propertiesFilter.sort == sortField + ' ASC') $scope.propertiesFilter.sort = sortField + ' DESC';
+            else if ($scope.propertiesFilter.sort == sortField + ' DESC') $scope.propertiesFilter.sort = '';
+            else $scope.propertiesFilter.sort = sortField + ' ASC';
             $scope.loadProperties();
         };
 

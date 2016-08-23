@@ -50,9 +50,17 @@
                                    tooltip-class="customTooltip"
                                    uib-tooltip="Check sign indicates that there is no specific property for such key in current country and default value is taken"></i>
                             </th>
-                            <th>Property Key</th>
+                            <th>
+                                <span class="dk-table-sortable" ng-click="changePropertySort('key')">Property Key
+                                    <i class="fa fa-sort" ng-class="{'fa-sort-asc' : (propertiesFilter.sort == 'key ASC'), 'fa-sort-desc' : (propertiesFilter.sort == 'key DESC')}"></i>
+                                </span>
+                            </th>
                             <th width="50%">Property Value</th>
-                            <th>Last Modified</th>
+                            <th>
+                                <span class="dk-table-sortable" ng-click="changePropertySort('lastModified')">Last Modified
+                                    <i class="fa fa-sort" ng-class="{'fa-sort-asc' : (propertiesFilter.sort == 'lastModified ASC'), 'fa-sort-desc' : (propertiesFilter.sort == 'lastModified DESC')}"></i>
+                                </span>
+                            </th>
                             <th>Actions</th>
                         </tr>
                         </thead>
