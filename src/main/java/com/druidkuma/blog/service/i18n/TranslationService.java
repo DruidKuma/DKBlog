@@ -35,4 +35,6 @@ public interface TranslationService {
 
     List<String> getChildGroupNames(String groupNameKey);
     Page<String> getTranslationKeysForGroup(String groupNameKey, Pageable pageable, String search);
+
+    void saveTranslation(String group, String key, String value, String countryIso);
 }

@@ -1,5 +1,6 @@
 package com.druidkuma.blog.service.i18n;
 
+import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
 import com.druidkuma.blog.dao.i18n.TranslationRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +34,15 @@ public class TranslationServiceImpl implements TranslationService {
     private TranslationRepository translationRepository;
     private LanguageRepository languageRepository;
     private ProcedureService procedureService;
+    private CountryRepository countryRepository;
 
     @Autowired
-    public TranslationServiceImpl(TranslationGroupRepository translationGroupRepository, TranslationRepository translationRepository, LanguageRepository languageRepository, ProcedureService procedureService) {
+    public TranslationServiceImpl(TranslationGroupRepository translationGroupRepository, TranslationRepository translationRepository, LanguageRepository languageRepository, ProcedureService procedureService, CountryRepository countryRepository) {
         this.translationGroupRepository = translationGroupRepository;
         this.translationRepository = translationRepository;
         this.languageRepository = languageRepository;
         this.procedureService = procedureService;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -115,6 +119,25 @@ public class TranslationServiceImpl implements TranslationService {
         return StringUtils.isBlank(search)
                 ? translationRepository.getTranslationKeysForGroup(procedureService.resolveTranslationGroup(groupNameKey), pageable)
                 : translationRepository.getTranslationKeysForGroupWithSearch(procedureService.resolveTranslationGroup(groupNameKey), pageable, search);
+    }
+
+    @Override
+    public void saveTranslation(String group, String key, String value, String countryIso) {
+        String languageIsoCode = countryRepository.findByIsoAlpha2Code(countryIso).getDefaultLanguage().getIsoCode();
+        TranslationGroup translationGroup = resolveTranslationGroup(group);
+        Translation translation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(translationGroup, key, languageIsoCode);
+        if(translation != null) {
+            translation.setValue(value);
+            translation.setLastModified(Instant.now());
+        }
+        else translation = Translation.builder()
+                .key(key)
+                .value(value)
+                .language(languageRepository.findByIsoCode(languageIsoCode))
+                .translationGroup(translationGroup)
+                .lastModified(Instant.now())
+                .build();
+        translationRepository.saveAndFlush(translation);
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {

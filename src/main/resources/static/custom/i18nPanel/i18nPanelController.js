@@ -79,7 +79,7 @@ angular.module("blogApp")
                 value: data.target,
                 countryIso: $scope.targetCountry.isoCode
             }).then(function(response) {
-                translation.lastModified = new Date();
+                $scope.loadTranslations();
             }, function(error) { $scope.showError() })
         };
 

@@ -71,8 +71,10 @@ public class TranslateResource {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public void saveTranslation(@RequestBody NewTranslationDto newTranslationDto) {
-        //TODO
-        System.out.println("Implement me!");
+        translationService.saveTranslation(newTranslationDto.getGroup(),
+                newTranslationDto.getKey(),
+                newTranslationDto.getValue(),
+                newTranslationDto.getCountryIso());
     }
 
     private Page<TranslatePanelDto.TPTranslation> getPageOfTranslations(String groupName, String srcCountryIso, String destCountryIso, Pageable pageable, String search) {
