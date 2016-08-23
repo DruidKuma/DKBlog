@@ -1,7 +1,6 @@
 package com.druidkuma.blog.web.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Created by Iurii Miedviediev
@@ -12,11 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BlogPostFilter {
-    private Integer currentPage;
-    private Integer entriesOnPage;
+public class BlogPostFilter extends SimplePaginationFilter {
     private String category;
-    private String sort;
-    private String search;
     private String filterPublished;
 }

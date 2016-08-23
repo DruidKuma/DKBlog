@@ -1,6 +1,8 @@
 package com.druidkuma.blog.dao.property;
 
 import com.druidkuma.blog.domain.property.Property;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +32,20 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
            "(NOT EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c3 ON pr2.country.id = c3.id " +
             "           WHERE pr2.key = pr.key AND c3.isoAlpha2Code = :countryIso) AND c IS NULL)")
     List<Property> findAllForCountryOrDefault(@Param("countryIso") String countryIso);
+
+    @Query(value = "SELECT pr FROM Property pr LEFT OUTER JOIN Country c ON pr.country.id = c.id WHERE " +
+            "(EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c2 ON pr2.country.id = c2.id " +
+            "            WHERE pr2.key = pr.key AND c2.isoAlpha2Code = :countryIso) AND c.isoAlpha2Code = :countryIso) " +
+            "OR " +
+            "(NOT EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c3 ON pr2.country.id = c3.id " +
+            "           WHERE pr2.key = pr.key AND c3.isoAlpha2Code = :countryIso) AND c IS NULL)")
+    Page<Property> getPageForCountryOrDefault(@Param("countryIso") String countryIso, Pageable pageable);
+
+    @Query(value = "SELECT pr FROM Property pr LEFT OUTER JOIN Country c ON pr.country.id = c.id WHERE " +
+            "((EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c2 ON pr2.country.id = c2.id " +
+            "            WHERE pr2.key = pr.key AND c2.isoAlpha2Code = :countryIso) AND c.isoAlpha2Code = :countryIso) " +
+            "OR " +
+            "(NOT EXISTS (SELECT pr2 FROM Property pr2 JOIN Country c3 ON pr2.country.id = c3.id " +
+            "           WHERE pr2.key = pr.key AND c3.isoAlpha2Code = :countryIso) AND c IS NULL)) AND lower(pr.key) LIKE concat('%', lower(:search), '%')")
+    Page<Property> getPageForCountryOrDefaultWithSearch(@Param("countryIso") String countryIso, @Param("search") String search, Pageable pageable);
 }

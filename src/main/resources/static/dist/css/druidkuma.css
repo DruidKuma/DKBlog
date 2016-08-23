@@ -450,3 +450,15 @@ button.btn.extra-small {
     font-size: 13px;
     margin-top: -3px;
 }
+
+ul.nav.navbar-nav.property-search-form {
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.header-title.prop-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Karla', sans-serif;
+    margin: 10px 0;
+}

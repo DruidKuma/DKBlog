@@ -11,6 +11,13 @@ angular.module("blogApp").service('Property', ["$http", function($http) {
                 method: "get"
             })
         },
+        page: function(params) {
+            return $http({
+                url: API_PROPERTY_URL + "/page",
+                method: "get",
+                params: params
+            })
+        },
         save: function(property) {
             return $http({
                 url: API_PROPERTY_URL,

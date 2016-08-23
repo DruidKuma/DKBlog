@@ -4,8 +4,10 @@ import com.druidkuma.blog.domain.property.Property;
 import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
+import com.druidkuma.blog.web.dto.SimplePaginationFilter;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +41,20 @@ public class PropertyResource {
         return propertyService.getPropertyListForCountry(currentCountryIso).stream()
                 .map(property -> propertyTransformer.tranformToDto(property))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public Page<PropertyDto> getPageOfPropertiesForCountry(SimplePaginationFilter paginationFilter,
+                                                           @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        Pageable pageable = buildPageRequest(paginationFilter);
+        Page<Property> properties = propertyService.getPropertyPageForCountry(pageable, paginationFilter.getSearch(), currentCountryIso);
+
+        return new PageImpl<>(
+                properties.getContent()
+                        .stream()
+                        .map(property -> propertyTransformer.tranformToDto(property))
+                        .collect(Collectors.toList()),
+                pageable, properties.getTotalElements());
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -78,5 +94,12 @@ public class PropertyResource {
     @RequestMapping(value = "/system/all", method = RequestMethod.GET)
     public Map<String, String> getAllSystemProperties() {
         return propertyService.getAllSystemProperties();
+    }
+
+    private Pageable buildPageRequest(SimplePaginationFilter paginationFilter) {
+        Integer page = paginationFilter.getCurrentPage() - 1;
+        Integer pageSize = paginationFilter.getEntriesOnPage();
+
+        return new PageRequest(page, pageSize, Sort.Direction.DESC, "lastModified");
     }
 }

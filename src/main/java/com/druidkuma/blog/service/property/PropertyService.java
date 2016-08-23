@@ -1,6 +1,8 @@
 package com.druidkuma.blog.service.property;
 
 import com.druidkuma.blog.domain.property.Property;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Set;
  */
 public interface PropertyService {
     List<Property> getPropertyListForCountry(String countryIso);
+    Page<Property> getPropertyPageForCountry(Pageable pageable, String search, String currentCountryIso);
+
     void saveProperty(Property property);
     void deleteProperty(Long id);
     void makeDefaultPropertyById(Long id);

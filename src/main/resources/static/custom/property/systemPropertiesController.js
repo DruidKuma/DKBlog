@@ -11,10 +11,24 @@ angular.module("blogApp")
             $scope.loadProperties();
         });
 
+        $scope.propertiesFilter = {
+            search: '',
+            currentPage: 1,
+            entriesOnPage: 3,
+            totalItems: 0
+        };
+
+        $scope.resetPaginationAndReload = function() {
+            $scope.propertiesFilter.currentPage = 1;
+            $scope.propertiesFilter.totalItems = 0;
+            $scope.loadProperties();
+        };
+
         $scope.loadProperties = function() {
             $scope.loadingProcess = true;
-            Property.all().then(function(response) {
-                $scope.allProperties = response.data;
+            Property.page($scope.propertiesFilter).then(function(response) {
+                $scope.allProperties = response.data.content;
+                $scope.propertiesFilter.totalItems = response.data.totalElements;
                 $scope.specificProperties = $scope.filterSpecific($scope.allProperties);
 
             }, function(error) {$scope.showError()}).finally(function() {

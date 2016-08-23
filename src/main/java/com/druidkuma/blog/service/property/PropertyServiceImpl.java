@@ -8,6 +8,8 @@ import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -36,6 +38,12 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public List<Property> getPropertyListForCountry(String countryIso) {
         return propertyRepository.findAllForCountryOrDefault(countryIso);
+    }
+
+    @Override
+    public Page<Property> getPropertyPageForCountry(Pageable pageable, String search, String currentCountryIso) {
+        if(StringUtils.isNotBlank(search)) return propertyRepository.getPageForCountryOrDefaultWithSearch(currentCountryIso, search, pageable);
+        else return propertyRepository.getPageForCountryOrDefault(currentCountryIso, pageable);
     }
 
     @Override
