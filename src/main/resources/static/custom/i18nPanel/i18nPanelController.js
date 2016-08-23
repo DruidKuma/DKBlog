@@ -15,13 +15,41 @@ angular.module("blogApp")
 
 
         $scope.chosenGroupParts = [];
+        $scope.translationsFilter = {
+            search: '',
+            sort: '',
+            currentPage: 1,
+            entriesOnPage: 2,
+            totalItems: 0
+        };
+
+        $scope.changeTranslationsSort = function(sortField) {
+            if($scope.translationsFilter.sort == sortField + ' ASC') $scope.translationsFilter.sort = sortField + ' DESC';
+            else if ($scope.translationsFilter.sort == sortField + ' DESC') $scope.translationsFilter.sort = '';
+            else $scope.translationsFilter.sort = sortField + ' ASC';
+            $scope.loadTranslations();
+        };
 
         $scope.loadPanelView = function() {
+            $scope.translationsFilter.sort = '';
+            $scope.translationsFilter.search = '';
+            $scope.translationsFilter.currentPage = 1;
+            $scope.translationsFilter.totalItems = 0;
+
             $scope.translationLoading = true;
-            I18NService.getTranslationPanelView($scope.chosenGroupParts.join('.'), $scope.targetCountry.isoCode).then(function(response) {
-                $scope.currentGroupView = response.data;
+            I18NService.getTranslationPanelView($scope.chosenGroupParts.join('.'), $scope.targetCountry.isoCode, $scope.translationsFilter).then(function(response) {
+                $scope.currentGroupView = angular.copy(response.data);
+                $scope.currentGroupView.translations = response.data.translations.content;
+                $scope.translationsFilter.totalItems = response.data.translations.totalElements;
                 $scope.translationLoading = false;
             }, function(error) { $scope.showError() });
+        };
+
+        $scope.loadTranslations = function() {
+            I18NService.getPageOfTranslations($scope.chosenGroupParts.join('.'), $scope.targetCountry.isoCode, $scope.translationsFilter).then(function(response) {
+                $scope.currentGroupView.translations = response.data.content;
+                $scope.translationsFilter.totalItems = response.data.totalElements;
+            }, function(error) { $scope.showError() })
         };
 
         $scope.changeTargetCountry = function(country) {

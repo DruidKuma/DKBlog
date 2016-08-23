@@ -1,6 +1,7 @@
 package com.druidkuma.blog.web.dto;
 
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @Builder
 public class TranslatePanelDto {
     private List<String> groups;
-    private List<TPTranslation> translations;
+    private Page<TPTranslation> translations;
 
     @Getter
     @Setter

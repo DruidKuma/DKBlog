@@ -6,9 +6,10 @@ import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
 import com.druidkuma.blog.web.dto.SimplePaginationFilter;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class PropertyResource {
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public Page<PropertyDto> getPageOfPropertiesForCountry(SimplePaginationFilter paginationFilter,
                                                            @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        Pageable pageable = buildPageRequest(paginationFilter);
+        Pageable pageable = paginationFilter.toPageRequest("lastModified DESC");
         Page<Property> properties = propertyService.getPropertyPageForCountry(pageable, paginationFilter.getSearch(), currentCountryIso);
 
         return new PageImpl<>(
@@ -95,20 +96,5 @@ public class PropertyResource {
     @RequestMapping(value = "/system/all", method = RequestMethod.GET)
     public Map<String, String> getAllSystemProperties() {
         return propertyService.getAllSystemProperties();
-    }
-
-    private Pageable buildPageRequest(SimplePaginationFilter paginationFilter) {
-        Integer page = paginationFilter.getCurrentPage() - 1;
-        Integer pageSize = paginationFilter.getEntriesOnPage();
-
-        String[] sort;
-        if(StringUtils.isBlank(paginationFilter.getSort()) || paginationFilter.getSort().split(" ").length != 2) {
-            sort = "lastModified DESC".split(" ");
-        }
-        else {
-            sort = paginationFilter.getSort().split(" ");
-        }
-        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
-        return new PageRequest(page, pageSize, direction, sort[0]);
     }
 }

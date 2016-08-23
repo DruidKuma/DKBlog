@@ -11,6 +11,8 @@ import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -109,8 +111,10 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @Override
-    public List<String> getTranslationKeysForGroup(String groupNameKey) {
-        return translationRepository.getTranslationKeysForGroup(procedureService.resolveTranslationGroup(groupNameKey));
+    public Page<String> getTranslationKeysForGroup(String groupNameKey, Pageable pageable, String search) {
+        return StringUtils.isBlank(search)
+                ? translationRepository.getTranslationKeysForGroup(procedureService.resolveTranslationGroup(groupNameKey), pageable)
+                : translationRepository.getTranslationKeysForGroupWithSearch(procedureService.resolveTranslationGroup(groupNameKey), pageable, search);
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {

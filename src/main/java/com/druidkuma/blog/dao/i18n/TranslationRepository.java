@@ -2,6 +2,8 @@ package com.druidkuma.blog.dao.i18n;
 
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +21,8 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
     Translation findByTranslationGroupAndKeyAndLanguageIsoCode(TranslationGroup translationGroup, String key, String languageIsoCode);
 
     @Query(value = "SELECT DISTINCT tr.key FROM Translation tr WHERE tr.translationGroup.id = :groupId")
-    List<String> getTranslationKeysForGroup(@Param("groupId") Long groupId);
+    Page<String> getTranslationKeysForGroup(@Param("groupId") Long groupId, Pageable pageable);
+
+    @Query(value = "SELECT DISTINCT tr.key FROM Translation tr WHERE tr.translationGroup.id = :groupId AND lower(tr.key) LIKE concat('%', lower(:search) , '%')")
+    Page<String> getTranslationKeysForGroupWithSearch(@Param("groupId") Long groupId, Pageable pageable, @Param("search") String search);
 }

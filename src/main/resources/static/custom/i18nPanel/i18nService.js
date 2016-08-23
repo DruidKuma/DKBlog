@@ -12,10 +12,18 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 method: "get"
             })
         },
-        getTranslationPanelView: function(groupName, targetCountry) {
+        getTranslationPanelView: function(groupName, targetCountry, filter) {
             return $http({
                 url: API_I18N_URL + "panel/" + targetCountry + "/" + groupName,
-                method: "get"
+                method: "get",
+                params: filter
+            })
+        },
+        getPageOfTranslations: function(groupName, targetCountry, filter) {
+            return $http({
+                url: API_I18N_URL + "page/" + targetCountry + "/" + groupName,
+                method: "get",
+                params:  filter
             })
         },
         saveTranslation: function(translation) {

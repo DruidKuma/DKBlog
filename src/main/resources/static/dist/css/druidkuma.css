@@ -451,10 +451,11 @@ button.btn.extra-small {
     margin-top: -3px;
 }
 
-ul.nav.navbar-nav.property-search-form {
+ul.nav.navbar-nav.dk-search-form {
     float: none;
     display: inline-block;
     vertical-align: middle;
+    line-height: 1.2;
 }
 
 div.header-title.prop-title {

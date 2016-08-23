@@ -4,6 +4,8 @@ import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.web.dto.TranslationDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -32,5 +34,5 @@ public interface TranslationService {
     Language getLanguageByIsoCode(String isoCode);
 
     List<String> getChildGroupNames(String groupNameKey);
-    List<String> getTranslationKeysForGroup(String groupNameKey);
+    Page<String> getTranslationKeysForGroup(String groupNameKey, Pageable pageable, String search);
 }

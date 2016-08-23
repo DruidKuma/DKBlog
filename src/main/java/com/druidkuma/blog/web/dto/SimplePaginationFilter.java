@@ -1,6 +1,10 @@
 package com.druidkuma.blog.web.dto;
 
 import lombok.*;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Created by Iurii Miedviediev
@@ -16,4 +20,16 @@ public class SimplePaginationFilter {
     private Integer entriesOnPage;
     private String sort;
     private String search;
+
+    public Pageable toPageRequest(String defaultSorting) {
+        Integer page = this.getCurrentPage() - 1;
+        Integer pageSize = this.getEntriesOnPage();
+
+        String[] sort = StringUtils.isBlank(this.getSort()) || this.getSort().split(" ").length != 2
+                ? defaultSorting.split(" ")
+                : this.getSort().split(" ");
+
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        return new PageRequest(page, pageSize, direction, sort[0]);
+    }
 }
