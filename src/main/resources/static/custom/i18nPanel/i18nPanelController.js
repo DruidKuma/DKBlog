@@ -2,10 +2,10 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', function($scope, I18NService) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', function($scope, I18NService, $translate, $translatePartialLoader) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
-            $scope.pageHeading.title = "I18N Panel";
+            $scope.pageHeading.title = "i18nPanel";
         });
         $scope.$on('countryChanged', function(event, data) {
             $scope.loadPanelView();
@@ -19,7 +19,7 @@ angular.module("blogApp")
             search: '',
             sort: '',
             currentPage: 1,
-            entriesOnPage: 2,
+            entriesOnPage: 10,
             totalItems: 0
         };
 
@@ -80,6 +80,9 @@ angular.module("blogApp")
                 countryIso: $scope.targetCountry.isoCode
             }).then(function(response) {
                 $scope.loadTranslations();
+                $translatePartialLoader.deleteAll();
+                $translatePartialLoader.addPart('layout');
+                $translate.refresh();
             }, function(error) { $scope.showError() })
         };
 
