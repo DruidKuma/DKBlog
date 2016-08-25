@@ -77,7 +77,7 @@ public class TranslationServiceImpl implements TranslationService {
         String[] nestedGroups = groupNameKey.split("\\.");
         Assert.notEmpty(nestedGroups);
 
-        TranslationGroup resultGroup = translationGroupRepository.findByName(nestedGroups[0]);
+        TranslationGroup resultGroup = translationGroupRepository.findByNameAndParentIsNull(nestedGroups[0]);
 
         if(nestedGroups.length < 2) return resultGroup;
         return resolveRecursively(Arrays.copyOfRange(nestedGroups, 1, nestedGroups.length), resultGroup);
@@ -138,6 +138,20 @@ public class TranslationServiceImpl implements TranslationService {
                 .lastModified(Instant.now())
                 .build();
         translationRepository.saveAndFlush(translation);
+    }
+
+    @Override
+    public void saveTranslationGroup(TranslationGroup group) {
+        translationGroupRepository.saveAndFlush(group);
+    }
+
+    @Override
+    public void deleteTranslationGroup(String groupName) {
+        TranslationGroup translationGroup = resolveTranslationGroup(groupName);
+        if(translationGroup != null) {
+            translationRepository.delete(translationRepository.findByTranslationGroup(translationGroup));
+            translationGroupRepository.delete(translationGroup);
+        }
     }
 
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {

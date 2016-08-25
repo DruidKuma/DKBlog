@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface TranslationGroupRepository extends JpaRepository<TranslationGroup, Long> {
-    TranslationGroup findByName(String name);
+    TranslationGroup findByNameAndParentIsNull(String name);
     List<TranslationGroup> findAllByParentIsNull();
 }

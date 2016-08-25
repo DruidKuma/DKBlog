@@ -37,4 +37,8 @@ public interface TranslationService {
     Page<String> getTranslationKeysForGroup(String groupNameKey, Pageable pageable, String search);
 
     void saveTranslation(String group, String key, String value, String countryIso);
+
+    void saveTranslationGroup(TranslationGroup group);
+
+    void deleteTranslationGroup(String groupName);
 }

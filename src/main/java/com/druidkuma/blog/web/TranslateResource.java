@@ -1,6 +1,9 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.i18n.Translation;
+import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import com.druidkuma.blog.exception.TranslationGroupExistsException;
+import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.NewTranslationDto;
@@ -8,8 +11,11 @@ import com.druidkuma.blog.web.dto.SimplePaginationFilter;
 import com.druidkuma.blog.web.dto.TranslatePanelDto;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,6 +81,30 @@ public class TranslateResource {
                 newTranslationDto.getKey(),
                 newTranslationDto.getValue(),
                 newTranslationDto.getCountryIso());
+    }
+
+    @RequestMapping(value = "/group/save", method = RequestMethod.POST)
+    public void saveTranslationGroup(@RequestBody NewTranslationDto translationGroupDto) {
+        TranslationGroup translationGroup = null;
+        if(StringUtils.isNotBlank(translationGroupDto.getGroup())) {
+            translationGroup = translationService.resolveTranslationGroup(translationGroupDto.getGroup());
+            if(translationGroup == null) throw new TranslationGroupNotExistsException(translationGroupDto.getGroup());
+            for (TranslationGroup group : translationGroup.getChildGroups()) {
+                if(group.getName().equals(translationGroupDto.getKey())) {
+                    throw new TranslationGroupExistsException(translationGroupDto.getGroup(), translationGroupDto.getKey());
+                }
+            }
+        }
+        translationService.saveTranslationGroup(
+                TranslationGroup.builder()
+                        .name(translationGroupDto.getKey())
+                        .parent(translationGroup)
+                        .build());
+    }
+
+    @RequestMapping(value = "/group/remove/{groupName:.+}")
+    public void deleteTranslationGroup(@PathVariable("groupName") String groupName) {
+        translationService.deleteTranslationGroup(groupName);
     }
 
     private Page<TranslatePanelDto.TPTranslation> getPageOfTranslations(String groupName, String srcCountryIso, String destCountryIso, Pageable pageable, String search) {

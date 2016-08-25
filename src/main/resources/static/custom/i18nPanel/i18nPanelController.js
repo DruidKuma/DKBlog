@@ -114,5 +114,32 @@ angular.module("blogApp")
             delete $scope.inserted;
         };
 
+        $scope.newGroupFormRequested = false;
+        $scope.newCategoryNameKey = '';
+        $scope.showNewGroupForm = function() {
+            $scope.newGroupFormRequested = true;
+        };
+
+        $scope.saveTranslationGroup = function() {
+            I18NService.saveTranslationGroup($scope.newCategoryNameKey, $scope.chosenGroupParts.join('.')).then(function(response) {
+                $scope.newGroupFormRequested = false;
+                $scope.chosenGroupParts.push($scope.newCategoryNameKey);
+                $scope.newCategoryNameKey = '';
+                $scope.loadPanelView();
+            });
+        };
+
+        $scope.deleteCurrentGroup = function() {
+            $scope.executeWithWarning("Are you sure?",
+                "This action will delete this group with all translations and can influence work of the whole application!",
+                "Yes, delete it!",
+                function() {
+                    I18NService.deleteGroup($scope.chosenGroupParts.join('.')).then(function(response){
+                        $scope.chosenGroupParts = [];
+                        $scope.loadPanelView();
+                    });
+                });
+        };
+
         $scope.loadPanelView();
     }]);

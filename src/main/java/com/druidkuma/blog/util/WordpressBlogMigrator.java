@@ -81,7 +81,7 @@ public class WordpressBlogMigrator {
     }
 
     private TranslationGroup createTranslationGroup(String key, TranslationGroup parentGroup) {
-        TranslationGroup existing = translationGroupRepository.findByName(key);
+        TranslationGroup existing = translationGroupRepository.findByNameAndParentIsNull(key);
         if(existing != null) return existing;
 
         return translationGroupRepository.saveAndFlush(

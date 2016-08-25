@@ -467,3 +467,8 @@ div.header-title.prop-title {
 span.dk-table-sortable {
     cursor: pointer;
 }
+
+.new-tr-category-form.app-search .form-control,
+.new-tr-category-form.app-search .form-control:focus {
+    width: 250px;
+}
