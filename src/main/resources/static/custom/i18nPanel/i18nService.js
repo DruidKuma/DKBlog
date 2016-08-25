@@ -45,6 +45,12 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 url: API_I18N_URL + "group/remove/" + groupName,
                 method: "delete"
             })
+        },
+        deleteTranslation: function(groupNameKey, translationKey) {
+            return $http({
+                url: API_I18N_URL + "translation/remove/" + groupNameKey + "/" + translationKey,
+                method: "delete"
+            })
         }
     }
 }]);

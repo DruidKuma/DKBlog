@@ -107,6 +107,11 @@ public class TranslateResource {
         translationService.deleteTranslationGroup(groupName);
     }
 
+    @RequestMapping(value = "/translation/remove/{groupName:.+}/{key}")
+    public void deleteTranslation(@PathVariable("groupName") String groupName, @PathVariable("key") String key) {
+        translationService.deleteTranslation(groupName, key);
+    }
+
     private Page<TranslatePanelDto.TPTranslation> getPageOfTranslations(String groupName, String srcCountryIso, String destCountryIso, Pageable pageable, String search) {
         List<TranslatePanelDto.TPTranslation> translations = Lists.newArrayList();
         Map<String, Translation> sourceTranslations = translationService.getTranslationsFromDb(groupName,

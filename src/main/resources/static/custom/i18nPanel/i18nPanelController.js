@@ -91,7 +91,9 @@ angular.module("blogApp")
                 "This action will delete this translation key with all translations and can influence the work of the whole application!",
                 "Yes, delete it!",
                 function() {
-                    console.log('Implement me');
+                    I18NService.deleteTranslation($scope.chosenGroupParts.join('.'), translation.key).then(function(response) {
+                        $scope.loadTranslations();
+                    }, function(error) { $scope.showError() });
                 });
         };
 
@@ -126,7 +128,7 @@ angular.module("blogApp")
                 $scope.chosenGroupParts.push($scope.newCategoryNameKey);
                 $scope.newCategoryNameKey = '';
                 $scope.loadPanelView();
-            });
+            }, function(error) { $scope.showError() });
         };
 
         $scope.deleteCurrentGroup = function() {
@@ -138,7 +140,7 @@ angular.module("blogApp")
                         $scope.chosenGroupParts = [];
                         $scope.loadPanelView();
                     });
-                });
+                }, function(error) { $scope.showError() });
         };
 
         $scope.loadPanelView();

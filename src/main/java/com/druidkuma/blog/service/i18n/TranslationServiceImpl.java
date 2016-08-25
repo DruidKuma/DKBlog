@@ -154,6 +154,14 @@ public class TranslationServiceImpl implements TranslationService {
         }
     }
 
+    @Override
+    public void deleteTranslation(String groupName, String key) {
+        TranslationGroup translationGroup = resolveTranslationGroup(groupName);
+        if(translationGroup != null) {
+            translationRepository.delete(translationRepository.findByTranslationGroupAndKey(translationGroup, key));
+        }
+    }
+
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {
         if(translationGroup == null || names.length < 1) return translationGroup;
         for (TranslationGroup group : translationGroup.getChildGroups()) {

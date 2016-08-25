@@ -41,4 +41,6 @@ public interface TranslationService {
     void saveTranslationGroup(TranslationGroup group);
 
     void deleteTranslationGroup(String groupName);
+
+    void deleteTranslation(String groupName, String key);
 }

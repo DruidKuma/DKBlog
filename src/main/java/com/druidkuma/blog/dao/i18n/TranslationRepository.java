@@ -18,6 +18,7 @@ import java.util.List;
 @Repository
 public interface TranslationRepository extends JpaRepository<Translation, Long> {
     List<Translation> findByTranslationGroupAndLanguageIsoCode(TranslationGroup translationGroup, String languageIsoCode);
+    List<Translation> findByTranslationGroupAndKey(TranslationGroup translationGroup, String key);
     List<Translation> findByTranslationGroup(TranslationGroup translationGroup);
     Translation findByTranslationGroupAndKeyAndLanguageIsoCode(TranslationGroup translationGroup, String key, String languageIsoCode);
 
