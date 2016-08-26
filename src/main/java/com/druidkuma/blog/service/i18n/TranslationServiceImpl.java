@@ -189,6 +189,15 @@ public class TranslationServiceImpl implements TranslationService {
         translationRepository.delete(translationRepository.findByLanguageIsoCode(langIso));
     }
 
+    @Override
+    public void clearForAllExceptCurrent(String currentCountryIso) {
+        String langIso = countryRepository.findByIsoAlpha2Code(currentCountryIso).getDefaultLanguage().getIsoCode();
+        translationRepository.findAll()
+                .stream()
+                .filter(translation -> !translation.getLanguage().getIsoCode().equals(langIso))
+                .forEach(translation -> translationRepository.delete(translation));
+    }
+
     private Map<String, Object> exportJson(TranslationGroup group, String srcLang, String destLang) {
         Map<String, Object> groupTranslations = Maps.newHashMap();
 

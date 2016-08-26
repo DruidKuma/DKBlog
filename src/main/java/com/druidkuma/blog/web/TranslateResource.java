@@ -137,6 +137,11 @@ public class TranslateResource {
         translationService.clearForCountry(currentCountryIso);
     }
 
+    @RequestMapping(value = "/translation/remove/country/all", method = RequestMethod.DELETE)
+    public void clearTranslationsForAllCountries(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        translationService.clearForAllExceptCurrent(currentCountryIso);
+    }
+
     private HttpEntity<Map<String, Object>> buildEntityForDownloadFile(Map<String, Object> bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
