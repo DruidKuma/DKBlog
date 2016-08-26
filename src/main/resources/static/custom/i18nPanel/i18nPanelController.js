@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', function($scope, I18NService, $translate, $translatePartialLoader) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -147,6 +147,17 @@ angular.module("blogApp")
             I18NService.clearTranslationsForCurrentCountry().then(function(response) {
                 $scope.loadPanelView();
             }, function(error) { $scope.showError() })
+        };
+
+        $scope.openCustomExporterModal = function() {
+            var exportModal = $uibModal.open({
+                animation: true,
+                templateUrl: 'customExportModal.html',
+                //controller: 'EditCategoryController',
+                size: 'lg',
+                resolve: {
+                }
+            });
         };
 
         $scope.loadPanelView();
