@@ -3,6 +3,7 @@ package com.druidkuma.blog.service.i18n;
 import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +49,6 @@ public interface TranslationService {
 
     void clearForCountry(String currentCountryIso);
     void clearForAllExceptCurrent(String currentCountryIso);
+
+    ExcelDocument exportTranslationsInExcel(String groupName, String srcCountryIso, String destCountryIso);
 }

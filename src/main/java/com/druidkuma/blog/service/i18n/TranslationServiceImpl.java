@@ -8,6 +8,7 @@ import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
+import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Maps;
@@ -196,6 +197,12 @@ public class TranslationServiceImpl implements TranslationService {
                 .stream()
                 .filter(translation -> !translation.getLanguage().getIsoCode().equals(langIso))
                 .forEach(translation -> translationRepository.delete(translation));
+    }
+
+    @Override
+    public ExcelDocument exportTranslationsInExcel(String groupName, String srcCountryIso, String destCountryIso) {
+        //TODO
+        return null;
     }
 
     private Map<String, Object> exportJson(TranslationGroup group, String srcLang, String destLang) {

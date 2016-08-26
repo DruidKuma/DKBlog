@@ -5,6 +5,7 @@ import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.exception.TranslationGroupExistsException;
 import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.country.CountryService;
+import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.NewTranslationDto;
 import com.druidkuma.blog.web.dto.SimplePaginationFilter;
@@ -152,8 +153,16 @@ public class TranslateResource {
     public HttpEntity<byte[]> downloadInExcel(@PathVariable("groupName") String groupName,
                                               @PathVariable("targetCountry") String targetCountry,
                                               @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        //TODO
-        return null;
+
+        ExcelDocument excelDocument = translationService.exportTranslationsInExcel(groupName, currentCountryIso, targetCountry);
+        return buildHttpEntityWithExcelBytesAndHeaders("translations", excelDocument.getBytes());
+    }
+
+    private HttpEntity<byte[]> buildHttpEntityWithExcelBytesAndHeaders(String sheetName, byte[] bytes) {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        headers.add("Content-Disposition", "attachment; filename=\"" + sheetName + ".xlsx\"");
+        return new ResponseEntity<>(bytes, headers, OK);
     }
 
     private HttpEntity<Map<String, Object>> buildEntityForDownloadFile(Map<String, Object> bytes) {
