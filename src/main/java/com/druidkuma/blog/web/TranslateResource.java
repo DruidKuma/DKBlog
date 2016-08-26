@@ -16,10 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * @author DruidKuma
@@ -110,6 +116,27 @@ public class TranslateResource {
     @RequestMapping(value = "/translation/remove/{groupName:.+}/{key}")
     public void deleteTranslation(@PathVariable("groupName") String groupName, @PathVariable("key") String key) {
         translationService.deleteTranslation(groupName, key);
+    }
+
+    @RequestMapping(value = "/export/json/{targetCountry}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Map<String, Object>> exportTranslationsInJson(@PathVariable("targetCountry") String targetCountry,
+                                                        @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return exportTranslationsInJson(null, currentCountryIso, targetCountry);
+    }
+
+    @RequestMapping(value = "/export/json/{targetCountry}/{groupName:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Map<String, Object>> exportTranslationsInJson(@PathVariable("groupName") String groupName,
+                                               @PathVariable("targetCountry") String targetCountry,
+                                               @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+
+        return buildEntityForDownloadFile(translationService.exportJsonTranslations(groupName, currentCountryIso, targetCountry));
+    }
+
+    private HttpEntity<Map<String, Object>> buildEntityForDownloadFile(Map<String, Object> bytes) {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("Content-Disposition", "attachment; filename=translations.json");
+        return new ResponseEntity<>(bytes, headers, OK);
     }
 
     private Page<TranslatePanelDto.TPTranslation> getPageOfTranslations(String groupName, String srcCountryIso, String destCountryIso, Pageable pageable, String search) {

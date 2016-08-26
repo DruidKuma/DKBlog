@@ -144,4 +144,16 @@ angular.module("blogApp")
         };
 
         $scope.loadPanelView();
+
+        $scope.downloadInJson = function() {
+            this.attr('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify({
+                    key: 'value',
+                    nested: {
+                        key: 'val',
+                        siska: 'sosiska'
+                    }
+                })) );
+            this.click();
+        };
+
     }]);

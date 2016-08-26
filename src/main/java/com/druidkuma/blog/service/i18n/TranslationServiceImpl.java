@@ -7,6 +7,7 @@ import com.druidkuma.blog.dao.i18n.TranslationRepository;
 import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
+import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.collect.Maps;
@@ -162,6 +163,47 @@ public class TranslationServiceImpl implements TranslationService {
         }
     }
 
+    @Override
+    public Map<String, Object> exportJsonTranslations(String groupName, String srcCountryIso, String destCountryIso) {
+
+        String srcLangIso = countryRepository.findByIsoAlpha2Code(srcCountryIso).getDefaultLanguage().getIsoCode();
+        String destLangIso = countryRepository.findByIsoAlpha2Code(destCountryIso).getDefaultLanguage().getIsoCode();
+
+        Map<String, Object> translations = Maps.newHashMap();
+        if(StringUtils.isBlank(groupName)) {
+            for (TranslationGroup translationGroup : getTopLevelTranslationGroups()) {
+                translations.put(translationGroup.getName(), exportJson(translationGroup, srcLangIso, destLangIso));
+            }
+        }
+        else {
+            TranslationGroup translationGroup = resolveTranslationGroup(groupName);
+            if(translationGroup == null) throw new TranslationGroupNotExistsException(groupName);
+            translations.put(translationGroup.getName(), exportJson(translationGroup, srcLangIso, destLangIso));
+        }
+        return translations;
+    }
+
+    private Map<String, Object> exportJson(TranslationGroup group, String srcLang, String destLang) {
+        Map<String, Object> groupTranslations = Maps.newHashMap();
+
+        Map<String, Translation> srcTranslations = transformIntoTranslationMap(getTranslationsFromDb(group, srcLang));
+        Map<String, Translation> destTranslations = transformIntoTranslationMap(getTranslationsFromDb(group, destLang));
+        for (String key : translationRepository.getAllTranslationKeysForGroup(group)) {
+            Map<String, String> translation = Maps.newHashMapWithExpectedSize(2);
+            Translation srcTranslation = srcTranslations.get(key);
+            Translation destTranslation = destTranslations.get(key);
+            if(srcTranslation != null) translation.put(srcLang, srcTranslation.getValue());
+            if(destTranslation != null) translation.put(destLang, destTranslation.getValue());
+
+            groupTranslations.put(key, translation);
+        }
+
+        for (TranslationGroup translationGroup : group.getChildGroups()) {
+            groupTranslations.put(translationGroup.getName(), exportJson(translationGroup, srcLang, destLang));
+        }
+        return groupTranslations;
+    }
+
     private TranslationGroup resolveRecursively(String[] names, TranslationGroup translationGroup) {
         if(translationGroup == null || names.length < 1) return translationGroup;
         for (TranslationGroup group : translationGroup.getChildGroups()) {
@@ -182,6 +224,14 @@ public class TranslationServiceImpl implements TranslationService {
         Map<String, Object> result = Maps.newHashMap();
         for (Translation translation : translations) {
             result.put(translation.getKey(), translation.getValue());
+        }
+        return result;
+    }
+
+    private Map<String, Translation> transformIntoTranslationMap(List<Translation> translations) {
+        Map<String, Translation> result = Maps.newHashMap();
+        for (Translation translation : translations) {
+            result.put(translation.getKey(), translation);
         }
         return result;
     }

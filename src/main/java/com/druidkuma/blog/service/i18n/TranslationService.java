@@ -43,4 +43,6 @@ public interface TranslationService {
     void deleteTranslationGroup(String groupName);
 
     void deleteTranslation(String groupName, String key);
+
+    Map<String,Object> exportJsonTranslations(String groupName, String srcCountryIso, String destCountryIso);
 }

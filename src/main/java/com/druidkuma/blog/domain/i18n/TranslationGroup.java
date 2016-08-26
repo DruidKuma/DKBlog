@@ -1,7 +1,6 @@
 package com.druidkuma.blog.domain.i18n;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.collect.Lists;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -36,15 +35,7 @@ public class TranslationGroup {
     @JoinColumn(name = "tg_parent_group_id")
     private TranslationGroup parent;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
     private List<TranslationGroup> childGroups;
-
-    public void addParent(TranslationGroup parent) {
-        this.parent = parent;
-        if(parent != null) {
-            if(parent.getChildGroups() == null) parent.setChildGroups(Lists.newArrayList());
-            parent.getChildGroups().add(this);
-        }
-    }
 }
