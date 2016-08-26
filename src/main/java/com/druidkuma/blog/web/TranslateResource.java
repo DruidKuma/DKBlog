@@ -118,6 +118,16 @@ public class TranslateResource {
         translationService.deleteTranslation(groupName, key);
     }
 
+    @RequestMapping(value = "/translation/remove/country", method = RequestMethod.DELETE)
+    public void clearTranslationsForCurrentCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        translationService.clearForCountry(currentCountryIso);
+    }
+
+    @RequestMapping(value = "/translation/remove/country/all", method = RequestMethod.DELETE)
+    public void clearTranslationsForAllCountries(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        translationService.clearForAllExceptCurrent(currentCountryIso);
+    }
+
     @RequestMapping(value = "/export/json/{targetCountry}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Map<String, Object>> exportTranslationsInJson(@PathVariable("targetCountry") String targetCountry,
                                                         @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
@@ -132,14 +142,18 @@ public class TranslateResource {
         return buildEntityForDownloadFile(translationService.exportJsonTranslations(groupName, currentCountryIso, targetCountry));
     }
 
-    @RequestMapping(value = "/translation/remove/country", method = RequestMethod.DELETE)
-    public void clearTranslationsForCurrentCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        translationService.clearForCountry(currentCountryIso);
+    @RequestMapping(value = "/export/xls/{targetCountry}")
+    public HttpEntity<byte[]> downloadInExcel(@PathVariable("targetCountry") String targetCountry,
+                                              @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return downloadInExcel(null, targetCountry, currentCountryIso);
     }
 
-    @RequestMapping(value = "/translation/remove/country/all", method = RequestMethod.DELETE)
-    public void clearTranslationsForAllCountries(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        translationService.clearForAllExceptCurrent(currentCountryIso);
+    @RequestMapping(value = "/export/xls/{targetCountry}/{groupName:.+}")
+    public HttpEntity<byte[]> downloadInExcel(@PathVariable("groupName") String groupName,
+                                              @PathVariable("targetCountry") String targetCountry,
+                                              @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        //TODO
+        return null;
     }
 
     private HttpEntity<Map<String, Object>> buildEntityForDownloadFile(Map<String, Object> bytes) {
