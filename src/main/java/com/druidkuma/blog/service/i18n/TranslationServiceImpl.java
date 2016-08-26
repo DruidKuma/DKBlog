@@ -9,8 +9,11 @@ import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.excel.ExcelDocument;
+import com.druidkuma.blog.service.excel.SimpleExcelDocument;
 import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.TranslationDto;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,8 +204,51 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public ExcelDocument exportTranslationsInExcel(String groupName, String srcCountryIso, String destCountryIso) {
-        //TODO
-        return null;
+        final SimpleExcelDocument document = new SimpleExcelDocument("translations");
+        ExcelDocument excelDocument = document.getDocument();
+        String srcLang = countryRepository.findByIsoAlpha2Code(srcCountryIso).getDefaultLanguage().getIsoCode();
+        String destLang = countryRepository.findByIsoAlpha2Code(destCountryIso).getDefaultLanguage().getIsoCode();
+
+        //add header
+        Arrays.asList("key", srcLang, destLang).forEach(excelDocument::addHeaderCell);
+        excelDocument.newLine();
+
+        if(StringUtils.isBlank(groupName)) {
+            for (TranslationGroup translationGroup : getTopLevelTranslationGroups()) {
+                exportExcelTranslations(excelDocument, translationGroup, srcLang, destLang);
+            }
+        }
+        else exportExcelTranslations(excelDocument, resolveTranslationGroup(groupName), srcLang, destLang);
+
+        return excelDocument;
+    }
+
+    private void exportExcelTranslations(ExcelDocument document, TranslationGroup translationGroup, String srcLang, String destLang) {
+        String fullGroupName = buildFullGroupName(translationGroup);
+        Map<String, Translation> srcTranslations = transformIntoTranslationMap(getTranslationsFromDb(translationGroup, srcLang));
+        Map<String, Translation> destTranslations = transformIntoTranslationMap(getTranslationsFromDb(translationGroup, destLang));
+        for (String key : translationRepository.getAllTranslationKeysForGroup(translationGroup)) {
+            Translation srcTranslation = srcTranslations.get(key);
+            Translation destTranslation = destTranslations.get(key);
+
+            document.addStringCell(fullGroupName + "." + key);
+            document.addStringCell(srcTranslation != null ? srcTranslation.getValue() : "");
+            document.addStringCell(destTranslation != null ? destTranslation.getValue() : "");
+            document.newLine();
+        }
+
+        for (TranslationGroup childGroup : translationGroup.getChildGroups()) {
+            exportExcelTranslations(document, childGroup, srcLang, destLang);
+        }
+    }
+
+    private String buildFullGroupName(TranslationGroup translationGroup) {
+        List<String> groupNameParts = Lists.newArrayList();
+        while (translationGroup != null) {
+            groupNameParts.add(translationGroup.getName());
+            translationGroup = translationGroup.getParent();
+        }
+        return Joiner.on(".").join(Lists.reverse(groupNameParts));
     }
 
     private Map<String, Object> exportJson(TranslationGroup group, String srcLang, String destLang) {
