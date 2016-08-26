@@ -143,17 +143,12 @@ angular.module("blogApp")
                 }, function(error) { $scope.showError() });
         };
 
-        $scope.loadPanelView();
-
-        $scope.downloadInJson = function() {
-            this.attr('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify({
-                    key: 'value',
-                    nested: {
-                        key: 'val',
-                        siska: 'sosiska'
-                    }
-                })) );
-            this.click();
+        $scope.clearTranslationsForCurrentCountry = function() {
+            I18NService.clearTranslationsForCurrentCountry().then(function(response) {
+                $scope.loadPanelView();
+            }, function(error) { $scope.showError() })
         };
+
+        $scope.loadPanelView();
 
     }]);

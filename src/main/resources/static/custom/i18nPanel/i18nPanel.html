@@ -16,20 +16,29 @@
                                 <li><a href="#"><i class="zmdi zmdi-translate"></i> Translate via Yandex API</a></li>
                                 <li><a href="#"><i class="fa fa-google"></i> Translate via Google API</a></li>
                                 <li class="divider"></li>
-                                <li><a href="/api/blog/i18n/export/json/{{targetCountry.isoCode}}/{{chosenGroupParts.join('.')}}" target="_blank"><i class="zmdi zmdi-code"></i> Download in JSON</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Download in CSV</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Download in TSV</a></li>
+                                <li>
+                                    <a href="/api/blog/i18n/export/json/{{targetCountry.isoCode}}/{{chosenGroupParts.join('.')}}" target="_blank">
+                                        <i class="zmdi zmdi-code"></i> Download in JSON
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Download in custom format</a></li>
                                 <li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Download in XLS</a></li>
+                                <!--<li class="divider"></li>-->
+                                <!--<li><a href="#"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>-->
+                                <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in CSV</a></li>-->
+                                <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in TSV</a></li>-->
+                                <!--<li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>-->
                                 <li class="divider"></li>
-                                <li><a href="#"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in CSV</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in TSV</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for current
-                                    destination country (Russian)</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-delete"></i> Clear translations for all countries
-                                    (except current)</a></li>
+                                <li>
+                                    <a href="#" ng-click="clearTranslationsForCurrentCountry()">
+                                        <i class="zmdi zmdi-delete"></i> Clear translations for current destination country ({{targetCountry.name}})
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="zmdi zmdi-delete"></i> Clear translations for all countries (except current)
+                                    </a>
+                                </li>
                                 <li class="divider" ng-show="chosenGroupParts.length"></li>
                                 <li ng-show="chosenGroupParts.length" ng-click="deleteCurrentGroup()"><a href="#"><i class="zmdi zmdi-delete"></i> Delete Current Group </a></li>
                             </ul>

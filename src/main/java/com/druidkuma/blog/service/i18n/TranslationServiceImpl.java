@@ -183,6 +183,12 @@ public class TranslationServiceImpl implements TranslationService {
         return translations;
     }
 
+    @Override
+    public void clearForCountry(String currentCountryIso) {
+        String langIso = countryRepository.findByIsoAlpha2Code(currentCountryIso).getDefaultLanguage().getIsoCode();
+        translationRepository.delete(translationRepository.findByLanguageIsoCode(langIso));
+    }
+
     private Map<String, Object> exportJson(TranslationGroup group, String srcLang, String destLang) {
         Map<String, Object> groupTranslations = Maps.newHashMap();
 
@@ -236,3 +242,4 @@ public class TranslationServiceImpl implements TranslationService {
         return result;
     }
 }
+

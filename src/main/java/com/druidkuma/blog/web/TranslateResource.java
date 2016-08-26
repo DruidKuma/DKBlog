@@ -108,12 +108,12 @@ public class TranslateResource {
                         .build());
     }
 
-    @RequestMapping(value = "/group/remove/{groupName:.+}")
+    @RequestMapping(value = "/group/remove/{groupName:.+}", method = RequestMethod.DELETE)
     public void deleteTranslationGroup(@PathVariable("groupName") String groupName) {
         translationService.deleteTranslationGroup(groupName);
     }
 
-    @RequestMapping(value = "/translation/remove/{groupName:.+}/{key}")
+    @RequestMapping(value = "/translation/remove/{groupName:.+}/{key}", method = RequestMethod.DELETE)
     public void deleteTranslation(@PathVariable("groupName") String groupName, @PathVariable("key") String key) {
         translationService.deleteTranslation(groupName, key);
     }
@@ -130,6 +130,11 @@ public class TranslateResource {
                                                @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
 
         return buildEntityForDownloadFile(translationService.exportJsonTranslations(groupName, currentCountryIso, targetCountry));
+    }
+
+    @RequestMapping(value = "/translation/remove/country", method = RequestMethod.DELETE)
+    public void clearTranslationsForCurrentCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        translationService.clearForCountry(currentCountryIso);
     }
 
     private HttpEntity<Map<String, Object>> buildEntityForDownloadFile(Map<String, Object> bytes) {

@@ -45,4 +45,6 @@ public interface TranslationService {
     void deleteTranslation(String groupName, String key);
 
     Map<String,Object> exportJsonTranslations(String groupName, String srcCountryIso, String destCountryIso);
+
+    void clearForCountry(String currentCountryIso);
 }

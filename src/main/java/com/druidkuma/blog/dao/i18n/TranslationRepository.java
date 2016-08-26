@@ -20,6 +20,7 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
     List<Translation> findByTranslationGroupAndLanguageIsoCode(TranslationGroup translationGroup, String languageIsoCode);
     List<Translation> findByTranslationGroupAndKey(TranslationGroup translationGroup, String key);
     List<Translation> findByTranslationGroup(TranslationGroup translationGroup);
+    List<Translation> findByLanguageIsoCode(String languageIsoCode);
     Translation findByTranslationGroupAndKeyAndLanguageIsoCode(TranslationGroup translationGroup, String key, String languageIsoCode);
 
     @Query(value = "SELECT DISTINCT tr.key FROM Translation tr WHERE tr.translationGroup = :translationGroup")
