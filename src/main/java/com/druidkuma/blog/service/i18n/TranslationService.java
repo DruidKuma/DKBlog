@@ -51,4 +51,6 @@ public interface TranslationService {
     void clearForAllExceptCurrent(String currentCountryIso);
 
     ExcelDocument exportTranslationsInExcel(String groupName, String srcCountryIso, String destCountryIso);
+
+    byte[] exportCustomFormatTranslations(String groupName, String currentCountryIso, String targetCountry, String columnSeparator, String rowSeparator);
 }

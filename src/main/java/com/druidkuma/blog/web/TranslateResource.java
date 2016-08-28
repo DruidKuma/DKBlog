@@ -7,10 +7,7 @@ import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.i18n.TranslationService;
-import com.druidkuma.blog.web.dto.NewTranslationDto;
-import com.druidkuma.blog.web.dto.SimplePaginationFilter;
-import com.druidkuma.blog.web.dto.TranslatePanelDto;
-import com.druidkuma.blog.web.dto.TranslationDto;
+import com.druidkuma.blog.web.dto.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,13 +152,33 @@ public class TranslateResource {
                                               @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
 
         ExcelDocument excelDocument = translationService.exportTranslationsInExcel(groupName, currentCountryIso, targetCountry);
-        return buildHttpEntityWithExcelBytesAndHeaders("translations", excelDocument.getBytes());
+        return buildHttpEntityWithExcelBytesAndHeaders(excelDocument.getBytes());
     }
 
-    private HttpEntity<byte[]> buildHttpEntityWithExcelBytesAndHeaders(String sheetName, byte[] bytes) {
+    @RequestMapping(value = "/export/custom", method = RequestMethod.POST)
+    public HttpEntity<byte[]> downloadInCustomFormat(@RequestBody ExportConfigDto exportConfigDto,
+                                              @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        return buildHttpEntityWithTextBytesAndHeaders(
+                translationService.exportCustomFormatTranslations(
+                        exportConfigDto.getGroupName(),
+                        currentCountryIso,
+                        exportConfigDto.getTargetCountry(),
+                        exportConfigDto.getColumnSeparator(),
+                        exportConfigDto.getRowSeparator()
+                ));
+    }
+
+    private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "text/plain");
+        headers.add("Content-Disposition", "attachment; filename=translations.txt");
+        return new ResponseEntity<>(bytes, headers, OK);
+    }
+
+    private HttpEntity<byte[]> buildHttpEntityWithExcelBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        headers.add("Content-Disposition", "attachment; filename=\"" + sheetName + ".xlsx\"");
+        headers.add("Content-Disposition", "attachment; filename=translations.xlsx");
         return new ResponseEntity<>(bytes, headers, OK);
     }
 

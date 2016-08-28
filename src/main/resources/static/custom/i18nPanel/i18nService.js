@@ -57,6 +57,14 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 url: API_I18N_URL + "translation/remove/country",
                 method: "delete"
             })
+        },
+        exportWithCustomConfig: function(config) {
+            return $http({
+                url: API_I18N_URL + "export/custom",
+                method: "post",
+                data: JSON.stringify(config),
+                responseType: 'arraybuffer'
+            })
         }
     }
 }]);

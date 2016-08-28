@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -153,13 +153,39 @@ angular.module("blogApp")
             var exportModal = $uibModal.open({
                 animation: true,
                 templateUrl: 'customExportModal.html',
-                //controller: 'EditCategoryController',
+                controller: 'CustomExportController',
                 size: 'lg',
                 resolve: {
                 }
+            });
+
+            exportModal.result.then(function (exportConfig) {
+                I18NService.exportWithCustomConfig({
+                    targetCountry: $scope.targetCountry.isoCode,
+                    groupName: $scope.chosenGroupParts.join('.'),
+                    columnSeparator: exportConfig.columnSeparator,
+                    rowSeparator: exportConfig.rowSeparator
+                }).then(function(response) {
+                    var blob = new Blob([response.data], {type: "text/plain"});
+                    var objectUrl = URL.createObjectURL(blob);
+                    $window.open(objectUrl, '_self');
+                }, function() { $scope.showError() })
             });
         };
 
         $scope.loadPanelView();
 
-    }]);
+    }])
+    .controller('CustomExportController', function ($scope, $uibModalInstance) {
+
+        $scope.columnSeparator = ',';
+        $scope.rowSeparator = '';
+
+        $scope.exportTranslations = function () {
+            $uibModalInstance.close({columnSeparator: $scope.columnSeparator, rowSeparator: $scope.rowSeparator});
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    });

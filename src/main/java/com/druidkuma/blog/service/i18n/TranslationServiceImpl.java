@@ -15,6 +15,7 @@ import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.io.ByteArrayInputStream;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -221,6 +223,50 @@ public class TranslationServiceImpl implements TranslationService {
         else exportExcelTranslations(excelDocument, resolveTranslationGroup(groupName), srcLang, destLang);
 
         return excelDocument;
+    }
+
+    @Override
+    @SneakyThrows
+    public byte[] exportCustomFormatTranslations(String groupName, String currentCountryIso, String targetCountry, String columnSeparator, String rowSeparator) {
+        StringBuilder builder = new StringBuilder();
+        String srcLang = countryRepository.findByIsoAlpha2Code(currentCountryIso).getDefaultLanguage().getIsoCode();
+        String destLang = countryRepository.findByIsoAlpha2Code(targetCountry).getDefaultLanguage().getIsoCode();
+
+        //append header
+        builder
+                .append(Joiner.on(columnSeparator).join(Arrays.asList("key", srcLang, destLang)))
+                .append(rowSeparator)
+                .append('\n');
+
+        if(StringUtils.isBlank(groupName)) {
+            for (TranslationGroup translationGroup : getTopLevelTranslationGroups()) {
+                exportTextTranslations(builder, translationGroup, srcLang, destLang, columnSeparator, rowSeparator);
+            }
+        }
+        else exportTextTranslations(builder, resolveTranslationGroup(groupName), srcLang, destLang, columnSeparator, rowSeparator);
+
+        return builder.toString().getBytes("UTF-8");
+    }
+
+    private void exportTextTranslations(StringBuilder builder, TranslationGroup translationGroup, String srcLang, String destLang, String columnSeparator, String rowSeparator) {
+        String fullGroupName = buildFullGroupName(translationGroup);
+        Map<String, Translation> srcTranslations = transformIntoTranslationMap(getTranslationsFromDb(translationGroup, srcLang));
+        Map<String, Translation> destTranslations = transformIntoTranslationMap(getTranslationsFromDb(translationGroup, destLang));
+        for (String key : translationRepository.getAllTranslationKeysForGroup(translationGroup)) {
+            Translation srcTranslation = srcTranslations.get(key);
+            Translation destTranslation = destTranslations.get(key);
+
+            builder.append(Joiner.on(columnSeparator).join(Arrays.asList(
+                            fullGroupName + "." + key,
+                            srcTranslation != null ? srcTranslation.getValue() : "",
+                            destTranslation != null ? destTranslation.getValue() : "")))
+                    .append(rowSeparator)
+                    .append('\n');
+        }
+
+        for (TranslationGroup childGroup : translationGroup.getChildGroups()) {
+            exportTextTranslations(builder, childGroup, srcLang, destLang, columnSeparator, rowSeparator);
+        }
     }
 
     private void exportExcelTranslations(ExcelDocument document, TranslationGroup translationGroup, String srcLang, String destLang) {
