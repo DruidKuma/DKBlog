@@ -1,5 +1,7 @@
 package com.druidkuma.blog.util.procedures;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 /**
  * Created by Iurii Miedviediev
  *
@@ -10,4 +12,5 @@ package com.druidkuma.blog.util.procedures;
 public interface ProcedureService {
     void createRandomBlogEntryCountryMappings();
     Long resolveTranslationGroup(String groupNameKey);
+    Pair<Long, Long> getPreviousAndNextBlogEntryIds(Long currentBlogEntryId);
 }
