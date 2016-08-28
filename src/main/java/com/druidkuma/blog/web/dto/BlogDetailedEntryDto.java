@@ -1,6 +1,7 @@
 package com.druidkuma.blog.web.dto;
 
 import lombok.*;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.Instant;
 import java.util.List;
@@ -30,4 +31,6 @@ public class BlogDetailedEntryDto {
     private Boolean isCommentEnabled;
     private List<CountryDto> countries;
     private List<CategoryDto> categories;
+    private Long previousId;
+    private Long nextId;
 }

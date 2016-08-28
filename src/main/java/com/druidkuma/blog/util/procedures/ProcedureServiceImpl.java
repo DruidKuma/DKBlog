@@ -48,9 +48,10 @@ public class ProcedureServiceImpl implements ProcedureService {
         StoredProcedureQuery query = em.createStoredProcedureQuery(procedureName);
         query.registerStoredProcedureParameter("p_blog_entry_id", Integer.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("shifted_id", Integer.class, ParameterMode.OUT);
-        query.setParameter("p_blog_entry_id", currentBlogEntryId);
+        query.setParameter("p_blog_entry_id", currentBlogEntryId.intValue());
         query.execute();
-        return ((Integer) query.getOutputParameterValue("shifted_id")).longValue();
+        Object result = query.getOutputParameterValue("shifted_id");
+        return result == null ? null : ((Integer) result).longValue();
     }
 
     private void executeWithoutParameters(String procedureName) {

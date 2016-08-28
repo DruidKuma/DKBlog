@@ -12,7 +12,10 @@ angular.module("blogApp")
                 $scope.postEntry = response.data;
                 $scope.pageHeading.title = $scope.postEntry.title;
                 $scope.postEntry.content = $sce.trustAsHtml($scope.postEntry.content);
-            }).finally(function() {
+                if($scope.postEntry.previousId) $scope.previousPostLink = '/entry/' + $scope.postEntry.previousId;
+                if($scope.postEntry.nextId) $scope.nextPostLink = '/entry/' + $scope.postEntry.nextId;
+                console.log($scope.postEntry);
+            }, function(error) { $scope.showError() }).finally(function() {
                 $scope.loadingProcess = false;
             });
         };
