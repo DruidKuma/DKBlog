@@ -472,3 +472,12 @@ span.dk-table-sortable {
 .new-tr-category-form.app-search .form-control:focus {
     width: 250px;
 }
+
+.drop-box {
+    background: transparent;
+    border: 5px dashed #DDD;
+    text-align: center;
+    font-size: 200%;
+    padding: 50px 10px;
+    margin-left: 10px;
+}

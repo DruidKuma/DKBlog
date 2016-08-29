@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -154,9 +154,7 @@ angular.module("blogApp")
                 animation: true,
                 templateUrl: 'customExportModal.html',
                 controller: 'CustomExportController',
-                size: 'lg',
-                resolve: {
-                }
+                size: 'lg'
             });
 
             exportModal.result.then(function (exportConfig) {
@@ -173,6 +171,20 @@ angular.module("blogApp")
             });
         };
 
+        $scope.openUploadModal = function() {
+            var uploadModal = $uibModal.open({
+                animation: true,
+                templateUrl: 'uploadModal.html',
+                controller: 'UploadTranslationsController',
+                size: 'lg',
+                resolve: {
+                    Upload: function() {
+                        return Upload;
+                    }
+                }
+            });
+        };
+
         $scope.loadPanelView();
 
     }])
@@ -184,6 +196,12 @@ angular.module("blogApp")
         $scope.exportTranslations = function () {
             $uibModalInstance.close({columnSeparator: $scope.columnSeparator, rowSeparator: $scope.rowSeparator});
         };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    })
+    .controller('UploadTranslationsController', function ($scope, $uibModalInstance, Upload) {
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

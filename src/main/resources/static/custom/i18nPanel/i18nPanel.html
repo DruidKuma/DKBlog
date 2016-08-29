@@ -13,9 +13,9 @@
                             <a class="i18n-dropdown-toggle" uib-dropdown-toggle><i class="zmdi zmdi-attachment"></i></a>
 
                             <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                                <li><a href="#"><i class="zmdi zmdi-translate"></i> Translate via Yandex API</a></li>
-                                <li><a href="#"><i class="fa fa-google"></i> Translate via Google API</a></li>
-                                <li class="divider"></li>
+                                <!--<li><a href="#"><i class="zmdi zmdi-translate"></i> Translate via Yandex API</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-google"></i> Translate via Google API</a></li>-->
+                                <!--<li class="divider"></li>-->
                                 <li>
                                     <a href="/api/blog/i18n/export/json/{{targetCountry.isoCode}}/{{chosenGroupParts.join('.')}}" target="_blank">
                                         <i class="zmdi zmdi-code"></i> Download in JSON
@@ -27,8 +27,8 @@
                                         <i class="zmdi zmdi-format-align-left"></i> Download in XLS
                                     </a>
                                 </li>
-                                <!--<li class="divider"></li>-->
-                                <!--<li><a href="#"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>-->
+                                <li class="divider"></li>
+                                <li><a href="#" ng-click="openUploadModal()"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>
                                 <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in CSV</a></li>-->
                                 <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in TSV</a></li>-->
                                 <!--<li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>-->
@@ -278,6 +278,42 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="exportTranslations()">Export</button>
+        <button class="btn btn-warning" type="button" ng-click="$dismiss('cancel')">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="uploadModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Upload Translations</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <div ngf-select ngf-drop
+                             ng-model="files"
+                             ngf-model-invalid="invalidFiles"
+                             ngf-model-options="modelOptionsObj"
+                             ngf-pattern="pattern"
+                             ngf-accept="acceptSelect"
+                             ng-disabled="disabled"
+                             ngf-capture="capture"
+                             ngf-drag-over-class="dragOverClassObj"
+                             ngf-validate="validateObj"
+                             class="drop-box">
+                            Select File or Drop File
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
         <button class="btn btn-warning" type="button" ng-click="$dismiss('cancel')">Cancel</button>
     </div>
 </script>
