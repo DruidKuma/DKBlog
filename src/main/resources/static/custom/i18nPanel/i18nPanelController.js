@@ -203,7 +203,29 @@ angular.module("blogApp")
     })
     .controller('UploadTranslationsController', function ($scope, $uibModalInstance, Upload) {
 
+        $scope.acceptFormat = 'application/json';
+        $scope.uploadError = false;
+        $scope.uploadErrorMessage = '';
+
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+        $scope.uploadTranslations = function(file, errFiles) {
+            if (file) {
+
+                //TODO
+                $scope.uploadError = false;
+                $scope.uploadErrorMessage = '';
+                Upload.upload({
+                    url: '/unknown',
+                    data: {file: file}
+                }).then(function (response) {
+                    $uibModalInstance.close(response);
+                }, function (errResponse) {
+                    $scope.uploadError = true;
+                    $scope.uploadErrorMessage = errResponse.data.message;
+                });
+            }
+        }
     });

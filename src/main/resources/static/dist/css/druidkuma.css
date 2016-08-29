@@ -481,3 +481,7 @@ span.dk-table-sortable {
     padding: 50px 10px;
     margin-left: 10px;
 }
+
+.drop-box.error {
+    border: 5px dashed #ff5b5b;
+}

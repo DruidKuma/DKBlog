@@ -292,19 +292,16 @@
                 <form class="form-horizontal">
 
                     <div class="form-group">
-                        <div ngf-select ngf-drop
-                             ng-model="files"
-                             ngf-model-invalid="invalidFiles"
-                             ngf-model-options="modelOptionsObj"
-                             ngf-pattern="pattern"
-                             ngf-accept="acceptSelect"
-                             ng-disabled="disabled"
-                             ngf-capture="capture"
-                             ngf-drag-over-class="dragOverClassObj"
-                             ngf-validate="validateObj"
-                             class="drop-box">
+                        <div ngf-drop
+                             ngf-accept="acceptFormat"
+                             ngf-select="uploadTranslations($file, $invalidFiles)"
+                             class="drop-box" ng-class="{'error' : uploadError}">
                             Select File or Drop File
                         </div>
+                    </div>
+
+                    <div class="text-center error" ng-show="uploadError">
+                        {{uploadErrorMessage}}
                     </div>
 
                 </form>
