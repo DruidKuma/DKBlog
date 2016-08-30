@@ -183,6 +183,10 @@ angular.module("blogApp")
                     }
                 }
             });
+
+            uploadModal.result.then(function (response) {
+                $scope.loadPanelView();
+            });
         };
 
         $scope.loadPanelView();
@@ -213,12 +217,10 @@ angular.module("blogApp")
 
         $scope.uploadTranslations = function(file, errFiles) {
             if (file) {
-
-                //TODO
                 $scope.uploadError = false;
                 $scope.uploadErrorMessage = '';
                 Upload.upload({
-                    url: '/unknown',
+                    url: BASE_URL + '/api/blog/i18n/import/json',
                     data: {file: file}
                 }).then(function (response) {
                     $uibModalInstance.close(response);
