@@ -55,5 +55,5 @@ public interface TranslationService {
 
     byte[] exportCustomFormatTranslations(String groupName, String currentCountryIso, String targetCountry, String columnSeparator, String rowSeparator);
 
-    void importTranslations(MultipartFile file, String type);
+    void importTranslations(MultipartFile file, String type, String columnSeparator, String rowSeparator);
 }

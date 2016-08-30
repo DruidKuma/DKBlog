@@ -10,6 +10,7 @@ import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.excel.SimpleExcelDocument;
+import com.druidkuma.blog.service.i18n.importer.TranslationImporterFactory;
 import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.base.Joiner;
@@ -17,8 +18,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -136,7 +133,19 @@ public class TranslationServiceImpl implements TranslationService {
     public void saveTranslation(String group, String key, String value, String countryIso) {
         String languageIsoCode = countryRepository.findByIsoAlpha2Code(countryIso).getDefaultLanguage().getIsoCode();
         TranslationGroup translationGroup = resolveTranslationGroup(group);
-        createTranslation(key, value, languageIsoCode, translationGroup);
+        Translation translation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(translationGroup, key, languageIsoCode);
+        if(translation != null) {
+            translation.setValue(value);
+            translation.setLastModified(Instant.now());
+        }
+        else translation = Translation.builder()
+                .key(key)
+                .value(value)
+                .language(languageRepository.findByIsoCode(languageIsoCode))
+                .translationGroup(translationGroup)
+                .lastModified(Instant.now())
+                .build();
+        translationRepository.saveAndFlush(translation);
     }
 
     @Override
@@ -243,12 +252,8 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     @SneakyThrows
     @SuppressWarnings("unchecked")
-    public void importTranslations(MultipartFile file, String type) {
-        BufferedReader streamReader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
-        StringBuilder responseStrBuilder = new StringBuilder();
-        String inputStr;
-        while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
-        resolveJsonTranslationsRecursively((JSONObject) new JSONParser().parse(responseStrBuilder.toString()), null, null, languageRepository.getAvailableLanguageIsoCodes());
+    public void importTranslations(MultipartFile file, String type, String columnSeparator, String rowSeparator) {
+        TranslationImporterFactory.getImporter(type).importTranslations(file, columnSeparator, rowSeparator);
     }
 
     private void exportTextTranslations(StringBuilder builder, TranslationGroup translationGroup, String srcLang, String destLang, String columnSeparator, String rowSeparator) {
@@ -351,79 +356,6 @@ public class TranslationServiceImpl implements TranslationService {
             result.put(translation.getKey(), translation);
         }
         return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void resolveJsonTranslationsRecursively(Map<String, Object> translations, TranslationGroup parentGroup, TranslationGroup currentGroup, List<String> availableLanguageIsoCodes) {
-        for (Map.Entry<String, Object> entry : translations.entrySet()) {
-            if(isTranslationObject(entry.getValue(), availableLanguageIsoCodes)) {
-                for (Map.Entry<String, Object> newTranslations : ((Map<String, Object>) entry.getValue()).entrySet()) {
-                    Map<String, Object> translationList = (Map<String, Object>) newTranslations.getValue();
-                    translationList.entrySet()
-                            .stream()
-                            .filter(translation -> translation.getValue() instanceof String && availableLanguageIsoCodes.contains(translation.getKey()))
-                            .forEach(translation ->
-                                    createTranslation(
-                                            newTranslations.getKey(),
-                                            (String) translation.getValue(),
-                                            translation.getKey(),
-                                            retrieveTranslationGroup(entry.getKey(), parentGroup)));
-                }
-            }
-            else if(entry.getValue() instanceof Map) {
-                TranslationGroup newGroup = retrieveTranslationGroup(entry.getKey(), parentGroup);
-                resolveJsonTranslationsRecursively((Map<String, Object>) entry.getValue(), newGroup, newGroup, availableLanguageIsoCodes);
-            }
-            else if (entry.getValue() instanceof String) {
-                createTranslation(entry.getKey(), (String)entry.getValue(), null, currentGroup);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    boolean isTranslationObject(Object object, List<String> availableLanguages) {
-        if(! (object instanceof Map)) return false;
-        Map<String, Object> possibleTranslations = (Map<String, Object>) object;
-        for (Map.Entry<String, Object> entry : possibleTranslations.entrySet()) {
-            if(entry.getValue() != null && entry.getValue() instanceof Map) {
-                Map<String, Object> possibleTranslationList = (Map<String, Object>) entry.getValue();
-                for (Map.Entry<String, Object> translation : possibleTranslationList.entrySet()) {
-                    if(translation.getValue() instanceof String && availableLanguages.contains(translation.getKey())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private TranslationGroup retrieveTranslationGroup(String key, TranslationGroup parentGroup) {
-        TranslationGroup existing = parentGroup == null
-                ? translationGroupRepository.findByNameAndParentIsNull(key)
-                : translationGroupRepository.findByNameAndParent(key, parentGroup);
-        if(existing != null) return existing;
-
-        return translationGroupRepository.saveAndFlush(
-                TranslationGroup.builder()
-                        .name(key)
-                        .parent(parentGroup)
-                        .build());
-    }
-
-    private void createTranslation(String key, String value, String languageIsoCode, TranslationGroup group) {
-        Translation translation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(group, key, languageIsoCode);
-        if(translation != null) {
-            translation.setValue(value);
-            translation.setLastModified(Instant.now());
-        }
-        else translation = Translation.builder()
-                .key(key)
-                .value(value)
-                .language(languageRepository.findByIsoCode(languageIsoCode))
-                .translationGroup(group)
-                .lastModified(Instant.now())
-                .build();
-        translationRepository.saveAndFlush(translation);
     }
 }
 

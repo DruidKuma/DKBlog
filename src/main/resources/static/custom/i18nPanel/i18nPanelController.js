@@ -171,7 +171,7 @@ angular.module("blogApp")
             });
         };
 
-        $scope.openUploadModal = function() {
+        $scope.openUploadModal = function(format) {
             var uploadModal = $uibModal.open({
                 animation: true,
                 templateUrl: 'uploadModal.html',
@@ -180,6 +180,9 @@ angular.module("blogApp")
                 resolve: {
                     Upload: function() {
                         return Upload;
+                    },
+                    format: function() {
+                        return format;
                     }
                 }
             });
@@ -205,23 +208,32 @@ angular.module("blogApp")
             $uibModalInstance.dismiss('cancel');
         };
     })
-    .controller('UploadTranslationsController', function ($scope, $uibModalInstance, Upload) {
+    .controller('UploadTranslationsController', function ($scope, $uibModalInstance, Upload, format) {
 
-        $scope.acceptFormat = 'application/json';
+        $scope.formats = {
+            json: 'application/json',
+            excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            custom: 'text/plain, text/csv, text/tsv'
+        };
+
+        $scope.format = format;
+        $scope.acceptFormat = $scope.formats[$scope.format];
         $scope.uploadError = false;
         $scope.uploadErrorMessage = '';
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
+        $scope.columnSeparator = ',';
+        $scope.rowSeparator = ';';
 
         $scope.uploadTranslations = function(file, errFiles) {
             if (file) {
                 $scope.uploadError = false;
                 $scope.uploadErrorMessage = '';
                 Upload.upload({
-                    url: BASE_URL + '/api/blog/i18n/import/json',
-                    data: {file: file}
+                    url: BASE_URL + '/api/blog/i18n/import/' + $scope.format,
+                    data: {
+                        file: file,
+                        columnSeparator: $scope.columnSeparator,
+                        rowSeparator: $scope.rowSeparator
+                    }
                 }).then(function (response) {
                     $uibModalInstance.close(response);
                 }, function (errResponse) {

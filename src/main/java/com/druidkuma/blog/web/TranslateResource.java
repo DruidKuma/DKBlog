@@ -172,8 +172,11 @@ public class TranslateResource {
 
     @RequestMapping(value = "/import/{type}", method = RequestMethod.POST)
     @SneakyThrows
-    public void uploadTranslations(@RequestParam(value = "file") MultipartFile file, @PathVariable("type") String type) {
-        translationService.importTranslations(file, type);
+    public void uploadTranslations(@RequestParam(value = "file") MultipartFile file,
+                                   @RequestParam(value = "columnSeparator", required = false) String columnSeparator,
+                                   @RequestParam(value = "rowSeparator", required = false) String rowSeparator,
+                                   @PathVariable("type") String type) {
+        translationService.importTranslations(file, type, columnSeparator, rowSeparator);
     }
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {

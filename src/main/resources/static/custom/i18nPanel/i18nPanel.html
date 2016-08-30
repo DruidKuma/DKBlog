@@ -28,10 +28,9 @@
                                     </a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="#" ng-click="openUploadModal()"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>
-                                <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in CSV</a></li>-->
-                                <!--<li><a href="#"><i class="zmdi zmdi-collection-text"></i> Upload in TSV</a></li>-->
-                                <!--<li><a href="#"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>-->
+                                <li><a href="#" ng-click="openUploadModal('json')"><i class="zmdi zmdi-code"></i> Upload in JSON</a></li>
+                                <li><a href="#" ng-click="openUploadModal('custom')"><i class="zmdi zmdi-collection-text"></i> Upload in custom format</a></li>
+                                <li><a href="#" ng-click="openUploadModal('excel')"><i class="zmdi zmdi-format-align-left"></i> Upload in XLS</a></li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="#" ng-click="clearTranslationsForCurrentCountry()">
@@ -302,6 +301,26 @@
 
                     <div class="text-center error" ng-show="uploadError">
                         {{uploadErrorMessage}}
+                    </div>
+
+                    <div class="m-t-30" ng-show="format == 'custom'">
+                        <div class="form-group">
+                            <label class="col-md-2">
+                                Column Separator (Default is comma)
+                            </label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" ng-model="columnSeparator">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2">
+                                Row Separator (Default is new line)
+                            </label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" ng-model="rowSeparator">
+                            </div>
+                        </div>
                     </div>
 
                 </form>
