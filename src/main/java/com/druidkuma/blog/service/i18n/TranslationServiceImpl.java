@@ -248,7 +248,7 @@ public class TranslationServiceImpl implements TranslationService {
         StringBuilder responseStrBuilder = new StringBuilder();
         String inputStr;
         while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
-        resolveJsonTranslationsRecursively((JSONObject) new JSONParser().parse(responseStrBuilder.toString()), null, null);
+        resolveJsonTranslationsRecursively((JSONObject) new JSONParser().parse(responseStrBuilder.toString()), null, null, languageRepository.getAvailableLanguageIsoCodes());
     }
 
     private void exportTextTranslations(StringBuilder builder, TranslationGroup translationGroup, String srcLang, String destLang, String columnSeparator, String rowSeparator) {
@@ -354,19 +354,47 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @SuppressWarnings("unchecked")
-    private void resolveJsonTranslationsRecursively(Map<String, Object> translations, TranslationGroup parentGroup, TranslationGroup currentGroup) {
-
-        //TODO
-
+    private void resolveJsonTranslationsRecursively(Map<String, Object> translations, TranslationGroup parentGroup, TranslationGroup currentGroup, List<String> availableLanguageIsoCodes) {
         for (Map.Entry<String, Object> entry : translations.entrySet()) {
-            if(entry.getValue() instanceof Map) {
+            if(isTranslationObject(entry.getValue(), availableLanguageIsoCodes)) {
+                for (Map.Entry<String, Object> newTranslations : ((Map<String, Object>) entry.getValue()).entrySet()) {
+                    Map<String, Object> translationList = (Map<String, Object>) newTranslations.getValue();
+                    translationList.entrySet()
+                            .stream()
+                            .filter(translation -> translation.getValue() instanceof String && availableLanguageIsoCodes.contains(translation.getKey()))
+                            .forEach(translation ->
+                                    createTranslation(
+                                            newTranslations.getKey(),
+                                            (String) translation.getValue(),
+                                            translation.getKey(),
+                                            retrieveTranslationGroup(entry.getKey(), parentGroup)));
+                }
+            }
+            else if(entry.getValue() instanceof Map) {
                 TranslationGroup newGroup = retrieveTranslationGroup(entry.getKey(), parentGroup);
-                resolveJsonTranslationsRecursively((Map<String, Object>) entry.getValue(), newGroup, newGroup);
+                resolveJsonTranslationsRecursively((Map<String, Object>) entry.getValue(), newGroup, newGroup, availableLanguageIsoCodes);
             }
             else if (entry.getValue() instanceof String) {
                 createTranslation(entry.getKey(), (String)entry.getValue(), null, currentGroup);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    boolean isTranslationObject(Object object, List<String> availableLanguages) {
+        if(! (object instanceof Map)) return false;
+        Map<String, Object> possibleTranslations = (Map<String, Object>) object;
+        for (Map.Entry<String, Object> entry : possibleTranslations.entrySet()) {
+            if(entry.getValue() != null && entry.getValue() instanceof Map) {
+                Map<String, Object> possibleTranslationList = (Map<String, Object>) entry.getValue();
+                for (Map.Entry<String, Object> translation : possibleTranslationList.entrySet()) {
+                    if(translation.getValue() instanceof String && availableLanguages.contains(translation.getKey())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private TranslationGroup retrieveTranslationGroup(String key, TranslationGroup parentGroup) {
