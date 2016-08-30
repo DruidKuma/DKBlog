@@ -9,6 +9,7 @@ import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.*;
 import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -170,8 +171,9 @@ public class TranslateResource {
     }
 
     @RequestMapping(value = "/import/{type}", method = RequestMethod.POST)
+    @SneakyThrows
     public void uploadTranslations(@RequestParam(value = "file") MultipartFile file, @PathVariable("type") String type) {
-        System.out.println("");
+        translationService.importTranslations(file, type);
     }
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {

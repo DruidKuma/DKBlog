@@ -7,6 +7,7 @@ import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -53,4 +54,6 @@ public interface TranslationService {
     ExcelDocument exportTranslationsInExcel(String groupName, String srcCountryIso, String destCountryIso);
 
     byte[] exportCustomFormatTranslations(String groupName, String currentCountryIso, String targetCountry, String columnSeparator, String rowSeparator);
+
+    void importTranslations(MultipartFile file, String type);
 }
