@@ -35,11 +35,11 @@ public class JsonTranslationsImporter extends TranslationsImporter {
         StringBuilder responseStrBuilder = new StringBuilder();
         String inputStr;
         while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
-        resolveJsonTranslationsRecursively((JSONObject) new JSONParser().parse(responseStrBuilder.toString()), null, null, languageRepository.getAvailableLanguageIsoCodes());
+        resolveJsonTranslationsRecursively((JSONObject) new JSONParser().parse(responseStrBuilder.toString()), null, languageRepository.getAvailableLanguageIsoCodes());
     }
 
     @SuppressWarnings("unchecked")
-    private void resolveJsonTranslationsRecursively(Map<String, Object> translations, TranslationGroup parentGroup, TranslationGroup currentGroup, List<String> availableLanguageIsoCodes) {
+    private void resolveJsonTranslationsRecursively(Map<String, Object> translations, TranslationGroup translationGroup, List<String> availableLanguageIsoCodes) {
         for (Map.Entry<String, Object> entry : translations.entrySet()) {
             if(isTranslationObject(entry.getValue(), availableLanguageIsoCodes)) {
                 for (Map.Entry<String, Object> newTranslations : ((Map<String, Object>) entry.getValue()).entrySet()) {
@@ -52,15 +52,12 @@ public class JsonTranslationsImporter extends TranslationsImporter {
                                             newTranslations.getKey(),
                                             (String) translation.getValue(),
                                             translation.getKey(),
-                                            retrieveTranslationGroup(entry.getKey(), parentGroup)));
+                                            retrieveTranslationGroup(entry.getKey(), translationGroup)));
                 }
             }
             else if(entry.getValue() instanceof Map) {
-                TranslationGroup newGroup = retrieveTranslationGroup(entry.getKey(), parentGroup);
-                resolveJsonTranslationsRecursively((Map<String, Object>) entry.getValue(), newGroup, newGroup, availableLanguageIsoCodes);
-            }
-            else if (entry.getValue() instanceof String) {
-                createTranslation(entry.getKey(), (String)entry.getValue(), null, currentGroup);
+                TranslationGroup newGroup = retrieveTranslationGroup(entry.getKey(), translationGroup);
+                resolveJsonTranslationsRecursively((Map<String, Object>) entry.getValue(), newGroup, availableLanguageIsoCodes);
             }
         }
     }

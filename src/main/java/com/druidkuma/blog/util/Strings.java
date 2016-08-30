@@ -14,7 +14,7 @@ import java.util.Collection;
  *
  * @author Andreas Kühnel
  */
-public final class Strings extends org.apache.commons.lang.StringUtils {
+public final class Strings extends org.apache.commons.lang3.StringUtils {
     /**
      * Returns true, if the given strings are not equal
      */
@@ -353,6 +353,4 @@ public final class Strings extends org.apache.commons.lang.StringUtils {
 
         return MessageFormat.format(message, stringParams);
     }
-
-
 }

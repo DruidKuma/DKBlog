@@ -47,4 +47,13 @@ public abstract class TranslationsImporter {
                 .build();
         translationRepository.saveAndFlush(translation);
     }
+
+    protected TranslationGroup retrieveTranslationGroup(String nameKey) {
+        String[] groupNames = nameKey.split("\\.");
+        TranslationGroup current = null;
+        for (String groupName : groupNames) {
+            current = retrieveTranslationGroup(groupName, current);
+        }
+        return current;
+    }
 }

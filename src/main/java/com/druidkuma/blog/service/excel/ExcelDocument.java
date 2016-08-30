@@ -2,6 +2,7 @@ package com.druidkuma.blog.service.excel;
 
 import com.druidkuma.blog.util.Beans;
 import com.druidkuma.blog.util.Strings;
+import lombok.SneakyThrows;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -158,6 +159,15 @@ public class ExcelDocument {
         } catch (Throwable e) {
             throw new RuntimeException("loading " + file, e);
         }
+    }
+
+    @SneakyThrows
+    public static ExcelDocument load(InputStream in, String fileName) {
+        ExcelDocument doc = new ExcelDocument((Workbook) null);
+        boolean isXlsx = fileName.toLowerCase().endsWith(".xlsx");
+        doc.workbook = isXlsx ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        doc.sheet = doc.workbook.getSheetAt(0);
+        return doc;
     }
 
     /**
