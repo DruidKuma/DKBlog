@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', 'FileSaver', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload, FileSaver) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -164,9 +164,8 @@ angular.module("blogApp")
                     columnSeparator: exportConfig.columnSeparator,
                     rowSeparator: exportConfig.rowSeparator
                 }).then(function(response) {
-                    var blob = new Blob([response.data], {type: "text/plain"});
-                    var objectUrl = URL.createObjectURL(blob);
-                    $window.open(objectUrl, '_self');
+                    var data = new Blob([response.data], {type: "text/plain;charset=utf-8"});
+                    FileSaver.saveAs(data, 'translations.txt');
                 }, function() { $scope.showError() })
             });
         };

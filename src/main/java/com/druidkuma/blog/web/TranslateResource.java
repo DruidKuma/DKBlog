@@ -181,7 +181,7 @@ public class TranslateResource {
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "text/plain");
+        headers.add("Content-Type", "text/plain; charset=utf-8");
         headers.add("Content-Disposition", "attachment; filename=translations.txt");
         return new ResponseEntity<>(bytes, headers, OK);
     }
