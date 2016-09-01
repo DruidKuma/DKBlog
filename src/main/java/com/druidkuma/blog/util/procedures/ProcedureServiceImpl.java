@@ -38,17 +38,19 @@ public class ProcedureServiceImpl implements ProcedureService {
     }
 
     @Override
-    public Pair<Long, Long> getPreviousAndNextBlogEntryIds(Long currentBlogEntryId) {
+    public Pair<Long, Long> getPreviousAndNextBlogEntryIds(Long currentBlogEntryId, String countryIso) {
         return Pair.of(
-                getShiftedBlogEntryId("select_previous_blog_entry_id", currentBlogEntryId),
-                getShiftedBlogEntryId("select_next_blog_entry_id", currentBlogEntryId));
+                getShiftedBlogEntryId("select_previous_blog_entry_id", currentBlogEntryId, countryIso),
+                getShiftedBlogEntryId("select_next_blog_entry_id", currentBlogEntryId, countryIso));
     }
 
-    private Long getShiftedBlogEntryId(String procedureName, Long currentBlogEntryId) {
+    private Long getShiftedBlogEntryId(String procedureName, Long currentBlogEntryId, String countryIso) {
         StoredProcedureQuery query = em.createStoredProcedureQuery(procedureName);
         query.registerStoredProcedureParameter("p_blog_entry_id", Integer.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_country_iso", String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("shifted_id", Integer.class, ParameterMode.OUT);
         query.setParameter("p_blog_entry_id", currentBlogEntryId.intValue());
+        query.setParameter("p_country_iso", countryIso);
         query.execute();
         Object result = query.getOutputParameterValue("shifted_id");
         return result == null ? null : ((Integer) result).longValue();

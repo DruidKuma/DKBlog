@@ -4,12 +4,14 @@ import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.exception.PermalinkExistsException;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.permalink.PermalinkGenerationService;
+import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.druidkuma.blog.web.dto.BlogEntryInfoDto;
 import com.druidkuma.blog.web.dto.BlogPostFilter;
 import com.druidkuma.blog.web.dto.CountryDto;
 import com.druidkuma.blog.web.transformer.BlogEntryTransformer;
 import com.druidkuma.blog.web.transformer.CategoryTransformer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -34,19 +36,27 @@ public class BlogEntryResource {
     private BlogEntryTransformer blogEntryTransformer;
     private CategoryTransformer categoryTransformer;
     private PermalinkGenerationService permalinkGenerationService;
+    private ProcedureService procedureService;
 
     @Autowired
-    public BlogEntryResource(BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer, CategoryTransformer categoryTransformer, PermalinkGenerationService permalinkGenerationService) {
+    public BlogEntryResource(BlogEntryService blogEntryService, BlogEntryTransformer blogEntryTransformer, CategoryTransformer categoryTransformer, PermalinkGenerationService permalinkGenerationService, ProcedureService procedureService) {
         this.blogEntryService = blogEntryService;
         this.blogEntryTransformer = blogEntryTransformer;
         this.categoryTransformer = categoryTransformer;
         this.permalinkGenerationService = permalinkGenerationService;
+        this.procedureService = procedureService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id) {
+    public BlogDetailedEntryDto getEntry(@PathVariable("id") Long id,
+                                         @CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
         BlogEntry entry = blogEntryService.getOne(id);
-        return entry == null ? new BlogDetailedEntryDto() : blogEntryTransformer.tranformToDto(entry);
+        if(entry == null) return new BlogDetailedEntryDto();
+        BlogDetailedEntryDto dto = blogEntryTransformer.tranformToDto(entry);
+        Pair<Long, Long> shiftedEntries = procedureService.getPreviousAndNextBlogEntryIds(id, currentCountryIso);
+        dto.setPreviousId(shiftedEntries.getLeft());
+        dto.setNextId(shiftedEntries.getRight());
+        return dto;
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)

@@ -2,13 +2,11 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
 import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.Content;
+import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
-import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,14 +26,12 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
     private CountryTransformer countryTransformer;
     private CategoryTransformer categoryTransformer;
     private BlogEntryRepository blogEntryRepository;
-    private ProcedureService procedureService;
 
     @Autowired
-    public BlogEntryTransformer(CountryTransformer countryTransformer, CategoryTransformer categoryTransformer, BlogEntryRepository blogEntryRepository, ProcedureService procedureService) {
+    public BlogEntryTransformer(CountryTransformer countryTransformer, CategoryTransformer categoryTransformer, BlogEntryRepository blogEntryRepository) {
         this.countryTransformer = countryTransformer;
         this.categoryTransformer = categoryTransformer;
         this.blogEntryRepository = blogEntryRepository;
-        this.procedureService = procedureService;
     }
 
     @Override
@@ -78,8 +74,6 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
 
     @Override
     public BlogDetailedEntryDto tranformToDto(BlogEntry entry) {
-        Pair<Long, Long> shiftedIds = procedureService.getPreviousAndNextBlogEntryIds(entry.getId());
-
         return BlogDetailedEntryDto.builder()
                 .title(entry.getContent().getTitle())
                 .permalink(entry.getPermalink())
@@ -93,8 +87,6 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
                 .countries(entry.getCountries().stream().map(country -> countryTransformer.tranformToDto(country)).collect(Collectors.toList()))
                 .categories(entry.getCategories().stream().map(category -> categoryTransformer.tranformToDto(category)).collect(Collectors.toList()))
                 .id(entry.getId())
-                .previousId(shiftedIds.getLeft())
-                .nextId(shiftedIds.getRight())
                 .build();
     }
 }
