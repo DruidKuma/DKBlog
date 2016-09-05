@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', 'FileSaver', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload, FileSaver) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', 'FileSaver', 'toaster', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload, FileSaver, toaster) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -210,6 +210,16 @@ angular.module("blogApp")
                         return I18NService;
                     }
                 }
+            });
+
+            translationModal.result.then(function (response) {
+                toaster.pop({
+                    type: 'success',
+                    title: 'Translation Completed',
+                    body: 'Translation via external API process was successfully completed',
+                    showDuration: 3000,
+                    timeout: 3000
+                });
             });
         };
 
