@@ -485,3 +485,32 @@ span.dk-table-sortable {
 .drop-box.error {
     border: 5px dashed #ff5b5b;
 }
+
+span.external-translate-api-name {
+    text-transform: capitalize;
+    color: #00aced;
+}
+
+i.flag-icon.flag-icon-big {
+    font-size: 30px;
+}
+
+.radio.radio-xl {
+    margin-left: 0;
+    padding: 10px;
+    line-height: 2.1;
+}
+
+.radio.radio-xl label {
+    padding-left: 20px;
+}
+
+.radio.radio-xl label:before {
+    width: 30px;
+    height: 30px;
+}
+
+.radio.radio-xl label:after {
+    width: 24px;
+    height: 24px;
+}

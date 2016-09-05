@@ -191,6 +191,28 @@ angular.module("blogApp")
             });
         };
 
+        $scope.openExternalApiTranslationModal = function(type) {
+            var translationModal = $uibModal.open({
+                animation: true,
+                templateUrl: 'externalTranslation.html',
+                controller: 'ExternalTranslationsController',
+                size: 'lg',
+                resolve: {
+                    config: function() {
+                        return {
+                            type: type,
+                            srcCountry: $scope.currentCountry,
+                            destCountry: $scope.targetCountry,
+                            group: $scope.chosenGroupParts.join('.')
+                        }
+                    },
+                    I18NService: function() {
+                        return I18NService;
+                    }
+                }
+            });
+        };
+
         $scope.loadPanelView();
 
     }])
@@ -240,5 +262,31 @@ angular.module("blogApp")
                     $scope.uploadErrorMessage = errResponse.data.message;
                 });
             }
+        }
+    })
+    .controller('ExternalTranslationsController', function ($scope, $uibModalInstance, config, I18NService) {
+
+        $scope.config = config;
+        $scope.config.override = 'true';
+        $scope.inProcess = false;
+
+        $scope.errorDetected = false;
+        $scope.errorMessage = '';
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.translate = function() {
+            $scope.inProcess = true;
+            I18NService.translateViaExternalApi($scope.config).then(function(response) {
+                $uibModalInstance.close(response);
+            }, function(error) {
+                $scope.errorDetected = true;
+                $scope.errorMessage = error.data.message;
+            }).
+            finally(function() {
+                $scope.inProcess = false;
+            })
         }
     });

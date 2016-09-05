@@ -179,6 +179,12 @@ public class TranslateResource {
         translationService.importTranslations(file, type, columnSeparator, rowSeparator);
     }
 
+    @RequestMapping(value = "/translate/external", method = RequestMethod.POST)
+    public void translateWithExternalApi(@RequestBody ExternalTranslateConfigDto translateConfigDto) {
+        //TODO
+        System.out.println("IMPLEMENT ME");
+    }
+
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/plain; charset=utf-8");

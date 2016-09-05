@@ -65,6 +65,13 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 data: JSON.stringify(config),
                 responseType: 'arraybuffer'
             })
+        },
+        translateViaExternalApi: function(config) {
+            return $http({
+                url: API_I18N_URL + "translate/external",
+                method: "post",
+                data: JSON.stringify(config)
+            })
         }
     }
 }]);
