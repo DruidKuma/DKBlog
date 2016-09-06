@@ -11,6 +11,8 @@ import com.druidkuma.blog.exception.TranslationGroupNotExistsException;
 import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.excel.SimpleExcelDocument;
 import com.druidkuma.blog.service.i18n.importer.TranslationImporterFactory;
+import com.druidkuma.blog.service.i18n.translate.TranslationApiFactory;
+import com.druidkuma.blog.util.Strings;
 import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.TranslationDto;
 import com.google.common.base.Joiner;
@@ -254,6 +256,50 @@ public class TranslationServiceImpl implements TranslationService {
     @SuppressWarnings("unchecked")
     public void importTranslations(MultipartFile file, String type, String columnSeparator, String rowSeparator) {
         TranslationImporterFactory.getImporter(type).importTranslations(file, columnSeparator, rowSeparator);
+    }
+
+    @Override
+    public void translateWithExternalService(String group, String srcLangIso, String destLangIso, String type, Boolean override) {
+        List<TranslationGroup> groupsToTranslate = Strings.isBlank(group) ? getTopLevelTranslationGroups() : Lists.newArrayList(resolveTranslationGroup(group));
+        for (TranslationGroup translationGroup : groupsToTranslate) {
+            translateGroup(translationGroup, srcLangIso, destLangIso, type, override);
+        }
+    }
+
+    private void translateGroup(TranslationGroup translationGroup, String srcLangIso, String destLangIso, String type, Boolean override) {
+        Map<String, String> srcValues = getTranslationValues(translationGroup, srcLangIso);
+        Map<String, String> translatedValues = TranslationApiFactory.getService(type).translate(srcValues, srcLangIso, destLangIso);
+        for (Map.Entry<String, String> srcEntry : srcValues.entrySet()) {
+            Translation destTranslation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(translationGroup, srcEntry.getKey(), destLangIso);
+            if(destTranslation == null) {
+                translationRepository.saveAndFlush(Translation
+                        .builder()
+                        .key(srcEntry.getKey())
+                        .value(translatedValues.get(srcEntry.getKey()))
+                        .translationGroup(translationGroup)
+                        .language(languageRepository.findByIsoCode(destLangIso))
+                        .lastModified(Instant.now())
+                        .build());
+            }
+            else if(override) {
+                destTranslation.setValue(translatedValues.get(destTranslation.getKey()));
+                destTranslation.setLastModified(Instant.now());
+                translationRepository.saveAndFlush(destTranslation);
+            }
+        }
+
+        for (TranslationGroup group : translationGroup.getChildGroups()) {
+            translateGroup(group, srcLangIso, destLangIso, type, override);
+        }
+    }
+
+    private Map<String, String> getTranslationValues(TranslationGroup translationGroup, String langIso) {
+        List<Translation> translations = getTranslationsFromDb(translationGroup, langIso);
+        Map<String, String> result = Maps.newHashMap();
+        for (Translation translation : translations) {
+            result.put(translation.getKey(), translation.getValue());
+        }
+        return result;
     }
 
     private void exportTextTranslations(StringBuilder builder, TranslationGroup translationGroup, String srcLang, String destLang, String columnSeparator, String rowSeparator) {

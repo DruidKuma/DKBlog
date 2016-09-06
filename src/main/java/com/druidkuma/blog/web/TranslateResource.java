@@ -181,8 +181,12 @@ public class TranslateResource {
 
     @RequestMapping(value = "/translate/external", method = RequestMethod.POST)
     public void translateWithExternalApi(@RequestBody ExternalTranslateConfigDto translateConfigDto) {
-        //TODO
-        System.out.println("IMPLEMENT ME");
+        translationService.translateWithExternalService(
+                translateConfigDto.getGroup(),
+                translateConfigDto.getSrcCountry().getDefaultLanguageIso(),
+                translateConfigDto.getDestCountry().getDefaultLanguageIso(),
+                translateConfigDto.getType(),
+                translateConfigDto.getOverride());
     }
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {

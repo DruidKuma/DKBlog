@@ -220,6 +220,7 @@ angular.module("blogApp")
                     showDuration: 3000,
                     timeout: 3000
                 });
+                $scope.loadTranslations();
             });
         };
 
