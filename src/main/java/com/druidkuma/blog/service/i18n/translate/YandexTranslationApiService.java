@@ -24,7 +24,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 @Service
-public class YandexTranslationApiServiceImpl implements TranslationApiService {
+public class YandexTranslationApiService implements TranslationApiService {
 
     @Autowired
     private PropertyService propertyService;
