@@ -144,7 +144,7 @@ angular.module("blogApp")
         };
 
         $scope.clearTranslationsForCurrentCountry = function() {
-            I18NService.clearTranslationsForCurrentCountry().then(function(response) {
+            I18NService.clearTranslationsForCurrentCountry($scope.targetCountry).then(function(response) {
                 $scope.loadPanelView();
             }, function(error) { $scope.showError() })
         };

@@ -118,9 +118,9 @@ public class TranslateResource {
         translationService.deleteTranslation(groupName, key);
     }
 
-    @RequestMapping(value = "/translation/remove/country", method = RequestMethod.DELETE)
-    public void clearTranslationsForCurrentCountry(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
-        translationService.clearForCountry(currentCountryIso);
+    @RequestMapping(value = "/translation/remove/country/{countryIso}", method = RequestMethod.DELETE)
+    public void clearTranslationsForCountry(@PathVariable("countryIso") String countryIso) {
+        translationService.clearForCountry(countryIso);
     }
 
     @RequestMapping(value = "/translation/remove/country/all", method = RequestMethod.DELETE)

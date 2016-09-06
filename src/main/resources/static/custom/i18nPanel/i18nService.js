@@ -52,9 +52,9 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 method: "delete"
             })
         },
-        clearTranslationsForCurrentCountry: function() {
+        clearTranslationsForCurrentCountry: function(country) {
             return $http({
-                url: API_I18N_URL + "translation/remove/country",
+                url: API_I18N_URL + "translation/remove/country/" + country.isoCode,
                 method: "delete"
             })
         },
