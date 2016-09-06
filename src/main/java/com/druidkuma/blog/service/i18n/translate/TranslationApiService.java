@@ -1,7 +1,5 @@
 package com.druidkuma.blog.service.i18n.translate;
 
-import com.druidkuma.blog.domain.country.Language;
-
 import java.util.Map;
 
 /**
@@ -9,9 +7,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 public interface TranslationApiService {
-    String translate(String source, String langIso);
-    String translate(String source, Language language);
-
-    Map<String, String> translate(Map<String, String> srcTranslations, String langIso);
-    Map<String, String> translate(Map<String, String> srcTranslations, Language language);
+    String getType();
+    String translate(String source, String srcLangIso, String destLangIso);
+    Map<String, String> translate(Map<String, String> srcTranslations, String srcLangIso, String destLangIso);
 }
