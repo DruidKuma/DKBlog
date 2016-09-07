@@ -514,3 +514,11 @@ i.flag-icon.flag-icon-big {
     width: 24px;
     height: 24px;
 }
+
+.clear-fix:after {
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}

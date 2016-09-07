@@ -224,7 +224,25 @@ angular.module("blogApp")
             });
         };
 
+        $scope.loadCountryManagementData = function() {
+            I18NService.loadCountryManagementData().then(function(response) {
+                $scope.countryData = response.data;
+                $scope.chosenCountry = $scope.currentCountry.isoCode;
+            }, function(error) { $scope.showError() });
+        };
+
+        $scope.toggleCountryDataEnabled = function(country) {
+            country.enabled = !country.enabled;
+        };
+
+        $scope.loadChosenCountry = function() {
+            I18NService.loadCountryConfig($scope.chosenCountry).then(function(response) {
+
+            }, function(error) { $scope.showError() })
+        };
+
         $scope.loadPanelView();
+        $scope.loadCountryManagementData();
 
     }])
     .controller('CustomExportController', function ($scope, $uibModalInstance) {

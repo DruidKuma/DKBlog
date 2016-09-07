@@ -1,6 +1,7 @@
 package com.druidkuma.blog.service.country;
 
 import com.druidkuma.blog.domain.country.Country;
+import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.web.dto.CountryDto;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 public interface CountryService {
     List<Country> getAvailableCountries();
+    List<CountryDto> getAll();
+    List<Language> getAllLanguages();
 
     List<CountryDto> getCountryDataForFlags();
 

@@ -72,6 +72,12 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(config)
             })
+        },
+        loadCountryManagementData: function() {
+            return $http({
+                url: API_I18N_URL + "data/country",
+                method: "get"
+            })
         }
     }
 }]);

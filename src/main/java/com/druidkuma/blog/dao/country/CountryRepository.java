@@ -22,4 +22,7 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
 
     @Query(value = "SELECT new com.druidkuma.blog.web.dto.CountryDto(c.id, c.isoAlpha2Code, c.name, c.defaultLanguage.isoCode) FROM Country c WHERE c.isEnabled = TRUE ORDER BY c.name")
     List<CountryDto> getCountryData();
+
+    @Query(value = "SELECT new com.druidkuma.blog.web.dto.CountryDto(c.id, c.isoAlpha2Code, c.name, c.defaultLanguage.isoCode) FROM Country c ORDER BY c.name")
+    List<CountryDto> getAll();
 }

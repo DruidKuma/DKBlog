@@ -1,7 +1,9 @@
 package com.druidkuma.blog.service.country;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
+import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.domain.country.Country;
+import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.web.dto.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +21,27 @@ import java.util.List;
 public class CountryServiceImpl implements CountryService {
 
     private CountryRepository countryRepository;
+    private LanguageRepository languageRepository;
 
     @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository) {
+    public CountryServiceImpl(CountryRepository countryRepository, LanguageRepository languageRepository) {
         this.countryRepository = countryRepository;
+        this.languageRepository = languageRepository;
     }
 
     @Override
     public List<Country> getAvailableCountries() {
         return countryRepository.findAllByIsEnabledIsTrue();
+    }
+
+    @Override
+    public List<CountryDto> getAll() {
+        return countryRepository.getAll();
+    }
+
+    @Override
+    public List<Language> getAllLanguages() {
+        return languageRepository.findAll();
     }
 
     @Override

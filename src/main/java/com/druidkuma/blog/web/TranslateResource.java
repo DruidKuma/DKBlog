@@ -189,6 +189,11 @@ public class TranslateResource {
                 translateConfigDto.getOverride());
     }
 
+    @RequestMapping(value = "/data/country", method = RequestMethod.GET)
+    public List<CountryDto> getAllCountries() {
+        return countryService.getAll();
+    }
+
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/plain; charset=utf-8");
