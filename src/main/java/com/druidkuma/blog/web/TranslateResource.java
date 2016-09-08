@@ -220,6 +220,11 @@ public class TranslateResource {
         countryService.toggleCountryEnabled(isoCode);
     }
 
+    @RequestMapping(value = "/data/country/language/default/{countryIso}")
+    public void changeDefaultLanguageForCountry(@PathVariable("countryIso") String countryIso, @RequestBody LanguageDto languageDto) {
+        countryService.changeDefaultLanguage(countryIso, languageTransformer.transformFromDto(languageDto));
+    }
+
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/plain; charset=utf-8");

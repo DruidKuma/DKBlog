@@ -228,7 +228,6 @@ angular.module("blogApp")
         $scope.loadCountryConfigData = function() {
             I18NService.loadCountryConfig($scope.chosenConfigCountry).then(function(response) {
                 $scope.configEditCountry = response.data;
-                console.log($scope.configEditCountry);
             }, function(error) { $scope.showError() })
         };
 
@@ -242,6 +241,11 @@ angular.module("blogApp")
         $scope.toggleCountryDataEnabled = function(country) {
             country.enabled = !country.enabled;
             I18NService.toggleCountryEnabled(country.isoCode)
+                .then(function(response) {}, function(error) { $scope.showError() })
+        };
+
+        $scope.changeDefaultLanguageForCountry = function() {
+            I18NService.changeDefaultLanguage($scope.configEditCountry)
                 .then(function(response) {}, function(error) { $scope.showError() })
         };
 

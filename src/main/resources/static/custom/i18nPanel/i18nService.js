@@ -90,6 +90,13 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 url: API_I18N_URL + "data/country/enabled/" + isoCode,
                 method: "post"
             })
+        },
+        changeDefaultLanguage: function(country) {
+            return $http({
+                url: API_I18N_URL + "data/country/language/default/" + country.isoCode,
+                method: "post",
+                data: JSON.stringify(country.defaultLanguage)
+            })
         }
     }
 }]);

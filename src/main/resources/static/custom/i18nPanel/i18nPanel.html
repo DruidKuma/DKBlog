@@ -286,7 +286,7 @@
                                     <div class="col-md-3">
                                         <select class="form-control input-sm country-edit-lang-select"
                                                 ng-model="configEditCountry.defaultLanguage"
-                                                ng-change=""
+                                                ng-change="changeDefaultLanguageForCountry()"
                                                 ng-options="lang as lang.name for lang in configEditCountry.languages track by lang.isoCode">
                                         </select>
                                     </div>

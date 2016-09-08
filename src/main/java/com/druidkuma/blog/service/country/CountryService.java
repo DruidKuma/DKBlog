@@ -23,4 +23,6 @@ public interface CountryService {
     Country getCountryByIsoCode(String currentCountryIso);
 
     void toggleCountryEnabled(String countryIso);
+
+    void changeDefaultLanguage(String countryIso, Language language);
 }

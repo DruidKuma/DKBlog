@@ -60,4 +60,9 @@ public class CountryServiceImpl implements CountryService {
         country.setIsEnabled(!country.getIsEnabled());
         countryRepository.saveAndFlush(country);
     }
+
+    @Override
+    public void changeDefaultLanguage(String countryIso, Language language) {
+        //TODO
+    }
 }
