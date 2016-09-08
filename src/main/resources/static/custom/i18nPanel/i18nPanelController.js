@@ -22,6 +22,7 @@ angular.module("blogApp")
             entriesOnPage: 10,
             totalItems: 0
         };
+        $scope.chosenConfigCountry = $scope.currentCountry.isoCode;
 
         $scope.changeTranslationsSort = function(sortField) {
             if($scope.translationsFilter.sort == sortField + ' ASC') $scope.translationsFilter.sort = sortField + ' DESC';
@@ -224,25 +225,28 @@ angular.module("blogApp")
             });
         };
 
-        $scope.loadCountryManagementData = function() {
-            I18NService.loadCountryManagementData().then(function(response) {
+        $scope.loadCountryConfigData = function() {
+            I18NService.loadCountryConfig($scope.chosenConfigCountry).then(function(response) {
+                $scope.configEditCountry = response.data;
+                console.log($scope.configEditCountry);
+            }, function(error) { $scope.showError() })
+        };
+
+        $scope.initCountryConfigData = function() {
+            I18NService.loadAllCountryNames().then(function(response) {
                 $scope.countryData = response.data;
-                $scope.chosenCountry = $scope.currentCountry.isoCode;
-            }, function(error) { $scope.showError() });
+                $scope.loadCountryConfigData();
+            }, function(error) { $scope.showError() })
         };
 
         $scope.toggleCountryDataEnabled = function(country) {
             country.enabled = !country.enabled;
-        };
-
-        $scope.loadChosenCountry = function() {
-            I18NService.loadCountryConfig($scope.chosenCountry).then(function(response) {
-
-            }, function(error) { $scope.showError() })
+            I18NService.toggleCountryEnabled(country.isoCode)
+                .then(function(response) {}, function(error) { $scope.showError() })
         };
 
         $scope.loadPanelView();
-        $scope.loadCountryManagementData();
+        $scope.initCountryConfigData();
 
     }])
     .controller('CustomExportController', function ($scope, $uibModalInstance) {

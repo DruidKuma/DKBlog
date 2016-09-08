@@ -1,5 +1,6 @@
 package com.druidkuma.blog.web;
 
+import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.exception.TranslationGroupExistsException;
@@ -8,6 +9,7 @@ import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.excel.ExcelDocument;
 import com.druidkuma.blog.service.i18n.TranslationService;
 import com.druidkuma.blog.web.dto.*;
+import com.druidkuma.blog.web.transformer.LanguageTransformer;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -37,11 +40,13 @@ public class TranslateResource {
 
     private TranslationService translationService;
     private CountryService countryService;
+    private LanguageTransformer languageTransformer;
 
     @Autowired
-    public TranslateResource(TranslationService translationService, CountryService countryService) {
+    public TranslateResource(TranslationService translationService, CountryService countryService, LanguageTransformer languageTransformer) {
         this.translationService = translationService;
         this.countryService = countryService;
+        this.languageTransformer = languageTransformer;
     }
 
     @RequestMapping(value = "/translate/{part}/{lang}", method = RequestMethod.GET)
@@ -189,9 +194,30 @@ public class TranslateResource {
                 translateConfigDto.getOverride());
     }
 
-    @RequestMapping(value = "/data/country", method = RequestMethod.GET)
-    public List<CountryDto> getAllCountries() {
+    @RequestMapping(value = "/data/country/{countryIso}", method = RequestMethod.GET)
+    public CountryConfigDto getConfigCountryData(@PathVariable("countryIso") String countryIso) {
+        Country country = countryService.getCountryByIsoCode(countryIso);
+        return CountryConfigDto
+                .builder()
+                .enabled(country.getIsEnabled())
+                .name(country.getName())
+                .isoCode(country.getIsoAlpha2Code())
+                .defaultLanguage(languageTransformer.tranformToDto(country.getDefaultLanguage()))
+                .languages(country.getLanguages()
+                        .stream()
+                        .map(language -> languageTransformer.tranformToDto(language))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    @RequestMapping(value = "/data/names/country", method = RequestMethod.GET)
+    public List<CountryDto> getConfigCoutnryData() {
         return countryService.getAll();
+    }
+
+    @RequestMapping(value = "/data/country/enabled/{isoCode}", method = RequestMethod.POST)
+    public void toggleCountryEnabled(@PathVariable("isoCode") String isoCode) {
+        countryService.toggleCountryEnabled(isoCode);
     }
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {

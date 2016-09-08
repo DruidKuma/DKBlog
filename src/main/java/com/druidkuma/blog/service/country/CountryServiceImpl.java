@@ -53,4 +53,11 @@ public class CountryServiceImpl implements CountryService {
     public Country getCountryByIsoCode(String currentCountryIso) {
         return countryRepository.findByIsoAlpha2Code(currentCountryIso);
     }
+
+    @Override
+    public void toggleCountryEnabled(String countryIso) {
+        Country country = countryRepository.findByIsoAlpha2Code(countryIso);
+        country.setIsEnabled(!country.getIsEnabled());
+        countryRepository.saveAndFlush(country);
+    }
 }

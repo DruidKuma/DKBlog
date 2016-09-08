@@ -17,4 +17,5 @@ import lombok.*;
 public class LanguageDto {
     private String isoCode;
     private String name;
+    private String nativeName;
 }

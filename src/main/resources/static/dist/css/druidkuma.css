@@ -522,3 +522,12 @@ i.flag-icon.flag-icon-big {
     visibility: hidden;
     clear: both;
 }
+
+.vert-align-mid {
+    vertical-align: middle;
+}
+
+.country-edit-lang-select {
+    width: 70%;
+    margin: 0 auto;
+}

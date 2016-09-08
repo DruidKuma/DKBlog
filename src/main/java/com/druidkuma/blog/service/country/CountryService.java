@@ -21,4 +21,6 @@ public interface CountryService {
     List<CountryDto> getCountryDataForFlags();
 
     Country getCountryByIsoCode(String currentCountryIso);
+
+    void toggleCountryEnabled(String countryIso);
 }

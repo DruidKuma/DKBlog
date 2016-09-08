@@ -73,10 +73,22 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 data: JSON.stringify(config)
             })
         },
-        loadCountryManagementData: function() {
+        loadCountryConfig: function(countryIso) {
             return $http({
-                url: API_I18N_URL + "data/country",
+                url: API_I18N_URL + "data/country/" + countryIso,
                 method: "get"
+            })
+        },
+        loadAllCountryNames: function() {
+            return $http({
+                url: API_I18N_URL + "data/names/country",
+                method: "get"
+            })
+        },
+        toggleCountryEnabled: function(isoCode) {
+            return $http({
+                url: API_I18N_URL + "data/country/enabled/" + isoCode,
+                method: "post"
             })
         }
     }
