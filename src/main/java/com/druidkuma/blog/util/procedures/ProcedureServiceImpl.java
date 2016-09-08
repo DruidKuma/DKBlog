@@ -56,6 +56,16 @@ public class ProcedureServiceImpl implements ProcedureService {
         return result == null ? null : ((Integer) result).longValue();
     }
 
+    @Override
+    public void changeDefaultLanguageForCountry(String countryIso, String langIso) {
+        StoredProcedureQuery query = em.createStoredProcedureQuery("change_default_country_language");
+        query.registerStoredProcedureParameter("p_country_iso", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_lang_iso", String.class, ParameterMode.IN);
+        query.setParameter("p_country_iso", countryIso);
+        query.setParameter("p_lang_iso", langIso);
+        query.execute();
+    }
+
     private void executeWithoutParameters(String procedureName) {
         StoredProcedureQuery query = em.createStoredProcedureQuery(procedureName);
         query.execute();

@@ -13,4 +13,5 @@ public interface ProcedureService {
     void createRandomBlogEntryCountryMappings();
     Long resolveTranslationGroup(String groupNameKey);
     Pair<Long, Long> getPreviousAndNextBlogEntryIds(Long currentBlogEntryId, String countryIso);
+    void changeDefaultLanguageForCountry(String countryIso, String langIso);
 }

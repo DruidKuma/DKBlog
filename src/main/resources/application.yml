@@ -19,7 +19,7 @@ server:
 properties:
   filenames: classpath:application.yml
 
-logging:
-  level:
-    org.hibernate: TRACE
-    org.hibernate.loader.plan.build.internal.AbstractLoadPlanBuildingAssociationVisitationStrategy: INFO
+#logging:
+#  level:
+#    org.hibernate: TRACE
+#    org.hibernate.loader.plan.build.internal.AbstractLoadPlanBuildingAssociationVisitationStrategy: INFO

@@ -531,3 +531,7 @@ i.flag-icon.flag-icon-big {
     width: 70%;
     margin: 0 auto;
 }
+
+.country-config-block {
+    padding-bottom: 0 !important;
+}

@@ -4,6 +4,7 @@ import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.country.Language;
+import com.druidkuma.blog.util.procedures.ProcedureService;
 import com.druidkuma.blog.web.dto.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,13 @@ public class CountryServiceImpl implements CountryService {
 
     private CountryRepository countryRepository;
     private LanguageRepository languageRepository;
+    private ProcedureService procedureService;
 
     @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository, LanguageRepository languageRepository) {
+    public CountryServiceImpl(CountryRepository countryRepository, LanguageRepository languageRepository, ProcedureService procedureService) {
         this.countryRepository = countryRepository;
         this.languageRepository = languageRepository;
+        this.procedureService = procedureService;
     }
 
     @Override
@@ -63,6 +66,6 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void changeDefaultLanguage(String countryIso, Language language) {
-        //TODO
+        procedureService.changeDefaultLanguageForCountry(countryIso, language.getIsoCode());
     }
 }
