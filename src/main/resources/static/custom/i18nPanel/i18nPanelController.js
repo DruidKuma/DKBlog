@@ -252,6 +252,14 @@ angular.module("blogApp")
         $scope.loadPanelView();
         $scope.initCountryConfigData();
 
+        $scope.modernBrowsers = [
+            { icon: "<img src='http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-1.jpg' />",   name: "Opera",              maker: "(Opera Software)",        ticked: true  },
+            { icon: "<img src='http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-1.jpg' />",   name: "Internet Explorer",  maker: "(Microsoft)",             ticked: false },
+            { icon: "<img src='http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-1.jpg' />",   name: "Firefox",            maker: "(Mozilla Foundation)",    ticked: true  },
+            { icon: "<img src='http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-1.jpg' />",   name: "Safari",             maker: "(Apple)",                 ticked: false },
+            { icon: "<img src='http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-1.jpg' />",   name: "Chrome",             maker: "(Google)",                ticked: true  }
+        ];
+
     }])
     .controller('CustomExportController', function ($scope, $uibModalInstance) {
 
