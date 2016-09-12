@@ -198,8 +198,9 @@
 /* container of multi select items */
 .multiSelect .checkBoxContainer {
     display: block;
-    padding: 8px;   
-    overflow: hidden;
+    padding: 8px;
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 /* ! to show / hide the checkbox layer above */
