@@ -97,6 +97,12 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(country.defaultLanguage)
             })
+        },
+        loadLangVariants: function() {
+            return $http({
+                url: API_I18N_URL + "data/languages",
+                method: "get"
+            })
         }
     }
 }]);

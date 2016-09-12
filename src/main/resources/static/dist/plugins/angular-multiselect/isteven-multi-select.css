@@ -22,8 +22,17 @@
 
 /* ! create a "column" */
 .multiSelect .acol {
+    width: 100%;
     display: inline-block;    
     min-width: 12px;
+}
+
+.multiSelect .acol span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    display: block;
 }
 
 /* ! */
@@ -200,6 +209,7 @@
     display: block;
     padding: 8px;
     max-height: 250px;
+    max-width: 500px;
     overflow-y: scroll;
 }
 
