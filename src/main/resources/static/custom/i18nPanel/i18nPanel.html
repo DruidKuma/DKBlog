@@ -292,13 +292,17 @@
                                         </select>
                                     </div>
                                     <div class="col-md-5">
-                                        <div
-                                                isteven-multi-select
-                                                input-model="allLanguages"
-                                                output-model="configEditCountry.languages"
-                                                button-label="name"
-                                                item-label="name"
-                                                tick-property="ticked">
+                                        <div isteven-multi-select
+                                             input-model="allLanguages"
+                                             output-model="configEditCountry.languages"
+                                             on-item-click="updateCountryLanguages()"
+                                             on-select-all="updateCountryLanguages()"
+                                             on-select-none="updateCountryLanguages()"
+                                             on-reset="updateCountryLanguages()"
+                                             button-label="name"
+                                             item-label="name"
+                                             tick-property="ticked"
+                                             disable-property="disabled">
                                         </div>
                                     </div>
                                 </div>

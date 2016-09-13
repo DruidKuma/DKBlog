@@ -103,6 +103,13 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 url: API_I18N_URL + "data/languages",
                 method: "get"
             })
+        },
+        updateCountryLanguages: function(country) {
+            return $http({
+                url: API_I18N_URL + "data/languages/save/" + country.isoCode,
+                method: "post",
+                data: JSON.stringify(country.languages)
+            })
         }
     }
 }]);

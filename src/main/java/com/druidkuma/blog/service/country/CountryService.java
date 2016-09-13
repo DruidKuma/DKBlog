@@ -25,4 +25,6 @@ public interface CountryService {
     void toggleCountryEnabled(String countryIso);
 
     void changeDefaultLanguage(String countryIso, Language language);
+
+    void updateLanguagesForCountry(String countryIso, List<Language> updatedLanguages);
 }

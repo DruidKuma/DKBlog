@@ -247,7 +247,7 @@ angular.module("blogApp")
 
         $scope.changeDefaultLanguageForCountry = function() {
             I18NService.changeDefaultLanguage($scope.configEditCountry)
-                .then(function(response) {}, function(error) { $scope.showError() })
+                .then(function(response) { $scope.loadLanguageVariants() }, function(error) { $scope.showError() })
         };
 
         $scope.loadLanguageVariants = function() {
@@ -255,10 +255,20 @@ angular.module("blogApp")
                 $scope.allLanguages = response.data;
                 angular.forEach($scope.allLanguages, function(lang) {
                     var found = $filter('filter')($scope.configEditCountry.languages, {isoCode: lang.isoCode}, true);
-                    if(found.length) lang.ticked = true;
+                    if(found.length) {
+                        lang.ticked = true;
+                        if($scope.configEditCountry.defaultLanguage.isoCode == lang.isoCode) lang.disabled = true;
+                    }
                 });
             }, function(error) { $scope.showError() })
         };
+
+        $scope.updateCountryLanguages = function() {
+            I18NService.updateCountryLanguages($scope.configEditCountry)
+                .then(function(response) {},
+                    function(error) { $scope.showError(error.data.message) });
+        };
+
 
         $scope.loadPanelView();
         $scope.initCountryConfigData();

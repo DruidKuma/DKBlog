@@ -68,4 +68,18 @@ public class CountryServiceImpl implements CountryService {
     public void changeDefaultLanguage(String countryIso, Language language) {
         procedureService.changeDefaultLanguageForCountry(countryIso, language.getIsoCode());
     }
+
+    @Override
+    public void updateLanguagesForCountry(String countryIso, List<Language> updatedLanguages) {
+        Country country = countryRepository.findByIsoAlpha2Code(countryIso);
+        if(!updatedLanguages.contains(country.getDefaultLanguage())) throw new RuntimeException("Cannot remove default language from country");
+        country.getLanguages().clear();
+        for (Language updatedLanguage : updatedLanguages) {
+            country.getLanguages().add(updatedLanguage);
+        }
+        countryRepository.saveAndFlush(country);
+
+        //hibernate spoils the helper column for default language, so we need to reinsert this
+        changeDefaultLanguage(countryIso, country.getDefaultLanguage());
+    }
 }

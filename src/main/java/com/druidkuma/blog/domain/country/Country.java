@@ -22,6 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@DynamicInsert
+@DynamicUpdate
+@SelectBeforeUpdate
 public class Country {
 
     @Id

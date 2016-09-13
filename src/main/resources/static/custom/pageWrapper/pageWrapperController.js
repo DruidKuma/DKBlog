@@ -31,10 +31,10 @@ angular.module("blogApp")
             $scope.reloadBlogPosts();
         };
 
-        $scope.showError = function() {
+        $scope.showError = function(message) {
             SweetAlert.swal({
                 title: "Error!",
-                text: "Something went wrong...",
+                text: message ? message : "Something went wrong...",
                 imageUrl: "/dist/images/error.gif" });
         };
 

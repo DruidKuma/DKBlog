@@ -233,6 +233,17 @@ public class TranslateResource {
                 .collect(Collectors.toList());
     }
 
+    @RequestMapping(value = "/data/languages/save/{countryIso}", method = RequestMethod.POST)
+    public void saveCountryLanguages(@RequestBody List<LanguageDto> languages, @PathVariable("countryIso") String countryIso) {
+        countryService.updateLanguagesForCountry(
+                countryIso,
+                languages
+                        .stream()
+                        .map(languageDto -> languageTransformer.transformFromDto(languageDto))
+                        .collect(Collectors.toList())
+        );
+    }
+
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/plain; charset=utf-8");

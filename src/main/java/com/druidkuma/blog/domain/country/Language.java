@@ -34,4 +34,17 @@ public class Language {
 
     @Column(name = "l_native_name")
     private String nativeName;
+
+    @Override
+    public int hashCode() {
+        return this.isoCode.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Language language = (Language) o;
+        return !(isoCode != null ? !isoCode.equals(language.isoCode) : language.isoCode != null);
+    }
 }
