@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION change_default_country_language(p_country_iso TEXT, p_lang_iso TEXT) RETURNS int4
+CREATE OR REPLACE FUNCTION change_default_country_language(p_country_iso TEXT, p_lang_iso TEXT) RETURNS INTEGER
 AS
 $BODY$
 DECLARE

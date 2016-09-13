@@ -211,7 +211,7 @@ public class TranslateResource {
     }
 
     @RequestMapping(value = "/data/names/country", method = RequestMethod.GET)
-    public List<CountryDto> getConfigCoutnryData() {
+    public List<CountryDto> getConfigCountryData() {
         return countryService.getAll();
     }
 
@@ -223,6 +223,14 @@ public class TranslateResource {
     @RequestMapping(value = "/data/country/language/default/{countryIso}")
     public void changeDefaultLanguageForCountry(@PathVariable("countryIso") String countryIso, @RequestBody LanguageDto languageDto) {
         countryService.changeDefaultLanguage(countryIso, languageTransformer.transformFromDto(languageDto));
+    }
+
+    @RequestMapping(value = "/data/languages", method = RequestMethod.GET)
+    public List<LanguageDto> getAllLanguages() {
+        return countryService.getAllLanguages()
+                .stream()
+                .map(language -> languageTransformer.tranformToDto(language))
+                .collect(Collectors.toList());
     }
 
     private HttpEntity<byte[]> buildHttpEntityWithTextBytesAndHeaders(byte[] bytes) {

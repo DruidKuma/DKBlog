@@ -2,7 +2,7 @@
  * Created by DruidKuma on 7/26/16.
  */
 angular.module("blogApp")
-    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', 'FileSaver', 'toaster', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload, FileSaver, toaster) {
+    .controller('I18nPanelController',['$scope', 'I18NService', '$translate', '$translatePartialLoader', '$uibModal', '$window', 'Upload', 'FileSaver', 'toaster', '$filter', function($scope, I18NService, $translate, $translatePartialLoader, $uibModal, $window, Upload, FileSaver, toaster, $filter) {
         //Page Heading
         $scope.$on('$routeChangeSuccess', function () {
             $scope.pageHeading.title = "i18nPanel";
@@ -228,6 +228,7 @@ angular.module("blogApp")
         $scope.loadCountryConfigData = function() {
             I18NService.loadCountryConfig($scope.chosenConfigCountry).then(function(response) {
                 $scope.configEditCountry = response.data;
+                $scope.loadLanguageVariants();
             }, function(error) { $scope.showError() })
         };
 
@@ -249,9 +250,18 @@ angular.module("blogApp")
                 .then(function(response) {}, function(error) { $scope.showError() })
         };
 
+        $scope.loadLanguageVariants = function() {
+            I18NService.loadLangVariants().then(function(response) {
+                $scope.allLanguages = response.data;
+                angular.forEach($scope.allLanguages, function(lang) {
+                    var found = $filter('filter')($scope.configEditCountry.languages, {isoCode: lang.isoCode}, true);
+                    if(found.length) lang.ticked = true;
+                });
+            }, function(error) { $scope.showError() })
+        };
+
         $scope.loadPanelView();
         $scope.initCountryConfigData();
-
     }])
     .controller('CustomExportController', function ($scope, $uibModalInstance) {
 
