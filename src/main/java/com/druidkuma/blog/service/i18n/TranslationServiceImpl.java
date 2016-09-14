@@ -4,6 +4,7 @@ import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.dao.i18n.TranslationGroupRepository;
 import com.druidkuma.blog.dao.i18n.TranslationRepository;
+import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
@@ -266,25 +267,42 @@ public class TranslationServiceImpl implements TranslationService {
         }
     }
 
+    @Override
+    public void performFullTranslation(String currentCountryIso) {
+        Country country = countryRepository.findByIsoAlpha2Code(currentCountryIso);
+        String srcLang = country.getDefaultLanguage().getIsoCode();
+        List<String> languageIsoCodes = languageRepository.getAvailableLanguageIsoCodes();
+        languageIsoCodes.remove(srcLang);
+        for (String languageIsoCode : languageIsoCodes) {
+            translateWithExternalService(null, srcLang, languageIsoCode, "yandex", true);
+        }
+    }
+
     private void translateGroup(TranslationGroup translationGroup, String srcLangIso, String destLangIso, String type, Boolean override) {
         Map<String, String> srcValues = getTranslationValues(translationGroup, srcLangIso);
         Map<String, String> translatedValues = TranslationApiFactory.getService(type).translate(srcValues, srcLangIso, destLangIso);
         for (Map.Entry<String, String> srcEntry : srcValues.entrySet()) {
             Translation destTranslation = translationRepository.findByTranslationGroupAndKeyAndLanguageIsoCode(translationGroup, srcEntry.getKey(), destLangIso);
             if(destTranslation == null) {
-                translationRepository.saveAndFlush(Translation
-                        .builder()
-                        .key(srcEntry.getKey())
-                        .value(translatedValues.get(srcEntry.getKey()))
-                        .translationGroup(translationGroup)
-                        .language(languageRepository.findByIsoCode(destLangIso))
-                        .lastModified(Instant.now())
-                        .build());
+                String value = translatedValues.get(srcEntry.getKey());
+                if(StringUtils.isNotBlank(value)) {
+                    translationRepository.saveAndFlush(Translation
+                            .builder()
+                            .key(srcEntry.getKey())
+                            .value(value)
+                            .translationGroup(translationGroup)
+                            .language(languageRepository.findByIsoCode(destLangIso))
+                            .lastModified(Instant.now())
+                            .build());
+                }
             }
             else if(override) {
-                destTranslation.setValue(translatedValues.get(destTranslation.getKey()));
-                destTranslation.setLastModified(Instant.now());
-                translationRepository.saveAndFlush(destTranslation);
+                String value = translatedValues.get(destTranslation.getKey());
+                if(value != null) {
+                    destTranslation.setValue(value);
+                    destTranslation.setLastModified(Instant.now());
+                    translationRepository.saveAndFlush(destTranslation);
+                }
             }
         }
 

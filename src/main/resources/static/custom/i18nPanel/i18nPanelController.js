@@ -269,6 +269,26 @@ angular.module("blogApp")
                     function(error) { $scope.showError(error.data.message) });
         };
 
+        $scope.requestFullTranslation = function() {
+            delete $scope.fullTranslateRequested;
+            $scope.executeWithWarning(
+                "Are you sure?",
+                "This action will launch translation al ALL existing properties for ALL existing languages and will override ALL existing translations",
+                "Launch",
+                function() {
+                    I18NService.launchFullTranslationProcess().then(function(response) {
+                        toaster.pop({
+                            type: 'success',
+                            title: 'Translation Completed',
+                            body: 'Full translation is successfully completed',
+                            showDuration: 3000,
+                            timeout: 3000
+                        });
+                    }, function(error) { $scope.showError() })
+                }
+            )
+        };
+
 
         $scope.loadPanelView();
         $scope.initCountryConfigData();

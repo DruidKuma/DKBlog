@@ -58,4 +58,6 @@ public interface TranslationService {
     void importTranslations(MultipartFile file, String type, String columnSeparator, String rowSeparator);
 
     void translateWithExternalService(String group, String srcLangIso, String destLangIso, String type, Boolean override);
+
+    void performFullTranslation(String currentCountryIso);
 }

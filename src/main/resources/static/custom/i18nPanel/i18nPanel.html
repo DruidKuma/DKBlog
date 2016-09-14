@@ -317,6 +317,21 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pull-right text-danger hidden-feature"
+                     ng-show="!fullTranslateRequested"
+                     ng-click="fullTranslateRequested=true">
+                    <i class="fa fa fa-stop-circle-o"></i>
+                </div>
+                <div class="pull-right text-warning hidden-feature"
+                     ng-show="fullTranslateRequested"
+                     ng-click="requestFullTranslation()">
+                    <i class="fa fa fa-warning"></i>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

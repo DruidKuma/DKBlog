@@ -110,6 +110,12 @@ angular.module("blogApp").service('I18NService', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(country.languages)
             })
+        },
+        launchFullTranslationProcess: function() {
+            return $http({
+                url: API_I18N_URL + "translate/full",
+                method: "post"
+            })
         }
     }
 }]);

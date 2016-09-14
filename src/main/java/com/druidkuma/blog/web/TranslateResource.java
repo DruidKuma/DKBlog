@@ -194,6 +194,11 @@ public class TranslateResource {
                 translateConfigDto.getOverride());
     }
 
+    @RequestMapping(value = "/translate/full", method = RequestMethod.POST)
+    public void launchFullTranslate(@CookieValue(value = "currentCountryIso", defaultValue = "US") String currentCountryIso) {
+        translationService.performFullTranslation(currentCountryIso);
+    }
+
     @RequestMapping(value = "/data/country/{countryIso}", method = RequestMethod.GET)
     public CountryConfigDto getConfigCountryData(@PathVariable("countryIso") String countryIso) {
         Country country = countryService.getCountryByIsoCode(countryIso);

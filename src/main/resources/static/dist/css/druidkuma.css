@@ -23,7 +23,7 @@ div.country-block .dropdown-menu {
     width: 80%;
     padding: 0;
     overflow-y: auto;
-    max-height: 80vh;
+    max-height: 60vh;
 }
 
 div.country-block a {
@@ -534,4 +534,9 @@ i.flag-icon.flag-icon-big {
 
 .country-config-block {
     padding-bottom: 0 !important;
+}
+
+.hidden-feature {
+    font-size: 16px !important;
+    cursor: pointer;
 }

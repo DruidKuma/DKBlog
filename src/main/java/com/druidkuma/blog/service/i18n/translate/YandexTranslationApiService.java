@@ -58,7 +58,11 @@ public class YandexTranslationApiService implements TranslationApiService {
                         + PARAM_TEXT + URLEncoder.encode(source, ENCODING);
         final URL url = new URL(SERVICE_URL + params);
 
-        return retrievePropArrString(url, TRANSLATION_LABEL).trim();
+        try {
+            return retrievePropArrString(url, TRANSLATION_LABEL).trim();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
