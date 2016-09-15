@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
  * @since 7/28/16
  */
 public interface ProcedureService {
-    void createRandomBlogEntryCountryMappings();
     Long resolveTranslationGroup(String groupNameKey);
     Pair<Long, Long> getPreviousAndNextBlogEntryIds(Long currentBlogEntryId, String countryIso);
     void changeDefaultLanguageForCountry(String countryIso, String langIso);

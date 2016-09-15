@@ -23,11 +23,6 @@ public class ProcedureServiceImpl implements ProcedureService {
     private EntityManager em;
 
     @Override
-    public void createRandomBlogEntryCountryMappings() {
-        executeWithoutParameters("create_random_blog_post_country_mappings");
-    }
-
-    @Override
     public Long resolveTranslationGroup(String groupNameKey) {
         StoredProcedureQuery query = em.createStoredProcedureQuery("resolve_translation_group_by_full_name");
         query.registerStoredProcedureParameter("p_full_name", String.class, ParameterMode.IN);
@@ -63,11 +58,6 @@ public class ProcedureServiceImpl implements ProcedureService {
         query.registerStoredProcedureParameter("p_lang_iso", String.class, ParameterMode.IN);
         query.setParameter("p_country_iso", countryIso);
         query.setParameter("p_lang_iso", langIso);
-        query.execute();
-    }
-
-    private void executeWithoutParameters(String procedureName) {
-        StoredProcedureQuery query = em.createStoredProcedureQuery(procedureName);
         query.execute();
     }
 }

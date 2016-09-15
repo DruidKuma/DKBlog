@@ -15,7 +15,7 @@ import com.druidkuma.blog.service.i18n.importer.TranslationImporterFactory;
 import com.druidkuma.blog.service.i18n.translate.TranslationApiFactory;
 import com.druidkuma.blog.util.Strings;
 import com.druidkuma.blog.util.procedures.ProcedureService;
-import com.druidkuma.blog.web.dto.TranslationDto;
+import com.druidkuma.blog.web.dto.i18n.TranslationDto;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

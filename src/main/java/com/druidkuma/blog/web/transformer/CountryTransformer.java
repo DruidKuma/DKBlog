@@ -2,7 +2,7 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.country.CountryRepository;
 import com.druidkuma.blog.domain.country.Country;
-import com.druidkuma.blog.web.dto.CountryDto;
+import com.druidkuma.blog.web.dto.country.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

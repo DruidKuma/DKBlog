@@ -4,7 +4,7 @@ import com.druidkuma.blog.domain.country.Language;
 import com.druidkuma.blog.domain.i18n.Translation;
 import com.druidkuma.blog.domain.i18n.TranslationGroup;
 import com.druidkuma.blog.service.excel.ExcelDocument;
-import com.druidkuma.blog.web.dto.TranslationDto;
+import com.druidkuma.blog.web.dto.i18n.TranslationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;

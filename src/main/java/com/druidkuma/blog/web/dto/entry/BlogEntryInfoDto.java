@@ -1,5 +1,6 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.entry;
 
+import com.druidkuma.blog.web.dto.category.CategoryDto;
 import lombok.*;
 
 import java.time.Instant;

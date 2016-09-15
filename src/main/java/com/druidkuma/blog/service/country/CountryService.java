@@ -2,7 +2,7 @@ package com.druidkuma.blog.service.country;
 
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.country.Language;
-import com.druidkuma.blog.web.dto.CountryDto;
+import com.druidkuma.blog.web.dto.country.CountryDto;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import java.util.List;
  * @since 7/22/16
  */
 public interface CountryService {
-    List<Country> getAvailableCountries();
     List<CountryDto> getAll();
     List<Language> getAllLanguages();
 

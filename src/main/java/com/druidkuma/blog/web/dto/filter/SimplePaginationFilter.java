@@ -1,4 +1,4 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.filter;
 
 import lombok.*;
 import org.apache.commons.lang.StringUtils;

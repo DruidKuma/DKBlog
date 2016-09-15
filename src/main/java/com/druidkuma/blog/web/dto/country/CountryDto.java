@@ -1,4 +1,4 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.country;
 
 import lombok.*;
 

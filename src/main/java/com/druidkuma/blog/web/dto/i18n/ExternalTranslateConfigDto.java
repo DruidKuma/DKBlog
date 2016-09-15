@@ -1,5 +1,6 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.i18n;
 
+import com.druidkuma.blog.web.dto.country.CountryDto;
 import lombok.Getter;
 import lombok.Setter;
 

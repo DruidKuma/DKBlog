@@ -4,7 +4,7 @@ import com.druidkuma.blog.domain.property.Property;
 import com.druidkuma.blog.service.country.CountryService;
 import com.druidkuma.blog.service.property.PropertyService;
 import com.druidkuma.blog.web.dto.PropertyDto;
-import com.druidkuma.blog.web.dto.SimplePaginationFilter;
+import com.druidkuma.blog.web.dto.filter.SimplePaginationFilter;
 import com.druidkuma.blog.web.transformer.PropertyTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

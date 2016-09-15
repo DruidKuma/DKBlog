@@ -5,7 +5,7 @@ import com.druidkuma.blog.domain.BlogEntry;
 import com.druidkuma.blog.domain.Content;
 import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
-import com.druidkuma.blog.web.dto.BlogDetailedEntryDto;
+import com.druidkuma.blog.web.dto.entry.BlogDetailedEntryDto;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

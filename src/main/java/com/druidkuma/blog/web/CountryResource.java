@@ -1,7 +1,7 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.service.country.CountryService;
-import com.druidkuma.blog.web.dto.CountryDto;
+import com.druidkuma.blog.web.dto.country.CountryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

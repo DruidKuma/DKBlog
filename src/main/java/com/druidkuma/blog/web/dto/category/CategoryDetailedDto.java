@@ -1,5 +1,7 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.category;
 
+import com.druidkuma.blog.web.dto.country.CountryDto;
+import com.druidkuma.blog.web.dto.i18n.TranslationDto;
 import lombok.*;
 
 import java.util.List;

@@ -1,8 +1,6 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.country;
 
 import lombok.*;
-
-import java.util.List;
 
 /**
  * Created by Iurii Miedviediev
@@ -16,10 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CountryConfigDto {
+public class LanguageDto {
     private String isoCode;
     private String name;
-    private Boolean enabled;
-    private LanguageDto defaultLanguage;
-    private List<LanguageDto> languages;
+    private String nativeName;
 }

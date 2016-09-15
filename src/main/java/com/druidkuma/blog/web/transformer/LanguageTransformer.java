@@ -2,7 +2,7 @@ package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.country.LanguageRepository;
 import com.druidkuma.blog.domain.country.Language;
-import com.druidkuma.blog.web.dto.LanguageDto;
+import com.druidkuma.blog.web.dto.country.LanguageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

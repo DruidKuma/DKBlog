@@ -1,7 +1,8 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.entry;
 
+import com.druidkuma.blog.web.dto.category.CategoryDto;
+import com.druidkuma.blog.web.dto.country.CountryDto;
 import lombok.*;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.Instant;
 import java.util.List;

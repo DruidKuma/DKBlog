@@ -1,4 +1,4 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.i18n;
 
 import lombok.*;
 
@@ -7,15 +7,15 @@ import lombok.*;
  *
  * @author DruidKuma
  * @version 1.0.0
- * @since 9/7/16
+ * @since 8/1/16
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LanguageDto {
-    private String isoCode;
-    private String name;
-    private String nativeName;
+public class TranslationDto {
+    private String lang;
+    private String display;
+    private String value;
 }
