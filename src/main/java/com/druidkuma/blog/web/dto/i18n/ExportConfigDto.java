@@ -1,4 +1,4 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.i18n;
 
 import lombok.*;
 
