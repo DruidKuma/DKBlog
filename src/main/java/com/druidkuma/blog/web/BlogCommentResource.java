@@ -1,6 +1,6 @@
 package com.druidkuma.blog.web;
 
-import com.druidkuma.blog.domain.Comment;
+import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.comment.CommentService;
 import com.druidkuma.blog.web.dto.BlogCommentDto;

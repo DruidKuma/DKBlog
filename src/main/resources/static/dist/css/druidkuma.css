@@ -540,3 +540,98 @@ i.flag-icon.flag-icon-big {
     font-size: 16px !important;
     cursor: pointer;
 }
+
+/**
+COMMENT TAB IN ADMIN PANEL
+*/
+a.comment-user-mail {
+    color: rgba(58, 139, 208, 0.62);
+}
+
+a.comment-user-mail:hover {
+    color: rgba(69, 171, 255, 0.62);
+}
+
+span.comment-user-ip:hover {
+    color:whitesmoke;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+ul.comment-action-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.comment-action-list li {
+    display: inline;
+}
+
+.comment-action {
+    cursor: pointer;
+    color: #45abff;;
+}
+.comment-action:hover {
+    color: rgba(255, 0, 0, 0.61) !important;
+}
+
+li.comment-action.comment-approve {
+    color: #10c469;
+}
+
+li.comment-action.comment-danger {
+    color: orange;
+}
+
+div.comment-action-block {
+    padding-top: 10px;
+}
+
+div.comment-action-block {
+    display: none;
+}
+
+tr.comment-row:hover .comment-action-block {
+    display: block;
+}
+
+.comment-date {
+    color: gray;
+    padding-bottom: 5px;
+}
+
+.comment-date span {
+    color: rgba(255, 255, 0, 0.43);
+}
+
+a.post-com-count {
+    background-color: #0a6aa1;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+span.comment-count {
+    padding: 8px;
+}
+
+.comment-filter-list {
+    float: right !important;
+    margin-right: 20px;
+    padding: 5px;
+    border: 1px dotted rgba(255, 255, 255, 0.28);
+}
+
+li.comment-filter-item {
+    margin: 0 5px;
+}
+
+li.comment-filter-item.active {
+    color: rgba(120, 226, 232, 0.69);
+}
+
+li.comment-filter-item:not(.active):hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgba(120, 226, 232, 0.69);
+}

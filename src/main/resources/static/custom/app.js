@@ -55,6 +55,11 @@ blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoader
         controller: 'SystemPropertiesController'
     }).
 
+    when('/comments', {
+        templateUrl: '/custom/comment/commentPanel.html',
+        controller: 'CommentAdminController'
+    }).
+
     otherwise({
         redirectTo: '/'
     });

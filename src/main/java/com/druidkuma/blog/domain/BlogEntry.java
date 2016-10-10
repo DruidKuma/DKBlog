@@ -1,6 +1,7 @@
 package com.druidkuma.blog.domain;
 
 import com.druidkuma.blog.domain.category.Category;
+import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.domain.country.Country;
 import lombok.*;
 import org.hibernate.annotations.Fetch;

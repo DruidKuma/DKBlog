@@ -1,6 +1,6 @@
 package com.druidkuma.blog.service.comment;
 
-import com.druidkuma.blog.domain.Comment;
+import com.druidkuma.blog.domain.comment.Comment;
 
 import java.util.List;
 
