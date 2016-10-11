@@ -49,36 +49,46 @@
                     <div class="dk-loading" ng-show="loadingProcess">
                         <div class="dk-loading-animation"></div>
                     </div>
+
+                    <ul class="nav navbar-nav dk-search-form comment-action-list" ng-show="actionCommentIds.length">
+                        <li class="text-success comment-action-item"><i class="fa fa-arrow-right"></i></li>
+                        <li class="comment-action-item">Approve</li>
+                        <li>|</li>
+                        <li class="comment-action-item">Unapprove</li>
+                        <li>|</li>
+                        <li class="comment-action-item">Mark as Spam</li>
+                        <li>|</li>
+                        <li class="comment-action-item">Move to Trash</li>
+                    </ul>
+
                     <table class="table m-b-15" id="commentsTable">
                         <thead>
                         <tr>
-                            <th width="5%"><input type="checkbox"/></th>
+                            <th width="5%"><input type="checkbox" ng-checked="checkIfAllChecked()" ng-click="toggleAllCheck($event)"/></th>
                             <th width="20%">Author</th>
                             <th width="60%">Comment</th>
                             <th width="15%">In Response To</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="comment-row">
-                            <td><input type="checkbox"/></td>
+                        <tr class="comment-row" ng-repeat="comment in comments">
+                            <td><input type="checkbox" ng-checked="checkIfInActionList(comment.id)" ng-click="toggleActionCommentId(comment.id, $event)"/></td>
                             <td class="author column-author">
 
                                 <div class="comment-user-name m-b-10">
                                     <img src="dist/images/user-comment.png" height="32" width="32">
-                                    <strong>KnbigJswhf</strong>
+                                    <strong>{{comment.author}}</strong>
                                 </div>
-                                <a href="mailto:b13003622862@gmail.com" class="comment-user-mail">b13003622862@gmail.com</a>
+                                <a href="mailto:{{comment.email}}" class="comment-user-mail">{{comment.email}}</a>
                                 <br>
-                                <span class="comment-user-ip">10.63.0.33</span>
+                                <span class="comment-user-ip">{{comment.ipAddress}}</span>
                             </td>
                             <td>
                                 <div class="comment-date">
-                                    Submitted on <span>2016/10/07 at 12:06 pm</span>
+                                    Submitted on <span>{{comment.date | date:'dd/MM/yyyy HH:mm'}}</span>
                                 </div>
                                 <div class="comment-content">
-                                    Events. Backrounds to become issues in a dream atmosphere elf, Dwarf, Personal, Draconian, Troll, Ogre, orc, Massive, Satanic force, Angel perhaps what with the these sort of. Dwarf, Gnome, Your, Elf and / or troll are viewed as meant for good hands per hour. Precious Carmichael: Aren’t getting you intending. Video wows is extremely enslaving, Simillar to prescriptions, Beer, Or it may be casino. Truthfully, A wide range of manufacturers take into consideration world of warcraft their”Meth” On online social gaming. air jordan pas cher
-                                    I are possibly pushing, Despite the fact that my corporation is taking into consideration the one that put together that particular didn’t want to have no choice but at gunpoint to talk about a solitary superb and maybe even normal situation concerning the national government. The sees of both of your dipshit photo include really cartoonish as part of their states, Them spoils almost another fact the builders obtained say about them. Proper let me provide all kicker: The social networking stores i said from the outset of here? That people will never be brimming with my friends. nike air max pas cher
-                                    Generally second attribute that is expensive include pills. Which in turn best suited, Areas like well pills, End product pills, Double encounter modifiers and stuff like that price actual money. Not a bundle, Most likely close to a dime while well as nickel per, And then you have on only would like them over too participate in the wow, But it really really most definitely makes. nike air max one
+                                    {{comment.text}}
                                 </div>
                                 <div class="comment-action-block">
                                     <ul class="comment-action-list">
@@ -97,12 +107,8 @@
                                 </div>
                             </td>
                             <td>
-                                <strong>
-                                    <a href="http://www.reifen.de/magazin/wp-admin/edit-comments.php?p=14091" title="1,549 pending" class="post-com-count">
-                                        <span class="comment-count">0</span>
-                                    </a>
-                                </strong>
-                                <a href="#" class="m-l-10">View Post</a>
+                                <strong><span class="comment-count">0</span></strong>
+                                <a href="/entry/{{comment.postId}}" class="m-l-10">View Post</a>
                             </td>
                         </tr>
 

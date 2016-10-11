@@ -605,14 +605,14 @@ tr.comment-row:hover .comment-action-block {
     color: rgba(255, 255, 0, 0.43);
 }
 
-a.post-com-count {
+.comment-count {
     background-color: #0a6aa1;
     border-radius: 5px;
     color: #ffffff;
 }
 
 span.comment-count {
-    padding: 8px;
+    padding: 5px 8px;
 }
 
 .comment-filter-list {
@@ -631,6 +631,22 @@ li.comment-filter-item.active {
 }
 
 li.comment-filter-item:not(.active):hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgba(120, 226, 232, 0.69);
+}
+
+.comment-action-list {
+    float: left !important;
+    margin-right: 20px;
+    padding: 5px !important;
+    border: 1px dotted rgba(255, 255, 255, 0.28);
+}
+li.comment-action-item {
+    margin: 0 5px;
+}
+
+li.comment-action-item:hover {
     cursor: pointer;
     text-decoration: underline;
     color: rgba(120, 226, 232, 0.69);
