@@ -1,4 +1,4 @@
-package com.druidkuma.blog.web.dto;
+package com.druidkuma.blog.web.dto.comment;
 
 import com.google.common.collect.Lists;
 import lombok.*;

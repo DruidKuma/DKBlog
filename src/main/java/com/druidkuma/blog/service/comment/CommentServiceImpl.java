@@ -1,8 +1,13 @@
 package com.druidkuma.blog.service.comment;
 
 import com.druidkuma.blog.dao.comment.CommentRepository;
+import com.druidkuma.blog.dao.comment.specification.CommentSearchCriteria;
+import com.druidkuma.blog.dao.comment.specification.CommentSpecification;
 import com.druidkuma.blog.domain.comment.Comment;
+import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +43,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getOne(Long commentId) {
         return commentRepository.findOne(commentId);
+    }
+
+    @Override
+    public Page<BlogCommentInfoDto> getPageOfComments(Pageable pageRequest, String ipFilter, Long postFilter, String typeFilter) {
+        Page<Comment> comments = commentRepository.findAll(
+                new CommentSpecification(
+                        new CommentSearchCriteria(ipFilter, typeFilter, postFilter)),
+                pageRequest);
+        return null;
     }
 }

@@ -11,7 +11,7 @@
                     <ul class="nav navbar-nav dk-search-form">
                         <li class="hidden-xs">
                             <form role="search" class="app-search ng-pristine ng-valid">
-                                <input type="text" placeholder="Search..." class="form-control m-t-0 m-r-10" ng-model="propertiesFilter.search" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="resetPaginationAndReload()">
+                                <input type="text" placeholder="Search..." class="form-control m-t-0 m-r-10" ng-model="commentFilter.search" ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" ng-change="resetPaginationAndReload()">
                                 <a href=""><i class="fa fa-search"></i></a>
                             </form>
                         </li>
@@ -20,28 +20,38 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="m-r-10">
                             <uib-pagination
-                                    total-items="propertiesFilter.totalItems"
-                                    items-per-page="propertiesFilter.entriesOnPage"
-                                    ng-model="propertiesFilter.currentPage"
+                                    total-items="commentFilter.totalItems"
+                                    items-per-page="commentFilter.entriesOnPage"
+                                    ng-model="commentFilter.currentPage"
                                     max-size="5"
                                     class="pagination-sm pull-right m-t-0 m-b-0 m-r-10"
                                     boundary-link-numbers="true"
                                     rotate="false"
-                                    ng-click="loadProperties()">
+                                    ng-click="loadComments()">
                             </uib-pagination>
                         </li>
                     </ul>
 
                     <ul class="nav navbar-nav dk-search-form comment-filter-list">
-                        <li class="comment-filter-item active">All</li>
+                        <li class="comment-filter-item"
+                            ng-class="{'active' : !commentFilter.typeFilter}"
+                            ng-click="changeTypeFilter('')">All</li>
                         <li>|</li>
-                        <li class="comment-filter-item">Approved</li>
+                        <li class="comment-filter-item"
+                            ng-class="{'active' : commentFilter.typeFilter == 'APPROVED'}"
+                            ng-click="changeTypeFilter('APPROVED')">Approved</li>
                         <li>|</li>
-                        <li class="comment-filter-item">Pending</li>
+                        <li class="comment-filter-item"
+                            ng-class="{'active' : commentFilter.typeFilter == 'PENDING'}"
+                            ng-click="changeTypeFilter('PENDING')">Pending</li>
                         <li>|</li>
-                        <li class="comment-filter-item">Spam</li>
+                        <li class="comment-filter-item"
+                            ng-class="{'active' : commentFilter.typeFilter == 'SPAM'}"
+                            ng-click="changeTypeFilter('SPAM')">Spam</li>
                         <li>|</li>
-                        <li class="comment-filter-item">Trash</li>
+                        <li class="comment-filter-item"
+                            ng-class="{'active' : commentFilter.typeFilter == 'TRASH'}"
+                            ng-click="changeTypeFilter('TRASH')">Trash</li>
                     </ul>
                 </div>
 
@@ -107,7 +117,6 @@
                                 </div>
                             </td>
                             <td>
-                                <strong><span class="comment-count">0</span></strong>
                                 <a href="/entry/{{comment.postId}}" class="m-l-10">View Post</a>
                             </td>
                         </tr>

@@ -22,6 +22,13 @@ angular.module("blogApp").service('Comment', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(comment)
             })
+        },
+        loadPageOfComments: function(commentFilter) {
+            return $http({
+                url: BASE_URL + "/api/blog/comment/page",
+                method: "post",
+                data: JSON.stringify(commentFilter)
+            })
         }
     }
 }]);

@@ -3,9 +3,13 @@ package com.druidkuma.blog.web;
 import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.comment.CommentService;
-import com.druidkuma.blog.web.dto.BlogCommentDto;
+import com.druidkuma.blog.web.dto.comment.BlogCommentDto;
+import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
+import com.druidkuma.blog.web.dto.filter.CommentFilter;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +48,16 @@ public class BlogCommentResource {
     @RequestMapping(method = RequestMethod.POST)
     public BlogCommentDto saveComment(@RequestBody BlogCommentDto comment, HttpServletRequest request) {
         return buildCommentDto(commentService.saveComment(buildComment(comment, request)));
+    }
+
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public Page<BlogCommentInfoDto> getPageOfBlogComments(@RequestBody CommentFilter commentFilter) {
+        Pageable pageRequest = commentFilter.toPageRequest("creationDate DESC");
+        return commentService.getPageOfComments(
+                pageRequest,
+                commentFilter.getIpFilter(),
+                commentFilter.getPostFilter(),
+                commentFilter.getTypeFilter());
     }
 
     private BlogCommentDto buildCommentDto(Comment comment) {
