@@ -71,6 +71,11 @@
                         <li class="comment-action-item">Move to Trash</li>
                     </ul>
 
+                    <ul class="nav navbar-nav dk-search-form comment-active-filters m-l-15" ng-show="commentFilter.ipFilter || commentFilter.postFilter">
+                        <li class="m-r-5" ng-show="commentFilter.ipFilter">{{commentFilter.ipFilter}} <i class="fa fa-times" ng-click="removeIpFilter()"></i></li>
+                        <li ng-show="commentFilter.postFilter">Post ID: {{commentFilter.postFilter}} <i class="fa fa-times" ng-click="removePostFilter()"></i></li>
+                    </ul>
+
                     <table class="table m-b-15" id="commentsTable">
                         <thead>
                         <tr>
@@ -91,9 +96,9 @@
                                 </div>
                                 <a href="mailto:{{comment.email}}" class="comment-user-mail">{{comment.email}}</a>
                                 <br>
-                                <span class="comment-user-ip">{{comment.ipAddress}}</span>
+                                <span class="comment-user-ip" ng-click="filterByIpAddres(comment.ipAddress)">{{comment.ipAddress}}</span>
                             </td>
-                            <td>
+                            <td class="comment-content-wrapper">
                                 <div class="comment-date">
                                     Submitted on <span>{{comment.date | date:'dd/MM/yyyy HH:mm'}}</span>
                                 </div>
@@ -118,6 +123,9 @@
                             </td>
                             <td>
                                 <a href="/entry/{{comment.postId}}" class="m-l-10">View Post</a>
+                                <i class="fa fa-hashtag post-sort-btn"
+                                   ng-show="!commentFilter.postFilter"
+                                   ng-click="applyPostFilter(comment.postId)"></i>
                             </td>
                         </tr>
 

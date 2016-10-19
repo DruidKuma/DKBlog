@@ -7,10 +7,12 @@ import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Iurii Miedviediev
@@ -51,6 +53,20 @@ public class CommentServiceImpl implements CommentService {
                 new CommentSpecification(
                         new CommentSearchCriteria(ipFilter, typeFilter, postFilter)),
                 pageRequest);
-        return null;
+
+        return new PageImpl<>(
+                comments.getContent().stream()
+                        .map(comment -> BlogCommentInfoDto
+                                .builder()
+                                .id(comment.getId())
+                                .author(comment.getAuthor())
+                                .email(comment.getEmail())
+                                .ipAddress(comment.getAuthorIp())
+                                .date(comment.getCreationDate())
+                                .text(comment.getBody())
+                                .type(comment.getType().name())
+                                .postId(comment.getBlogEntry().getId())
+                                .build())
+                        .collect(Collectors.toList()), pageRequest, comments.getTotalElements());
     }
 }

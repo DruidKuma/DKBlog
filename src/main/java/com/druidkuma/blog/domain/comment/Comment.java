@@ -61,6 +61,10 @@ public class Comment {
     @Column(name = "cm_creation_date")
     private Instant creationDate;
 
+    @Column(name = "cm_type")
+    @Enumerated(value = EnumType.STRING)
+    private CommentType type;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cm_blog_entry_id")
     private BlogEntry blogEntry;

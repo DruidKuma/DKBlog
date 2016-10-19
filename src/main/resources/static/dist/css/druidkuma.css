@@ -592,6 +592,20 @@ div.comment-action-block {
     display: none;
 }
 
+.comment-content-wrapper {
+    position: relative;
+}
+
+.comment-content {
+    margin-bottom: 45px;
+}
+
+.comment-content-wrapper .comment-action-block {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+}
+
 tr.comment-row:hover .comment-action-block {
     display: block;
 }
@@ -650,4 +664,22 @@ li.comment-action-item:hover {
     cursor: pointer;
     text-decoration: underline;
     color: rgba(120, 226, 232, 0.69);
+}
+
+ul.comment-active-filters li {
+    padding: 5px;
+    border: 1px solid rgb(255, 246, 213);
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(85, 85, 85);
+}
+
+ul.comment-active-filters li i:hover {
+    color: red;
+    cursor: pointer;
+}
+
+i.post-sort-btn:hover {
+    color: white;
+    cursor: pointer;
 }

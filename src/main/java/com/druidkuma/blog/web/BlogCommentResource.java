@@ -1,6 +1,7 @@
 package com.druidkuma.blog.web;
 
 import com.druidkuma.blog.domain.comment.Comment;
+import com.druidkuma.blog.domain.comment.CommentType;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.comment.CommentService;
 import com.druidkuma.blog.web.dto.comment.BlogCommentDto;
@@ -72,6 +73,7 @@ public class BlogCommentResource {
 
     private Comment buildComment(BlogCommentDto commentDto, HttpServletRequest request) {
         return Comment.builder()
+                .type(CommentType.APPROVED)
                 .author(commentDto.getAuthor())
                 .authorUserAgent(request.getHeader("user-agent"))
                 .authorIp(request.getRemoteAddr())

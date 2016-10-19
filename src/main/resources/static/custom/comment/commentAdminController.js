@@ -5,30 +5,7 @@ angular.module("blogApp")
     .controller('CommentAdminController',['$scope', 'Comment', function($scope, Comment) {
 
         $scope.actionCommentIds = [];
-        $scope.comments = [
-            {
-                id: 1,
-                author: 'Iurii Miedviediev',
-                email: 'druidkuma@gmail.com',
-                ipAddress: '10.63.0.33',
-                date: 999303004098,
-                text: 'Events. Backrounds to become issues in a dream atmosphere elf, Dwarf, Personal, Draconian, Troll, Ogre, orc, Massive, Satanic force, Angel perhaps what with the these sort of. Dwarf, Gnome, Your, Elf and / or troll are viewed as meant for good hands per hour. Precious Carmichael: Aren’t getting you intending. Video wows is extremely enslaving',
-                type: 'APPROVED',
-                postId: 1625,
-                totalCommentsForPost: 18
-            },
-            {
-                id: 2,
-                author: 'Iurii Miedviediev',
-                email: 'druidkuma@gmail.com',
-                ipAddress: '10.63.0.33',
-                date: 999303004098,
-                text: 'Events. Backrounds to become issues in a dream atmosphere elf, Dwarf, Personal, Draconian, Troll, Ogre, orc, Massive, Satanic force, Angel perhaps what with the these sort of. Dwarf, Gnome, Your, Elf and / or troll are viewed as meant for good hands per hour. Precious Carmichael: Aren’t getting you intending. Video wows is extremely enslaving',
-                type: 'APPROVED',
-                postId: 1625,
-                totalCommentsForPost: 777
-            }
-        ];
+        $scope.comments = [];
 
         $scope.commentFilter = {
             search: '',
@@ -44,7 +21,8 @@ angular.module("blogApp")
         $scope.loadComments = function() {
             $scope.loadingProcess = true;
             Comment.loadPageOfComments($scope.commentFilter).then(function(response) {
-                //$scope.comments = response.data;
+                $scope.comments = response.data.content;
+                $scope.commentFilter.totalItems = response.data.totalElements;
             }, function(error) { $scope.showError() }).finally(function() {
                 $scope.loadingProcess = false;
             })
@@ -90,6 +68,23 @@ angular.module("blogApp")
             else {
                 $scope.actionCommentIds = [];
             }
+        };
+
+        $scope.filterByIpAddres = function(ipAddress) {
+            $scope.commentFilter.ipFilter = ipAddress;
+            $scope.resetPaginationAndReload();
+        };
+        $scope.removeIpFilter = function() {
+            $scope.commentFilter.ipFilter = '';
+            $scope.resetPaginationAndReload();
+        };
+        $scope.applyPostFilter = function(postId) {
+            $scope.commentFilter.postFilter = postId;
+            $scope.resetPaginationAndReload();
+        };
+        $scope.removePostFilter = function() {
+            $scope.commentFilter.postFilter = undefined;
+            $scope.resetPaginationAndReload();
         };
 
         $scope.loadComments();
