@@ -1,6 +1,7 @@
 package com.druidkuma.blog.service.comment;
 
 import com.druidkuma.blog.domain.comment.Comment;
+import com.druidkuma.blog.domain.comment.CommentType;
 import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface CommentService {
     Comment getOne(Long commentId);
 
     Page<BlogCommentInfoDto> getPageOfComments(Pageable pageRequest, String ipFilter, Long postFilter, String typeFilter);
+
+    void updateTypeForComments(List<Long> commentIds, CommentType type);
 }

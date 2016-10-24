@@ -4,6 +4,7 @@ import com.druidkuma.blog.dao.comment.CommentRepository;
 import com.druidkuma.blog.dao.comment.specification.CommentSearchCriteria;
 import com.druidkuma.blog.dao.comment.specification.CommentSpecification;
 import com.druidkuma.blog.domain.comment.Comment;
+import com.druidkuma.blog.domain.comment.CommentType;
 import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,5 +69,10 @@ public class CommentServiceImpl implements CommentService {
                                 .postId(comment.getBlogEntry().getId())
                                 .build())
                         .collect(Collectors.toList()), pageRequest, comments.getTotalElements());
+    }
+
+    @Override
+    public void updateTypeForComments(List<Long> commentIds, CommentType type) {
+        commentRepository.updateTypeForComments(commentIds, type);
     }
 }

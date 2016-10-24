@@ -683,3 +683,16 @@ i.post-sort-btn:hover {
     color: white;
     cursor: pointer;
 }
+
+span.text-APPROVED {
+    color: #10c469 !important;
+}
+span.text-PENDING {
+    color: #35b8e0 !important;
+}
+span.text-SPAM {
+    color: #ff5b5b !important;
+}
+span.text-TRASH {
+    color: #f9c851 !important;
+}

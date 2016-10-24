@@ -86,6 +86,17 @@ angular.module("blogApp")
             $scope.commentFilter.postFilter = undefined;
             $scope.resetPaginationAndReload();
         };
+        $scope.changeCommentStatus = function(newStatus, commentId) {
+            var actionIds;
+
+            if(commentId) actionIds = [commentId];
+            else actionIds = $scope.actionCommentIds;
+
+            Comment.changeCommentStatus(actionIds, newStatus).then(function(response) {
+                $scope.actionCommentIds = [];
+                $scope.loadComments();
+            });
+        };
 
         $scope.loadComments();
 

@@ -6,6 +6,7 @@ import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.comment.CommentService;
 import com.druidkuma.blog.web.dto.comment.BlogCommentDto;
 import com.druidkuma.blog.web.dto.comment.BlogCommentInfoDto;
+import com.druidkuma.blog.web.dto.comment.CommentStatusDto;
 import com.druidkuma.blog.web.dto.filter.CommentFilter;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,11 @@ public class BlogCommentResource {
                 commentFilter.getIpFilter(),
                 commentFilter.getPostFilter(),
                 commentFilter.getTypeFilter());
+    }
+
+    @RequestMapping(value = "/status", method = RequestMethod.PUT)
+    public void changeCommentStatus(@RequestBody CommentStatusDto commentStatusDto) {
+        commentService.updateTypeForComments(commentStatusDto.getCommentIds(), commentStatusDto.getStatus());
     }
 
     private BlogCommentDto buildCommentDto(Comment comment) {

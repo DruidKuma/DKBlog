@@ -29,6 +29,13 @@ angular.module("blogApp").service('Comment', ["$http", function($http) {
                 method: "post",
                 data: JSON.stringify(commentFilter)
             })
+        },
+        changeCommentStatus: function(commentIds, newStatus) {
+            return $http({
+                url: BASE_URL + "/api/blog/comment/status",
+                method: "put",
+                data: JSON.stringify({commentIds: commentIds, status: newStatus})
+            })
         }
     }
 }]);
