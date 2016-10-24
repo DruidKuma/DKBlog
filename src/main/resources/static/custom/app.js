@@ -1,7 +1,7 @@
 var blogApp = angular.module("blogApp", ['ngRoute', 'ui.bootstrap', 'ui.tinymce', 'ngCookies', 'pascalprecht.translate',
                                         'ngTagsInput', 'dcbImgFallback', 'truncate', 'color.picker', 'ngFileUpload',
                                         'dndLists', 'xeditable', 'ngSweetAlert', 'ui.slimscroll', 'uiSwitch', 'countTo',
-                                        'ngFileSaver', 'toaster', 'ngAnimate', 'isteven-multi-select']);
+                                        'ngFileSaver', 'toaster', 'ngAnimate', 'isteven-multi-select', 'ui.bootstrap']);
 var BASE_URL = 'http://localhost:8081';
 
 blogApp.config(['$routeProvider', '$translateProvider', '$translatePartialLoaderProvider', '$locationProvider', function($routeProvider, $translateProvider, $translatePartialLoaderProvider, $locationProvider) {

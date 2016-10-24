@@ -700,3 +700,8 @@ span.text-TRASH {
 .comment-type-radio-holder {
     width: 24%;
 }
+
+.comment-rating i.glyphicon.glyphicon-star, .comment-rating i.glyphicon.glyphicon-star-empty {
+    color: yellow;
+    font-size: 20px;
+}

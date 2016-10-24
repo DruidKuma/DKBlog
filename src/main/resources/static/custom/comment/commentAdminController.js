@@ -120,6 +120,8 @@ angular.module("blogApp")
             });
         };
 
+        $scope.rate = 3.4; //TODO
+
         $scope.loadComments();
 
     }])

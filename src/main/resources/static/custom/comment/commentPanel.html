@@ -81,7 +81,8 @@
                         <tr>
                             <th width="5%"><input type="checkbox" ng-checked="checkIfAllChecked()" ng-click="toggleAllCheck($event)"/></th>
                             <th width="20%">Author</th>
-                            <th width="60%">Comment</th>
+                            <th width="45%">Comment</th>
+                            <th width="15%">Rating</th>
                             <th width="15%">In Response To</th>
                         </tr>
                         </thead>
@@ -127,12 +128,15 @@
                                     </ul>
                                 </div>
                             </td>
+                            <td class="comment-rating">
+                                <uib-rating ng-model="rate" read-only="true"></uib-rating>
+                            </td>
                             <td>
-                                <a href="/entry/{{comment.postId}}" class="m-l-10">View Post</a>
+                                <a href="/entry/{{comment.postId}}">View Post</a>
                                 <i class="fa fa-hashtag post-sort-btn"
                                    ng-show="!commentFilter.postFilter"
                                    ng-click="applyPostFilter(comment.postId)"></i>
-                                <span ng-show="!commentFilter.typeFilter" class="text-{{comment.type}} center-block m-l-10">{{comment.type}}</span>
+                                <span ng-show="!commentFilter.typeFilter" class="text-{{comment.type}} center-block">{{comment.type}}</span>
                             </td>
                         </tr>
 
