@@ -44,6 +44,7 @@ angular.module("blogApp")
             return $scope.actionCommentIds.indexOf(commentId) !== -1;
         };
         $scope.checkIfAllChecked = function() {
+            if(!$scope.comments.length) return false;
             return $scope.comments.every(function(comment) {
                 return $scope.checkIfInActionList(comment.id);
             });

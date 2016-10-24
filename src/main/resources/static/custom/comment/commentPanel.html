@@ -62,13 +62,13 @@
 
                     <ul class="nav navbar-nav dk-search-form comment-action-list" ng-show="actionCommentIds.length">
                         <li class="text-success comment-action-item"><i class="fa fa-arrow-right"></i></li>
-                        <li class="comment-action-item">Approve</li>
+                        <li class="comment-action-item" ng-click="changeCommentStatus('APPROVED')">Approve</li>
                         <li>|</li>
-                        <li class="comment-action-item">Unapprove</li>
+                        <li class="comment-action-item" ng-click="changeCommentStatus('PENDING')">Unapprove</li>
                         <li>|</li>
-                        <li class="comment-action-item">Mark as Spam</li>
+                        <li class="comment-action-item" ng-click="changeCommentStatus('SPAM')">Mark as Spam</li>
                         <li>|</li>
-                        <li class="comment-action-item">Move to Trash</li>
+                        <li class="comment-action-item" ng-click="changeCommentStatus('TRASH')">Move to Trash</li>
                     </ul>
 
                     <ul class="nav navbar-nav dk-search-form comment-active-filters m-l-15" ng-show="commentFilter.ipFilter || commentFilter.postFilter">
@@ -110,17 +110,22 @@
                                         <li class="comment-approve comment-action"
                                             ng-show="comment.type!='APPROVED'"
                                             ng-click="changeCommentStatus('APPROVED', comment.id)">Approve</li>
-                                        <li class="comment-approve comment-action" ng-show="comment.type=='APPROVED'">Unapprove</li>
+                                        <li class="comment-approve comment-action"
+                                            ng-show="comment.type=='APPROVED'"
+                                            ng-click="changeCommentStatus('PENDING', comment.id)">Unapprove</li>
                                         <li>|</li>
                                         <li class="comment-action">Reply</li>
                                         <li>|</li>
                                         <li class="comment-action">Quick Edit</li>
                                         <li>|</li>
                                         <li class="comment-action">Edit</li>
-                                        <li>|</li>
-                                        <li class="comment-action comment-danger">Spam</li>
-                                        <li>|</li>
-                                        <li class="comment-action comment-danger">Trash</li>
+                                        <li ng-show="comment.type!='SPAM'">|</li>
+                                        <li class="comment-action comment-danger"
+                                            ng-show="comment.type!='SPAM'"
+                                            ng-click="changeCommentStatus('SPAM', comment.id)">Spam</li>
+                                        <li ng-show="comment.type!='TRASH'">|</li>
+                                        <li class="comment-action comment-danger" ng-show="comment.type!='TRASH'"
+                                            ng-click="changeCommentStatus('TRASH', comment.id)">Trash</li>
                                     </ul>
                                 </div>
                             </td>
