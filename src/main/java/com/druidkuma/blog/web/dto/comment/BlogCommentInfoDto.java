@@ -25,5 +25,4 @@ public class BlogCommentInfoDto {
     private String text;
     private String type;
     private Long postId;
-    private Integer totalCommentsForPost;
 }

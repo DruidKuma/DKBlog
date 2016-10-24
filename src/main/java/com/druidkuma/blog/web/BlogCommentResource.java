@@ -67,6 +67,11 @@ public class BlogCommentResource {
         commentService.updateTypeForComments(commentStatusDto.getCommentIds(), commentStatusDto.getStatus());
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public void updateComment(@RequestBody BlogCommentInfoDto commentDto) {
+        commentService.updateComment(commentDto);
+    }
+
     private BlogCommentDto buildCommentDto(Comment comment) {
         return BlogCommentDto.builder()
                 .author(comment.getAuthor())

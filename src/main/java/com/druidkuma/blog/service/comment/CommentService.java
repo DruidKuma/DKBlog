@@ -24,4 +24,6 @@ public interface CommentService {
     Page<BlogCommentInfoDto> getPageOfComments(Pageable pageRequest, String ipFilter, Long postFilter, String typeFilter);
 
     void updateTypeForComments(List<Long> commentIds, CommentType type);
+
+    void updateComment(BlogCommentInfoDto commentDto);
 }

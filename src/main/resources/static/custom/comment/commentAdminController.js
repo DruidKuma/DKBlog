@@ -2,7 +2,7 @@
  * Created by DruidKuma on 10/6/16.
  */
 angular.module("blogApp")
-    .controller('CommentAdminController',['$scope', 'Comment', function($scope, Comment) {
+    .controller('CommentAdminController',['$scope', 'Comment', '$uibModal', function($scope, Comment, $uibModal) {
 
         $scope.actionCommentIds = [];
         $scope.comments = [];
@@ -99,6 +99,39 @@ angular.module("blogApp")
             });
         };
 
+        $scope.openCommentEditModal = function(comment) {
+            var editCommentModal = $uibModal.open({
+                animation: true,
+                templateUrl: 'editCommentModal.html',
+                controller: 'EditCommentController',
+                size: 'lg',
+                resolve: {
+                    comment: function () {
+                        return comment;
+                    }
+                }
+            });
+
+            editCommentModal.result.then(function (editedComment) {
+                console.log(editedComment);
+                Comment.update(editedComment).then(function(response) {
+                    $scope.loadComments();
+                }, function(error) { $scope.showError() });
+            });
+        };
+
         $scope.loadComments();
 
-    }]);
+    }])
+    .controller('EditCommentController', function ($scope, $uibModalInstance, comment) {
+
+        $scope.comment = angular.copy(comment);
+
+        $scope.saveComment = function () {
+            $uibModalInstance.close($scope.comment);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    });

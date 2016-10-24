@@ -615,7 +615,7 @@ tr.comment-row:hover .comment-action-block {
     padding-bottom: 5px;
 }
 
-.comment-date span {
+span.comment-date {
     color: rgba(255, 255, 0, 0.43);
 }
 
@@ -695,4 +695,8 @@ span.text-SPAM {
 }
 span.text-TRASH {
     color: #f9c851 !important;
+}
+
+.comment-type-radio-holder {
+    width: 24%;
 }

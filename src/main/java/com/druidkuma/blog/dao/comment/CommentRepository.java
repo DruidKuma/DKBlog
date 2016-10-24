@@ -2,6 +2,7 @@ package com.druidkuma.blog.dao.comment;
 
 import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.domain.comment.CommentType;
+import com.druidkuma.blog.web.dto.comment.BlogCommentDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

@@ -75,4 +75,13 @@ public class CommentServiceImpl implements CommentService {
     public void updateTypeForComments(List<Long> commentIds, CommentType type) {
         commentRepository.updateTypeForComments(commentIds, type);
     }
+
+    @Override
+    public void updateComment(BlogCommentInfoDto commentDto) {
+        Comment comment = commentRepository.findOne(commentDto.getId());
+        comment.setAuthor(commentDto.getAuthor());
+        comment.setBody(commentDto.getText());
+        comment.setType(CommentType.valueOf(commentDto.getType()));
+        commentRepository.saveAndFlush(comment);
+    }
 }
