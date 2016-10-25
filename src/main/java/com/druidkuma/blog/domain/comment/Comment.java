@@ -65,6 +65,9 @@ public class Comment {
     @Enumerated(value = EnumType.STRING)
     private CommentType type;
 
+    @Column(name = "cm_rate")
+    private Integer rate;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cm_blog_entry_id")
     private BlogEntry blogEntry;

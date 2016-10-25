@@ -67,6 +67,7 @@ public class CommentServiceImpl implements CommentService {
                                 .text(comment.getBody())
                                 .type(comment.getType().name())
                                 .postId(comment.getBlogEntry().getId())
+                                .rate(comment.getRate())
                                 .build())
                         .collect(Collectors.toList()), pageRequest, comments.getTotalElements());
     }
