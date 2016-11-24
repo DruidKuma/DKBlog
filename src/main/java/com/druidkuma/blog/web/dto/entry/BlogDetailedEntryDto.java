@@ -1,5 +1,6 @@
 package com.druidkuma.blog.web.dto.entry;
 
+import com.druidkuma.blog.domain.entry.SeoSettings;
 import com.druidkuma.blog.web.dto.category.CategoryDto;
 import com.druidkuma.blog.web.dto.country.CountryDto;
 import lombok.*;
@@ -34,4 +35,5 @@ public class BlogDetailedEntryDto {
     private List<CategoryDto> categories;
     private Long previousId;
     private Long nextId;
+    private SeoSettings seoSettings;
 }

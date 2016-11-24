@@ -1,6 +1,6 @@
 package com.druidkuma.blog.service.category;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.web.dto.category.CategoryDetailedDto;

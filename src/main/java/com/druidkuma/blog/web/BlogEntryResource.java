@@ -1,6 +1,6 @@
 package com.druidkuma.blog.web;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.druidkuma.blog.exception.PermalinkExistsException;
 import com.druidkuma.blog.service.blogentry.BlogEntryService;
 import com.druidkuma.blog.service.permalink.PermalinkGenerationService;

@@ -1,6 +1,6 @@
 package com.druidkuma.blog.dao.blogEntry;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.druidkuma.blog.domain.country.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

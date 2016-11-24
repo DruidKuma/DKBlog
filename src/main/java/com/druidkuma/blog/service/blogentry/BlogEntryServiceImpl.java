@@ -5,7 +5,7 @@ import com.druidkuma.blog.dao.blogEntry.specification.BlogEntrySpecification;
 import com.druidkuma.blog.dao.blogEntry.specification.SearchCriteria;
 import com.druidkuma.blog.dao.category.CategoryRepository;
 import com.druidkuma.blog.dao.country.CountryRepository;
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

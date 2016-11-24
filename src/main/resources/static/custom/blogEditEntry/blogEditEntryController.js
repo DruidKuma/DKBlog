@@ -102,6 +102,19 @@ angular.module("blogApp")
             $scope.loadGalleryPart();
         };
 
+        $scope.openSeoSettings = function() {
+            Custombox.open({
+                target: "#seoSettingsModal",
+                effect: "push",
+                overlaySpeed: 100,
+                overlayColor: "#36404a",
+                overlayOpacity: 1
+            });
+        };
+        $scope.closeSeoSettings = function() {
+            Custombox.close();
+        };
+
         $scope.chooseImage = function(image) {
             $scope.selectedImage = image;
         };

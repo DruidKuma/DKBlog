@@ -139,6 +139,12 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group" ng-click="removeAttribute('title')">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-info pull-right" ng-click="openSeoSettings()"><i class="fa fa-globe"></i> SEO Settings</button>
+                                        </div>
+                                    </div>
+
 
                                 </form>
                             </div>
@@ -248,6 +254,46 @@
                             <button type="button" class="btn btn-xs btn-danger waves-effect waves-light" ng-click="closeImageGallery()">Cancel</button>
                         </div>
 
+                    </div>
+                </div>
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+    </div>
+</div>
+
+<div id="seoSettingsModal" class="modal-demo">
+    <button type="button" class="close" ng-click="closeSeoSettings()">
+        <span>×</span><span class="sr-only">Close</span>
+    </button>
+    <h4 class="custom-modal-title">SEO Settings</h4>
+    <div class="custom-modal-text">
+        <div class="content">
+
+            <div class="container">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">Title</label>
+                        <div class="col-md-11">
+                            <input type="text" class="form-control" placeholder="Enter title..." >
+                        </div>
+                    </div>
+                </form>
+
+                _su_description
+                _su_keywords
+                _su_meta_robots_nofollow
+                _su_meta_robots_noindex
+                _su_og_description
+                _su_og_image
+                _su_og_title
+                _su_og_type
+                _su_title
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-xs btn-info waves-effect waves-light" ng-click="closeSeoSettings()">OK</button>
+                        </div>
                     </div>
                 </div>
             </div> <!-- container -->

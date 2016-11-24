@@ -1,4 +1,4 @@
-package com.druidkuma.blog.domain;
+package com.druidkuma.blog.domain.entry;
 
 import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.comment.Comment;
@@ -74,6 +74,10 @@ public class BlogEntry {
             joinColumns = @JoinColumn(name = "be2c_blog_entry_id"),
             inverseJoinColumns = @JoinColumn(name = "be2c_category_id"))
     private List<Category> categories;
+
+    @OneToOne
+    @JoinColumn(name = "ss_blog_entry_id")
+    private SeoSettings seoSettings;
 
     @Transient
     private Set<Tag> tags;

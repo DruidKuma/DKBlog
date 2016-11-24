@@ -1,6 +1,6 @@
 package com.druidkuma.blog.dao.comment.specification;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.druidkuma.blog.domain.comment.Comment;
 import com.druidkuma.blog.domain.comment.CommentType;
 import com.google.common.collect.Lists;

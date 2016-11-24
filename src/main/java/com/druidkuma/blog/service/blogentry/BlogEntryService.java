@@ -1,6 +1,6 @@
 package com.druidkuma.blog.service.blogentry;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

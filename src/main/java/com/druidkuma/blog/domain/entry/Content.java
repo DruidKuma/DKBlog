@@ -1,4 +1,4 @@
-package com.druidkuma.blog.domain;
+package com.druidkuma.blog.domain.entry;
 
 import lombok.*;
 

@@ -1,8 +1,8 @@
 package com.druidkuma.blog.web.transformer;
 
 import com.druidkuma.blog.dao.blogEntry.BlogEntryRepository;
-import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Content;
+import com.druidkuma.blog.domain.entry.BlogEntry;
+import com.druidkuma.blog.domain.entry.Content;
 import com.druidkuma.blog.domain.category.Category;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.web.dto.entry.BlogDetailedEntryDto;
@@ -25,12 +25,14 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
 
     private CountryTransformer countryTransformer;
     private CategoryTransformer categoryTransformer;
+    private SeoSettingsTransformer seoSettingsTransformer;
     private BlogEntryRepository blogEntryRepository;
 
     @Autowired
-    public BlogEntryTransformer(CountryTransformer countryTransformer, CategoryTransformer categoryTransformer, BlogEntryRepository blogEntryRepository) {
+    public BlogEntryTransformer(CountryTransformer countryTransformer, CategoryTransformer categoryTransformer, SeoSettingsTransformer seoSettingsTransformer, BlogEntryRepository blogEntryRepository) {
         this.countryTransformer = countryTransformer;
         this.categoryTransformer = categoryTransformer;
+        this.seoSettingsTransformer = seoSettingsTransformer;
         this.blogEntryRepository = blogEntryRepository;
     }
 
@@ -69,6 +71,8 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
         content.setTitle(dto.getTitle());
         blogEntry.setContent(content);
 
+        blogEntry.setSeoSettings(seoSettingsTransformer.transformFromDto(dto.getSeoSettings()));
+
         return blogEntry;
     }
 
@@ -86,6 +90,7 @@ public class BlogEntryTransformer implements DtoTransformer<BlogEntry, BlogDetai
                 .isCommentEnabled(entry.getCommentsEnabled())
                 .countries(entry.getCountries().stream().map(country -> countryTransformer.tranformToDto(country)).collect(Collectors.toList()))
                 .categories(entry.getCategories().stream().map(category -> categoryTransformer.tranformToDto(category)).collect(Collectors.toList()))
+                .seoSettings(seoSettingsTransformer.tranformToDto(entry.getSeoSettings()))
                 .id(entry.getId())
                 .build();
     }

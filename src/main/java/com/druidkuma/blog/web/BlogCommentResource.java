@@ -88,7 +88,6 @@ public class BlogCommentResource {
                 .author(commentDto.getAuthor())
                 .authorUserAgent(request.getHeader("user-agent"))
                 .authorIp(request.getRemoteAddr())
-                .isApproved(true)
                 .body(commentDto.getBody())
                 .email("admin@blog.com")
                 .creationDate(Instant.now())

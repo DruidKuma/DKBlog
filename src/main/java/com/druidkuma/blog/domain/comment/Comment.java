@@ -1,6 +1,6 @@
 package com.druidkuma.blog.domain.comment;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.google.common.collect.Lists;
 import lombok.*;
 import org.hibernate.annotations.Fetch;

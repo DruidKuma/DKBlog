@@ -1,6 +1,6 @@
 package com.druidkuma.blog.domain.category;
 
-import com.druidkuma.blog.domain.BlogEntry;
+import com.druidkuma.blog.domain.entry.BlogEntry;
 import com.druidkuma.blog.domain.country.Country;
 import com.druidkuma.blog.domain.i18n.Translation;
 import lombok.*;

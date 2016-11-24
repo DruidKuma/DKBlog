@@ -1,7 +1,7 @@
 package com.druidkuma.blog.dao.blogEntry.specification;
 
-import com.druidkuma.blog.domain.BlogEntry;
-import com.druidkuma.blog.domain.Content;
+import com.druidkuma.blog.domain.entry.BlogEntry;
+import com.druidkuma.blog.domain.entry.Content;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
