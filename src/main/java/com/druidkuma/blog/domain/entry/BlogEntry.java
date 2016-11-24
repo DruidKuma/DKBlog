@@ -75,8 +75,8 @@ public class BlogEntry {
             inverseJoinColumns = @JoinColumn(name = "be2c_category_id"))
     private List<Category> categories;
 
-    @OneToOne
-    @JoinColumn(name = "ss_blog_entry_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "be_seo_settings_id")
     private SeoSettings seoSettings;
 
     @Transient

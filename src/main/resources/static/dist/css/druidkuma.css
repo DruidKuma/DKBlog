@@ -705,3 +705,7 @@ span.text-TRASH {
     color: yellow;
     font-size: 20px;
 }
+
+.seo-modal {
+    width: 800px !important;
+}

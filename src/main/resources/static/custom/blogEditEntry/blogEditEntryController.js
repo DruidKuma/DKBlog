@@ -38,6 +38,7 @@ angular.module("blogApp")
                 $scope.loadingProcess = true;
                 BlogEntry.single($routeParams.id).then(function(response) {
                     $scope.postEntry = response.data;
+                    console.log($scope.postEntry);
                 }).finally(function() {
                     $scope.loadingProcess = false;
                 });
@@ -105,10 +106,10 @@ angular.module("blogApp")
         $scope.openSeoSettings = function() {
             Custombox.open({
                 target: "#seoSettingsModal",
-                effect: "push",
+                effect: "newspaper",
                 overlaySpeed: 100,
                 overlayColor: "#36404a",
-                overlayOpacity: 1
+                overlayOpacity: 0.8
             });
         };
         $scope.closeSeoSettings = function() {

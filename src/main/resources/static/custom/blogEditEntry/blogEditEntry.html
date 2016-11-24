@@ -262,7 +262,7 @@
     </div>
 </div>
 
-<div id="seoSettingsModal" class="modal-demo">
+<div id="seoSettingsModal" class="modal-demo seo-modal">
     <button type="button" class="close" ng-click="closeSeoSettings()">
         <span>×</span><span class="sr-only">Close</span>
     </button>
@@ -273,22 +273,64 @@
             <div class="container">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-md-1 control-label">Title</label>
-                        <div class="col-md-11">
-                            <input type="text" class="form-control" placeholder="Enter title..." >
+                        <label class="col-md-2 control-label">Title</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.title" class="form-control" placeholder="Enter title..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Description</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.description" class="form-control" placeholder="Enter description..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Keywords</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.keywords" class="form-control" placeholder="Enter keywords..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Meta Robots No-Follow</label>
+                        <div class="col-md-10">
+                            <input type="checkbox" ng-model="postEntry.seoSettings.metaRobotsNoFollow" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Meta Robots No-Index</label>
+                        <div class="col-md-2">
+                            <input type="checkbox" ng-model="postEntry.seoSettings.metaRobotsNoIndex" class="">
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">OG Title</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.ogTitle" class="form-control" placeholder="Enter OG Title..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">OG Description</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.ogDescription" class="form-control" placeholder="Enter OG Description..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">OG Image</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.ogImage" class="form-control" placeholder="Enter OG Image..." >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">OG Type</label>
+                        <div class="col-md-10">
+                            <input type="text" ng-model="postEntry.seoSettings.ogType" class="form-control" placeholder="Enter OG Type..." >
                         </div>
                     </div>
                 </form>
 
-                _su_description
-                _su_keywords
-                _su_meta_robots_nofollow
-                _su_meta_robots_noindex
-                _su_og_description
-                _su_og_image
-                _su_og_title
-                _su_og_type
-                _su_title
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="pull-right">

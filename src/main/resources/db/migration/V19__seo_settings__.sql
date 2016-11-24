@@ -8,6 +8,7 @@ CREATE TABLE seo_settings (
   ss_og_description TEXT,
   ss_og_image TEXT,
   ss_og_title TEXT,
-  ss_og_type TEXT,
-  ss_blog_entry_id INTEGER REFERENCES blog_entry(be_id)
+  ss_og_type TEXT
 );
+
+ALTER TABLE blog_entry ADD COLUMN be_seo_settings_id INTEGER REFERENCES seo_settings(ss_id);
